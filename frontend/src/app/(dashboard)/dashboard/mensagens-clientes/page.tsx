@@ -30,6 +30,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
@@ -1088,7 +1089,7 @@ export default function MensagensClientesPage() {
 
                   {/* Text input + Send */}
                   <div className="flex items-end gap-2">
-                    <Textarea
+                    <AITextarea
                       ref={textareaRef}
                       placeholder="Digite sua resposta... (@ para comandos)"
                       className="min-h-[44px] max-h-32 resize-none text-sm"
@@ -1096,6 +1097,9 @@ export default function MensagensClientesPage() {
                       onChange={handleTextareaChange}
                       onKeyDown={handleKeyDown}
                       rows={1}
+                      aiContext={`Resposta a mensagem de cliente no contexto de mensagens a clientes de procuradoria${selectedThread?.clientName ? ` — cliente: ${selectedThread.clientName}` : ''}${selectedThread?.caseTitulo ? ` — caso: ${selectedThread.caseTitulo}` : ''}`}
+                      aiObjective="Redigir uma resposta profissional, clara e juridicamente adequada para o cliente"
+                      setValue={setReplyContent}
                     />
                     <Button
                       size="icon"

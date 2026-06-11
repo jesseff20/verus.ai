@@ -5,11 +5,14 @@ Implementação: RSA-2048 + SHA-256 (PKCS#1 v1.5 via cryptography library).
 Cada usuário tem um par de chaves gerado na primeira assinatura.
 A chave privada é armazenada cifrada com Fernet (AES-128-CBC + HMAC-SHA256).
 
+Derivação de chave: PBKDF2-HMAC-SHA256 com 100 000 iterações e salt por registro.
+
 Validade jurídica: baixa (sem ICP-Brasil). Indicada para uso interno/informal.
 """
 import base64
 import hashlib
 import logging
+import os
 from datetime import datetime, timezone, timedelta
 
 from django.conf import settings
@@ -18,12 +21,47 @@ from .base import SignatureProviderBase, SignatureResult
 
 logger = logging.getLogger(__name__)
 
+# Iterações PBKDF2 — ajustável conforme política de segurança.
+_PBKDF2_ITERATIONS = 100_000
 
-# Chave Fernet derivada do SECRET_KEY do Django
-# Em produção: usar AWS KMS ou HashiCorp Vault
-def _get_fernet():
+
+def _derive_fernet_key(secret: str, salt: bytes) -> bytes:
+    """
+    Deriva uma chave Fernet de 32 bytes a partir de um segredo e um salt
+    usando PBKDF2-HMAC-SHA256.
+
+    Args:
+        secret: segredo de entrada (normalmente Django SECRET_KEY).
+        salt:   salt aleatório de 16 bytes específico do registro.
+
+    Returns:
+        Chave Fernet codificada em base64url (44 bytes).
+    """
+    key_bytes = hashlib.pbkdf2_hmac(
+        'sha256',
+        secret.encode(),
+        salt,
+        iterations=_PBKDF2_ITERATIONS,
+    )
+    return base64.urlsafe_b64encode(key_bytes)
+
+
+def _get_fernet_for_record(salt: bytes):
+    """Retorna uma instância Fernet derivada do SECRET_KEY + salt do registro."""
     from cryptography.fernet import Fernet
-    import base64, hashlib
+    fernet_key = _derive_fernet_key(settings.SECRET_KEY, salt)
+    return Fernet(fernet_key)
+
+
+def _get_fernet_legacy():
+    """
+    Compatibilidade com registros criados antes da migração para PBKDF2.
+    A derivação legada usava SHA-256 simples sem salt.
+
+    ATENÇÃO: use apenas para descriptografar chaves antigas. Novos registros
+    devem sempre usar _get_fernet_for_record().
+    """
+    from cryptography.fernet import Fernet
     key_material = settings.SECRET_KEY.encode()
     derived = hashlib.sha256(key_material).digest()
     fernet_key = base64.urlsafe_b64encode(derived)
@@ -69,8 +107,20 @@ class InternalSignatureProvider(SignatureProviderBase):
             if not key_record.is_active:
                 raise ValueError('Chave do usuário foi revogada.')
 
-            # Descriptografa a chave privada
-            fernet = _get_fernet()
+            # Descriptografa a chave privada.
+            # Registros sem salt usam a derivação legada (SHA-256 simples).
+            # Registros com salt usam PBKDF2 — caminho seguro.
+            salt = bytes(key_record.private_key_salt) if key_record.private_key_salt else None
+            if salt:
+                fernet = _get_fernet_for_record(salt)
+            else:
+                logger.warning(
+                    'SignerKey do usuário %s usa derivação legada (sem PBKDF2). '
+                    'A chave será re-cifrada com PBKDF2 na próxima operação de escrita.',
+                    signer.id,
+                )
+                fernet = _get_fernet_legacy()
+
             private_key_pem = fernet.decrypt(bytes(key_record.private_key_encrypted))
             private_key = serialization.load_pem_private_key(private_key_pem, password=None)
             return private_key, key_record.fingerprint
@@ -101,18 +151,20 @@ class InternalSignatureProvider(SignatureProviderBase):
             )
             fingerprint = hashlib.sha256(pub_der).hexdigest()
 
-            # Cifra a chave privada com Fernet
-            fernet = _get_fernet()
+            # Cifra a chave privada com Fernet + PBKDF2
+            salt = os.urandom(16)
+            fernet = _get_fernet_for_record(salt)
             private_encrypted = fernet.encrypt(private_pem)
 
             SignerKey.objects.create(
                 user=signer,
                 public_key_pem=public_pem,
                 private_key_encrypted=private_encrypted,
+                private_key_salt=salt,
                 fingerprint=fingerprint,
             )
 
-            logger.info('Par de chaves RSA gerado para usuário %s', signer.id)
+            logger.info('Par de chaves RSA gerado para usuário %s (PBKDF2)', signer.id)
             return private_key, fingerprint
 
     def sign(self, content_hash: str, signer, **kwargs) -> SignatureResult:

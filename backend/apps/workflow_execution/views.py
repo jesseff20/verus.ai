@@ -1,5 +1,6 @@
 import logging
 from django.shortcuts import get_object_or_404
+from django.db.models import Count, Q
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -33,6 +34,11 @@ class FlowInstanceViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         qs = FlowInstance.objects.select_related(
             'template', 'started_by', 'organ'
+        ).annotate(
+            pending_task_count_annotation=Count(
+                'tasks',
+                filter=Q(tasks__status__in=('pending', 'in_progress')),
+            )
         )
         if hasattr(user, 'organ') and user.organ:
             qs = qs.filter(organ=user.organ)
@@ -116,7 +122,10 @@ class TaskInstanceViewSet(viewsets.ReadOnlyModelViewSet):
         qs = TaskInstance.objects.filter(instance_id=instance_pk)
         if organ:
             qs = qs.filter(instance__organ=organ)
-        return qs.select_related('assigned_to', 'completed_by').prefetch_related('requests')
+        return qs.select_related(
+            'assigned_to', 'completed_by',
+            'instance', 'instance__template',
+        ).prefetch_related('requests')
 
     @action(detail=True, methods=['post'], url_path='complete')
     def complete(self, request, instance_pk=None, pk=None):

@@ -140,7 +140,18 @@ def clients_list_create(request):
     POST /api/v1/clientes/  — Cria novo cliente
     """
     if request.method == 'GET':
-        qs = Client.objects.select_related('responsible_lawyer').all()
+        # Annotate total_cases_count to avoid N+1 in ClientSerializer.get_total_cases
+        qs = Client.objects.select_related('responsible_lawyer').annotate(
+            total_cases_count=Count('cases', filter=Q(cases__deleted_at__isnull=True))
+        )
+
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(
+                Q(responsible_lawyer__organ=user_organ) |
+                Q(created_by__organ=user_organ)
+            )
 
         # Filtros
         search = request.query_params.get('search', '').strip()
@@ -432,6 +443,10 @@ def deadlines_list_create(request, case_id=None):
             # Todos os prazos dos casos do usuário
             if _is_privileged(request.user):
                 qs = LegalDeadline.objects.select_related('caso', 'responsavel')
+                # Filtro de multi-tenancy: restringir ao órgão do usuário
+                user_organ = getattr(request.user, 'organ', None)
+                if user_organ:
+                    qs = qs.filter(caso__organ=user_organ)
             else:
                 qs = LegalDeadline.objects.filter(
                     Q(caso__advogado_responsavel=request.user) |
@@ -2010,6 +2025,11 @@ def protocols_list_create(request):
     if request.method == 'GET':
         qs = ElectronicProtocol.objects.select_related('case', 'created_by').all()
 
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(case__organ=user_organ)
+
         if not _is_privileged(request.user):
             qs = qs.filter(
                 Q(created_by=request.user) |
@@ -2260,6 +2280,14 @@ def contracts_list_create(request):
     if request.method == 'GET':
         qs = LegalContract.objects.select_related('client', 'case', 'created_by').order_by('-created_at')
 
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(
+                Q(case__organ=user_organ) |
+                Q(case__isnull=True, created_by__organ=user_organ)
+            )
+
         # Non-privileged users only see contracts they created or on their cases
         if not _is_privileged(request.user):
             qs = qs.filter(
@@ -2422,6 +2450,13 @@ def contract_statistics(request):
     """GET /api/v1/processos/contratos/stats/"""
     from django.db.models import Sum
     qs = LegalContract.objects.all()
+    # Filtro de multi-tenancy: restringir ao órgão do usuário
+    user_organ = getattr(request.user, 'organ', None)
+    if user_organ:
+        qs = qs.filter(
+            Q(case__organ=user_organ) |
+            Q(case__isnull=True, created_by__organ=user_organ)
+        )
     total = qs.count()
     by_status = {}
     for s in ['draft', 'pending_signature', 'signed', 'cancelled']:
@@ -2446,6 +2481,11 @@ def court_fees_list_create(request):
     """GET/POST /api/v1/processos/custas/"""
     if request.method == 'GET':
         qs = CourtFeeGuide.objects.select_related('case', 'created_by').order_by('-created_at')
+
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(case__organ=user_organ)
 
         # Non-privileged users only see fees they created or on their cases
         if not _is_privileged(request.user):
@@ -3029,6 +3069,12 @@ def workflow_executions_list_create(request):
     """GET lista execuções | POST inicia workflow em um caso."""
     if request.method == 'GET':
         qs = WorkflowExecution.objects.select_related('template', 'case').all()
+
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(case__organ=user_organ)
+
         case_id = request.query_params.get('case')
         if case_id:
             qs = qs.filter(case_id=case_id)
@@ -3527,6 +3573,11 @@ def client_messages_list(request):
 
     qs = ClientMessage.objects.select_related('client', 'case').order_by('-created_at')
 
+    # Filtro de multi-tenancy: restringir ao órgão do usuário
+    user_organ = getattr(request.user, 'organ', None)
+    if user_organ:
+        qs = qs.filter(case__organ=user_organ)
+
     if not _is_privileged(request.user):
         qs = qs.filter(
             Q(case__advogado_responsavel=request.user) |
@@ -3665,6 +3716,11 @@ def time_entries_list_create(request, case_id=None):
         qs = TimeEntry.objects.select_related('advogado', 'caso', 'task').all()
         if case_id:
             qs = qs.filter(caso_id=case_id)
+
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(caso__organ=user_organ)
 
         # Non-privileged users only see their own entries or entries on their cases
         if not _is_privileged(request.user):
@@ -4022,6 +4078,14 @@ def leads_list_create(request):
 
     if request.method == 'GET':
         qs = Lead.objects.select_related('stage', 'responsible').prefetch_related('activities').all()
+
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(
+                Q(created_by__organ=user_organ) |
+                Q(responsible__organ=user_organ)
+            ).distinct()
 
         # Non-privileged users only see leads they are responsible for or created
         if not _is_privileged(request.user):
@@ -4642,6 +4706,14 @@ def nfse_list_create(request):
 
     if request.method == 'GET':
         qs = InvoiceNFSe.objects.select_related('client', 'caso').all()
+
+        # Filtro de multi-tenancy: restringir ao órgão do usuário
+        user_organ = getattr(request.user, 'organ', None)
+        if user_organ:
+            qs = qs.filter(
+                Q(caso__organ=user_organ) |
+                Q(caso__isnull=True, created_by__organ=user_organ)
+            )
 
         # Non-privileged users only see their own NFS-e or those on their cases
         if not _is_privileged(request.user):

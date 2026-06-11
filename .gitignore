@@ -129,6 +129,11 @@ junit.xml
 *.pid.lock
 docker-compose.override.yml
 
+# Celery runtime files
+celerybeat-schedule
+celerybeat.pid
+celerybeat-schedule.db
+
 # Docker volumes data (persistente)
 postgres_data*/
 redis_data*/

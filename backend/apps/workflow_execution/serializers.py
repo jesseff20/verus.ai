@@ -145,6 +145,10 @@ class FlowInstanceListSerializer(serializers.ModelSerializer):
         return None
 
     def get_pending_task_count(self, obj):
+        # Use annotated value when available (avoids N+1 on list views)
+        annotated = getattr(obj, 'pending_task_count_annotation', None)
+        if annotated is not None:
+            return annotated
         return obj.tasks.filter(status__in=('pending', 'in_progress')).count()
 
 

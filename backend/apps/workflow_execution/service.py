@@ -88,15 +88,29 @@ def _create_task(instance: FlowInstance, node: FlowNode,
     if node.node_type in ('user_task', 'task'):
         assigned = _auto_assign(instance, node.role)
 
-    task = TaskInstance.objects.create(
-        instance=instance,
-        node_id=node.node_id,
-        node_type=node.node_type,
-        label=node.label,
-        role_required=node.role,
-        instructions=node.description or '',
-        assigned_to=assigned,
-    )
+    with transaction.atomic():
+        # select_for_update on the FlowInstance prevents two concurrent workers
+        # from creating duplicate tasks for the same node.
+        FlowInstance.objects.select_for_update().get(pk=instance.pk)
+
+        # Bail out if a task for this node was already created by another worker.
+        existing = TaskInstance.objects.filter(
+            instance=instance,
+            node_id=node.node_id,
+            status__in=('pending', 'in_progress'),
+        ).first()
+        if existing:
+            return existing
+
+        task = TaskInstance.objects.create(
+            instance=instance,
+            node_id=node.node_id,
+            node_type=node.node_type,
+            label=node.label,
+            role_required=node.role,
+            instructions=node.description or '',
+            assigned_to=assigned,
+        )
 
     if assigned:
         _log(instance, 'task_started', actor=actor,
@@ -223,7 +237,7 @@ def complete_task(
                     gateway_choice for inválido.
     """
     try:
-        task = TaskInstance.objects.select_related(
+        task = TaskInstance.objects.select_for_update().select_related(
             'instance', 'instance__template'
         ).get(pk=task_id)
     except TaskInstance.DoesNotExist:

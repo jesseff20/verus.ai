@@ -97,8 +97,8 @@ class Command(BaseCommand):
                     'data_limite': today + timedelta(days=7),
                 },
                 {
-                    'titulo': 'Orientar cliente sobre audiência',
-                    'descricao': 'Reunião com cliente para orientar sobre a audiência de conciliação e possibilidades de acordo',
+                    'titulo': 'Orientar parte sobre audiência',
+                    'descricao': 'Reunião de preparação com a parte interessada sobre a audiência de conciliação e possibilidades de acordo',
                     'status': 'pendente',
                     'prioridade': 'media',
                     'data_limite': today + timedelta(days=4),
@@ -148,8 +148,8 @@ class Command(BaseCommand):
                 'data_limite': today + timedelta(days=7),
             },
             {
-                'titulo': 'Atualizar cliente sobre andamento',
-                'descricao': 'Enviar comunicação ao cliente sobre o status atual do processo',
+                'titulo': 'Atualizar parte sobre andamento',
+                'descricao': 'Enviar comunicação à parte interessada sobre o status atual do processo',
                 'status': 'pendente',
                 'prioridade': 'media',
                 'data_limite': today + timedelta(days=3),

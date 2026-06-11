@@ -130,6 +130,14 @@ class SignerKey(models.Model):
     # ATENÇÃO: chave privada deve ser armazenada em HSM ou criptografada.
     # Em produção, usar AWS KMS ou Vault. Aqui armazenamos criptografada com FERNET.
     private_key_encrypted = models.BinaryField('Chave Privada (cifrada)')
+    # Salt PBKDF2 de 16 bytes gerado aleatoriamente por chave.
+    # Nullable para compatibilidade com registros legados (pré-KDF).
+    private_key_salt = models.BinaryField(
+        'Salt KDF (PBKDF2)',
+        null=True,
+        blank=True,
+        help_text='Salt aleatório de 16 bytes usado na derivação PBKDF2 da chave Fernet.',
+    )
     fingerprint = models.CharField('Fingerprint', max_length=64, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     revoked_at = models.DateTimeField(null=True, blank=True)

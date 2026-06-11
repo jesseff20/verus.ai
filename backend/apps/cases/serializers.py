@@ -47,7 +47,11 @@ class ClientSerializer(serializers.ModelSerializer):
         return None
 
     def get_total_cases(self, obj):
-        return obj.cases.count()
+        # Use annotated value when available (avoids N+1 on list views)
+        annotated = getattr(obj, 'total_cases_count', None)
+        if annotated is not None:
+            return annotated
+        return obj.cases.filter(deleted_at__isnull=True).count()
 
 
 class LegalDeadlineSerializer(serializers.ModelSerializer):

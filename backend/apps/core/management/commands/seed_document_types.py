@@ -4,8 +4,10 @@ Management command para criar tipos de documento jurídico.
 Cria DocumentCategory e DocumentType para cada tipo de documento do Verus.AI.
 O frontend consulta esses tipos para exibir no wizard do Assistente Inteligente.
 
-Taxonomia: 15 categorias unificadas, compatível com seed_juridico_completo.py
-e seed_juridico_avancado.py.
+Taxonomia: 16 categorias unificadas (15 gerais + 1 Procuradoria), compatível com
+seed_juridico_completo.py. A categoria "procuradoria" agrega tipos específicos de
+Procuradorias Municipais, Estaduais e da União (contratos administrativos, convênios,
+execução fiscal, improbidade, PAD, etc.).
 
 Usage:
     python manage.py seed_document_types
@@ -34,6 +36,7 @@ CATEGORIAS = [
     {'code': 'administrativo',    'name': 'Administrativo',        'display_order': 13},
     {'code': 'digital_lgpd',      'name': 'Digital e LGPD',        'display_order': 14},
     {'code': 'empresarial',       'name': 'Empresarial',           'display_order': 15},
+    {'code': 'procuradoria',      'name': 'Procuradoria',          'display_order': 16},
 ]
 
 # Categorias legadas (4 antigas) a remover antes de criar as novas
@@ -413,6 +416,36 @@ DOCUMENT_TYPES_DATA = [
      'category': 'administrativo', 'icon': 'ShieldCheck',  'color': 'indigo',
      'legal_basis': 'CF/88, Art. 5º, LXIX; Lei 12.016/2009', 'display_order': 3, 'is_active': True},
 
+    {'code': 'nota_tecnica',                         'name': 'Nota Técnica',                              'short_name': 'NT',
+     'description': 'Nota técnica fundamentada sobre questão de legalidade, conveniência ou oportunidade.',
+     'category': 'administrativo', 'icon': 'FileText',     'color': 'teal',
+     'legal_basis': 'Lei 9.784/1999; regulamentos internos', 'display_order': 4, 'is_active': True},
+
+    {'code': 'ato_administrativo',                   'name': 'Ato Administrativo',                        'short_name': 'AtoAdm.',
+     'description': 'Ato de gestão emitido pela autoridade administrativa no exercício de sua competência.',
+     'category': 'administrativo', 'icon': 'Stamp',        'color': 'orange',
+     'legal_basis': 'CF/88, Art. 37; Lei 9.784/1999', 'display_order': 5, 'is_active': True},
+
+    {'code': 'portaria',                             'name': 'Portaria',                                  'short_name': 'Port.',
+     'description': 'Ato normativo de competência de ministros, secretários ou diretores de órgão.',
+     'category': 'administrativo', 'icon': 'FileCheck',    'color': 'amber',
+     'legal_basis': 'LINDB; regulamentos internos', 'display_order': 6, 'is_active': True},
+
+    {'code': 'resolucao_adm',                        'name': 'Resolução',                                 'short_name': 'Resol.',
+     'description': 'Ato normativo emanado de colegiado ou órgão com competência regulamentar.',
+     'category': 'administrativo', 'icon': 'ScrollText',   'color': 'blue',
+     'legal_basis': 'CF/88, Art. 37; legislação orgânica do ente', 'display_order': 7, 'is_active': True},
+
+    {'code': 'decreto',                              'name': 'Decreto',                                   'short_name': 'Dec.',
+     'description': 'Ato normativo do chefe do Poder Executivo com caráter regulamentar ou individual.',
+     'category': 'administrativo', 'icon': 'Award',        'color': 'violet',
+     'legal_basis': 'CF/88, Art. 84, IV e VI', 'display_order': 8, 'is_active': True},
+
+    {'code': 'processo_administrativo_disciplinar',  'name': 'Processo Administrativo Disciplinar (PAD)', 'short_name': 'PAD',
+     'description': 'Procedimento instaurado para apurar irregularidade funcional de agente público.',
+     'category': 'administrativo', 'icon': 'ClipboardList','color': 'rose',
+     'legal_basis': 'Lei 8.112/1990, Art. 143; legislação estadual/municipal equivalente', 'display_order': 9, 'is_active': True},
+
     # === DIGITAL E LGPD ===
     {'code': 'notificacao_incidente_lgpd',      'name': 'Notificação de Incidente LGPD',         'short_name': 'Inc.LGPD',
      'description': 'Notificação à ANPD e titulares em caso de incidente de segurança com dados pessoais.',
@@ -459,11 +492,67 @@ DOCUMENT_TYPES_DATA = [
      'description': 'Contrato B2B de prestação de serviços entre empresas.',
      'category': 'empresarial', 'icon': 'FileSignature','color': 'teal',
      'legal_basis': 'CC, Art. 421; CC, Art. 593', 'display_order': 4, 'is_active': True},
+
+    # === PROCURADORIA ===
+    {'code': 'contrato_administrativo',              'name': 'Contrato Administrativo',                   'short_name': 'CtrAdm.',
+     'description': 'Instrumento contratual firmado pela Administração Pública para aquisição de bens, serviços ou obras.',
+     'category': 'procuradoria', 'icon': 'FileSignature','color': 'blue',
+     'legal_basis': 'Lei 14.133/2021 (Nova Lei de Licitações); Lei 8.666/1993 (transitório)', 'display_order': 1, 'is_active': True},
+
+    {'code': 'convenio',                             'name': 'Convênio',                                  'short_name': 'Conv.',
+     'description': 'Instrumento de cooperação entre entes públicos ou entre ente público e entidade privada sem fins lucrativos.',
+     'category': 'procuradoria', 'icon': 'Handshake',    'color': 'green',
+     'legal_basis': 'Lei 13.019/2014; Decreto 6.170/2007', 'display_order': 2, 'is_active': True},
+
+    {'code': 'termo_aditivo',                        'name': 'Termo Aditivo',                             'short_name': 'TA',
+     'description': 'Instrumento que altera cláusulas de contrato administrativo ou convênio vigente.',
+     'category': 'procuradoria', 'icon': 'FilePlus',     'color': 'teal',
+     'legal_basis': 'Lei 14.133/2021, Art. 124; Lei 8.666/1993, Art. 65', 'display_order': 3, 'is_active': True},
+
+    {'code': 'acao_cobranca_divida_ativa',           'name': 'Ação de Cobrança da Dívida Ativa',          'short_name': 'ExecFisc.',
+     'description': 'Execução fiscal para cobrança de crédito tributário ou não-tributário inscrito em dívida ativa.',
+     'category': 'procuradoria', 'icon': 'Banknote',     'color': 'orange',
+     'legal_basis': 'Lei 6.830/1980 (LEF); CTN, Art. 201', 'display_order': 4, 'is_active': True},
+
+    {'code': 'acao_improbidade_administrativa',      'name': 'Ação de Improbidade Administrativa',        'short_name': 'AIA',
+     'description': 'Ação para responsabilização de agente público por ato de improbidade administrativa.',
+     'category': 'procuradoria', 'icon': 'ShieldAlert',  'color': 'red',
+     'legal_basis': 'Lei 8.429/1992 (LIA), com alterações da Lei 14.230/2021', 'display_order': 5, 'is_active': True},
+
+    {'code': 'contestacao_ms_poder_publico',         'name': 'Contestação em Mandado de Segurança',       'short_name': 'Cont.MS',
+     'description': 'Peça de defesa do poder público em ação de mandado de segurança impetrado contra autoridade coatora.',
+     'category': 'procuradoria', 'icon': 'Scale',        'color': 'amber',
+     'legal_basis': 'Lei 12.016/2009, Art. 7º, §2º', 'display_order': 6, 'is_active': True},
+
+    {'code': 'parecer_licitacao',                    'name': 'Parecer Jurídico em Licitação',             'short_name': 'PARLic.',
+     'description': 'Parecer jurídico sobre edital, contrato ou impugnação em processo licitatório.',
+     'category': 'procuradoria', 'icon': 'Lightbulb',    'color': 'yellow',
+     'legal_basis': 'Lei 14.133/2021, Art. 53; Lei 8.666/1993, Art. 38, VI', 'display_order': 7, 'is_active': True},
+
+    {'code': 'impugnacao_edital',                    'name': 'Impugnação ao Edital',                      'short_name': 'ImpEdit.',
+     'description': 'Peça de impugnação apresentada contra cláusulas restritivas ou ilegais de edital licitatório.',
+     'category': 'procuradoria', 'icon': 'AlertOctagon', 'color': 'slate',
+     'legal_basis': 'Lei 14.133/2021, Art. 164; Lei 8.666/1993, Art. 41', 'display_order': 8, 'is_active': True},
+
+    {'code': 'informacoes_habeas_corpus',            'name': 'Informações em Habeas Corpus',              'short_name': 'InfoHC',
+     'description': 'Peça de informações prestadas pela autoridade coatora em sede de habeas corpus.',
+     'category': 'procuradoria', 'icon': 'MessageSquare','color': 'indigo',
+     'legal_basis': 'CPP, Art. 662; Lei 12.016/2009, Art. 7º (aplicação analógica)', 'display_order': 9, 'is_active': True},
+
+    {'code': 'recurso_administrativo_servidor',      'name': 'Recurso Administrativo (Servidor Público)', 'short_name': 'RecServidor',
+     'description': 'Recurso em processo administrativo disciplinar ou de revisão de ato que afeta servidor público.',
+     'category': 'procuradoria', 'icon': 'CornerUpRight','color': 'rose',
+     'legal_basis': 'Lei 8.112/1990, Art. 174; legislação estadual/municipal equivalente', 'display_order': 10, 'is_active': True},
+
+    {'code': 'termo_cooperacao_tecnica',             'name': 'Termo de Cooperação Técnica',               'short_name': 'TCT',
+     'description': 'Instrumento de cooperação técnica entre entes da Administração Pública.',
+     'category': 'procuradoria', 'icon': 'Link',         'color': 'cyan',
+     'legal_basis': 'Lei 13.019/2014; regulamentos do ente federativo', 'display_order': 11, 'is_active': True},
 ]
 
 
 class Command(BaseCommand):
-    help = 'Cria/atualiza tipos de documento jurídico do Verus.AI (15 categorias unificadas)'
+    help = 'Cria/atualiza tipos de documento jurídico do Verus.AI (16 categorias, incluindo Procuradoria)'
 
     def add_arguments(self, parser):
         parser.add_argument(

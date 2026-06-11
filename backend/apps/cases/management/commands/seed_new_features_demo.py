@@ -22,14 +22,14 @@ class Command(BaseCommand):
 
         User = get_user_model()
 
-        # Get or create demo user
+        # Get or create demo user (procuradoria context)
         user, _ = User.objects.get_or_create(
-            username='demo_advogado',
+            username='demo_procurador',
             defaults={
                 'first_name': 'João',
                 'last_name': 'Silva',
                 'email': 'joao@verus.ai',
-                'role': 'advogado',
+                'role': 'procurador',
                 'is_active': True,
             }
         )
@@ -38,12 +38,12 @@ class Command(BaseCommand):
             user.save()
 
         user2, _ = User.objects.get_or_create(
-            username='demo_advogado2',
+            username='demo_procuradora',
             defaults={
                 'first_name': 'Maria',
                 'last_name': 'Santos',
                 'email': 'maria@verus.ai',
-                'role': 'advogado_senior',
+                'role': 'procurador',
                 'is_active': True,
             }
         )
@@ -81,12 +81,12 @@ class Command(BaseCommand):
             }
         )
 
-        # Get or create demo case
+        # Get or create demo case (procuradoria context — execução fiscal)
         case, _ = LegalCase.objects.get_or_create(
             numero_processo='0001234-56.2024.8.15.2001',
             defaults={
-                'titulo': 'Ação de Indenização — Carlos vs. Empresa XYZ',
-                'especialidade': 'civel',
+                'titulo': 'Execução Fiscal — Município vs. Devedor de ISS',
+                'especialidade': 'tributario',
                 'status': 'ativo',
                 'fase': 'instrucao',
                 'client': client,
@@ -95,13 +95,13 @@ class Command(BaseCommand):
                 'parte_contraria': 'Empresa XYZ LTDA',
                 'parte_contraria_cpf_cnpj': '12.345.678/0001-90',
                 'tribunal': 'TJSP',
-                'vara_juizo': '3ª Vara Cível de São Paulo',
+                'vara_juizo': '1ª Vara da Fazenda Pública',
                 'comarca': 'São Paulo',
                 'valor_causa': Decimal('150000.00'),
-                'honorarios_combinados': Decimal('30000.00'),
+                'honorarios_combinados': Decimal('0.00'),
                 'advogado_responsavel': user,
                 'created_by': user,
-                'descricao': 'Ação de indenização por danos morais e materiais.',
+                'descricao': 'Execução fiscal de crédito tributário de ISS inscrito em dívida ativa.',
             }
         )
 
@@ -127,12 +127,12 @@ class Command(BaseCommand):
         # ─── CRM / LEADS ───
         self.stdout.write('Criando pipeline de leads...')
         stages_data = [
-            {'name': 'Novo Lead', 'order': 1, 'color': '#6B7280'},
-            {'name': 'Consulta Agendada', 'order': 2, 'color': '#3B82F6'},
-            {'name': 'Proposta Enviada', 'order': 3, 'color': '#F59E0B'},
-            {'name': 'Negociação', 'order': 4, 'color': '#8B5CF6'},
-            {'name': 'Cliente Ganho', 'order': 5, 'color': '#10B981', 'is_won': True},
-            {'name': 'Perdido', 'order': 6, 'color': '#EF4444', 'is_lost': True},
+            {'name': 'Nova Demanda', 'order': 1, 'color': '#6B7280'},
+            {'name': 'Análise Jurídica', 'order': 2, 'color': '#3B82F6'},
+            {'name': 'Parecer Elaborado', 'order': 3, 'color': '#F59E0B'},
+            {'name': 'Em Aprovação', 'order': 4, 'color': '#8B5CF6'},
+            {'name': 'Concluído', 'order': 5, 'color': '#10B981', 'is_won': True},
+            {'name': 'Arquivado', 'order': 6, 'color': '#EF4444', 'is_lost': True},
         ]
         stages = {}
         for s in stages_data:
@@ -144,38 +144,43 @@ class Command(BaseCommand):
 
         leads_data = [
             {
-                'name': 'Ana Paula Ferreira', 'email': 'ana@email.com', 'phone': '(83) 98765-4321',
-                'description': 'Precisa de advogado para processo trabalhista. Demissão sem justa causa.',
-                'specialty': 'trabalhista', 'source': 'indicacao', 'temperature': 'hot',
-                'stage': stages['Consulta Agendada'], 'estimated_value': Decimal('50000.00'),
+                'name': 'Secretaria de Obras — Contrato 001/2025', 'email': 'obras@municipio.gov.br',
+                'phone': '(83) 3000-1234',
+                'description': 'Parecer jurídico sobre legalidade de contratação emergencial de obras.',
+                'specialty': 'administrativo', 'source': 'indicacao', 'temperature': 'hot',
+                'stage': stages['Análise Jurídica'], 'estimated_value': Decimal('0.00'),
                 'responsible': user,
             },
             {
-                'name': 'Roberto Mendes', 'email': 'roberto@empresa.com', 'phone': '(11) 91234-5678',
-                'description': 'Consultoria tributária para sua empresa.',
-                'specialty': 'tributario', 'source': 'google', 'temperature': 'warm',
-                'stage': stages['Proposta Enviada'], 'estimated_value': Decimal('80000.00'),
+                'name': 'Câmara Municipal — Impugnação Edital', 'email': 'camara@municipio.gov.br',
+                'phone': '(11) 3000-5678',
+                'description': 'Análise de impugnação ao edital de licitação de pregão eletrônico.',
+                'specialty': 'administrativo', 'source': 'interno', 'temperature': 'warm',
+                'stage': stages['Parecer Elaborado'], 'estimated_value': Decimal('0.00'),
                 'responsible': user2,
             },
             {
-                'name': 'Fernanda Lima', 'email': 'fernanda@gmail.com', 'phone': '(21) 99876-5432',
-                'description': 'Divórcio consensual com partilha de bens.',
-                'specialty': 'familia', 'source': 'instagram', 'temperature': 'warm',
-                'stage': stages['Novo Lead'], 'estimated_value': Decimal('15000.00'),
+                'name': 'Empresa XYZ — Execução Fiscal ISS', 'email': 'fiscalizacao@municipio.gov.br',
+                'phone': '(21) 3000-9876',
+                'description': 'Propositura de execução fiscal para cobrança de ISS em dívida ativa.',
+                'specialty': 'tributario', 'source': 'interno', 'temperature': 'warm',
+                'stage': stages['Nova Demanda'], 'estimated_value': Decimal('150000.00'),
                 'responsible': user,
             },
             {
-                'name': 'Pedro Almeida', 'email': 'pedro@almeida.com', 'phone': '(83) 98888-7777',
-                'description': 'Ação de despejo de imóvel comercial.',
-                'specialty': 'imobiliario', 'source': 'site', 'temperature': 'cold',
-                'stage': stages['Novo Lead'], 'estimated_value': Decimal('25000.00'),
+                'name': 'Mandado de Segurança — SEMED', 'email': 'semed@municipio.gov.br',
+                'phone': '(83) 3000-4321',
+                'description': 'Defesa do poder público em MS impetrado contra ato da SEMED.',
+                'specialty': 'administrativo', 'source': 'interno', 'temperature': 'cold',
+                'stage': stages['Nova Demanda'], 'estimated_value': Decimal('0.00'),
                 'responsible': user2,
             },
             {
-                'name': 'Luciana Costa', 'email': 'luciana@empresa.com', 'phone': '(11) 97654-3210',
-                'description': 'Defesa em ação de consumidor — produto defeituoso.',
-                'specialty': 'consumidor', 'source': 'whatsapp', 'temperature': 'hot',
-                'stage': stages['Negociação'], 'estimated_value': Decimal('35000.00'),
+                'name': 'PAD — Servidor cargo comissionado', 'email': 'rh@municipio.gov.br',
+                'phone': '(11) 3000-7890',
+                'description': 'Instauração de PAD para apurar irregularidade funcional.',
+                'specialty': 'administrativo', 'source': 'interno', 'temperature': 'hot',
+                'stage': stages['Em Aprovação'], 'estimated_value': Decimal('0.00'),
                 'responsible': user,
             },
         ]
@@ -232,7 +237,7 @@ class Command(BaseCommand):
         # ─── NFS-e ───
         self.stdout.write('Criando notas fiscais demo...')
         InvoiceNFSe.objects.get_or_create(
-            descricao_servico='Honorários advocatícios — Ação de Indenização',
+            descricao_servico='Custas processuais — Execução Fiscal ISS',
             client=client,
             defaults={
                 'caso': case,
@@ -247,7 +252,7 @@ class Command(BaseCommand):
         )
 
         InvoiceNFSe.objects.get_or_create(
-            descricao_servico='Consultoria jurídica mensal — Tech Solutions',
+            descricao_servico='Serviços técnicos de assessoria jurídica — Tech Solutions',
             client=client2,
             defaults={
                 'status': 'authorized',
@@ -264,9 +269,9 @@ class Command(BaseCommand):
         )
 
         self.stdout.write(self.style.SUCCESS(
-            '\n✅ Dados de demonstração criados com sucesso!\n'
+            '\n Dados de demonstração criados com sucesso!\n'
             '  - Timesheet: 10+ registros de horas\n'
-            '  - CRM: 6 etapas + 5 leads no funil\n'
-            '  - KPIs: 2 advogados com scores e badges\n'
+            '  - CRM: 6 etapas + 5 demandas no funil (contexto de Procuradoria)\n'
+            '  - KPIs: 2 procuradores com scores e badges\n'
             '  - NFS-e: 2 notas fiscais (rascunho + autorizada)\n'
         ))

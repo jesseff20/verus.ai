@@ -65,7 +65,7 @@ CASE_DATA = [
             },
             {
                 'titulo': 'Reunir holerites e CTPS',
-                'descricao': 'Solicitar ao cliente cópias de todos os holerites, CTPS com anotações e extrato do FGTS',
+                'descricao': 'Solicitar à parte cópias de todos os holerites, CTPS com anotações e extrato do FGTS',
                 'status': 'pendente',
                 'prioridade': 'urgente',
                 'dias_limite': 3,
@@ -98,7 +98,7 @@ CASE_DATA = [
             },
             {
                 'tipo': 'honorario',
-                'descricao': 'Honorários advocatícios - parcela 1/3',
+                'descricao': 'Honorários sucumbenciais - parcela 1/3',
                 'valor': '5000.00',
                 'status': 'pendente',
                 'dias_vencimento': 15,
@@ -258,7 +258,7 @@ CASE_DATA = [
             },
             {
                 'tipo': 'honorario',
-                'descricao': 'Honorários advocatícios contratuais (30% do êxito)',
+                'descricao': 'Honorários sucumbenciais contratuais (30% do êxito)',
                 'valor': '0.00',
                 'status': 'pendente',
                 'dias_vencimento': 90,
@@ -336,7 +336,7 @@ CASE_DATA = [
             },
             {
                 'tipo': 'honorario',
-                'descricao': 'Honorários advocatícios - fase de conhecimento',
+                'descricao': 'Honorários sucumbenciais - fase de conhecimento',
                 'valor': '15000.00',
                 'status': 'pendente',
                 'dias_vencimento': 60,
@@ -422,7 +422,7 @@ CASE_DATA = [
             },
             {
                 'tipo': 'honorario',
-                'descricao': 'Honorários advocatícios - inventário',
+                'descricao': 'Honorários sucumbenciais - inventário',
                 'valor': '25000.00',
                 'status': 'pendente',
                 'dias_vencimento': 45,
@@ -529,7 +529,7 @@ CASE_DATA = [
         'financeiro': [
             {
                 'tipo': 'honorario',
-                'descricao': 'Honorários advocatícios',
+                'descricao': 'Honorários sucumbenciais',
                 'valor': '8000.00',
                 'status': 'pendente',
                 'dias_vencimento': 30,
@@ -696,7 +696,7 @@ CASE_DATA = [
             },
             {
                 'tipo': 'honorario',
-                'descricao': 'Honorários advocatícios - divórcio consensual',
+                'descricao': 'Honorários sucumbenciais - divórcio consensual',
                 'valor': '6000.00',
                 'status': 'pendente',
                 'dias_vencimento': 30,
@@ -753,7 +753,7 @@ FALLBACK_DATA = {
         },
         {
             'tipo': 'honorario',
-            'descricao': 'Honorários advocatícios',
+            'descricao': 'Honorários sucumbenciais',
             'valor': '7000.00',
             'status': 'pendente',
             'dias_vencimento': 30,

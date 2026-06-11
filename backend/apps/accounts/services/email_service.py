@@ -57,7 +57,7 @@ def _enviar_console(destinatario, assunto, text_content, html_content):
         message=text_content,
         from_email=_get_env(
             'EMAIL_FROM',
-            'noreply-bravonix@ictatechnology.com.br'
+            'noreply@ictatechnology.com.br'
         ),
         recipient_list=destinatario,
         html_message=html_content,
@@ -81,7 +81,7 @@ def _enviar_api(destinatario, assunto, text_content, html_content):
         'Content-Type': 'application/json',
     }
     payload = {
-        'from': _get_env('EMAIL_FROM', 'noreply-bravonix@ictatechnology.com.br'),
+        'from': _get_env('EMAIL_FROM', 'noreply@ictatechnology.com.br'),
         'to': destinatario,
         'subject': assunto,
         'html': html_content,

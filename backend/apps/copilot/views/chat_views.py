@@ -10,6 +10,7 @@ character-by-character updates.
 """
 import json
 import logging
+import os
 import time
 
 from django.http import StreamingHttpResponse
@@ -25,6 +26,17 @@ from ..services.case_context_service import build_case_context
 from ..services.user_kb_context import get_user_context
 
 logger = logging.getLogger(__name__)
+
+# ── Upload validation ────────────────────────────────────────────────────────
+ALLOWED_EXTENSIONS = {'.pdf', '.docx', '.doc', '.txt', '.xlsx', '.xls'}
+ALLOWED_MIMES = {
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/msword',
+    'text/plain',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel',
+}
 
 
 @csrf_exempt
@@ -62,6 +74,15 @@ def chat_stream(request):
 
     if not message and not uploaded_file:
         return _json_error('message ou file é obrigatório', 400)
+
+    # Validate uploaded file type (extension + MIME)
+    if uploaded_file:
+        ext = os.path.splitext(uploaded_file.name)[1].lower()
+        mime = getattr(uploaded_file, 'content_type', '') or ''
+        if ext not in ALLOWED_EXTENSIONS:
+            return _json_error(f'Tipo de arquivo não permitido: {ext}', 400)
+        if mime and mime not in ALLOWED_MIMES:
+            return _json_error(f'Tipo de conteúdo não permitido: {mime}', 400)
 
     # Validar sessão
     history = session_service.get_history(user.id, session_id)
