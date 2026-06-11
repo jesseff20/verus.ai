@@ -305,8 +305,23 @@ TOKEN_EXPIRATION_RESET = env('TOKEN_EXPIRATION_RESET', default='1h')
 RATE_LIMIT_MAX = env.int('RATE_LIMIT_MAX', default=5)
 RATE_LIMIT_WINDOW = env.int('RATE_LIMIT_WINDOW', default=60000)
 EMAIL_PROVIDER_API_KEY = env('EMAIL_PROVIDER_API_KEY', default='')
+RESEND_API_KEY = env('RESEND_API_KEY', default='')
 EMAIL_FROM = env('EMAIL_FROM', default='noreply@verus.ai')
+EMAIL_FROM_NAME = env('EMAIL_FROM_NAME', default='Verus.AI')
 HASH_COST = env.int('HASH_COST', default=12)
+
+# ========================================
+# EMAIL — Resend via SMTP (Django send_mail)
+# Em development.py isso é sobrescrito para console backend.
+# ========================================
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.resend.com')
+EMAIL_PORT = env.int('EMAIL_PORT', default=465)
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=True)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=False)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='resend')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('EMAIL_FROM', default='noreply@verus.ai')
 
 # Cache — tenta Redis via REDIS_URL, depois via CELERY_BROKER_URL, senão LocMem
 _redis_url = env('REDIS_URL', default='') or env('CELERY_BROKER_URL', default='')
