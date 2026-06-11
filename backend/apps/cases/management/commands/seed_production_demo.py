@@ -221,169 +221,169 @@ CLIENTS_DATA = [
 
 
 # ═══════════════════════════════════════════════════════════════════
-# 3. CASOS (8 casos cobrindo diferentes especialidades)
+# 3. CASOS (8 casos cobrindo diferentes especialidades de Procuradoria)
 # ═══════════════════════════════════════════════════════════════════
 
 CASES_DATA = [
-    # Caso 1 — Cível
+    # Caso 1 — Execução Fiscal (Dívida Ativa ISS)
     {
         'numero_processo': '1001234-56.2025.8.26.0100',
-        'titulo': 'Ação de Indenização — Carlos Oliveira vs. TransLog Transportes',
-        'especialidade': 'civel',
+        'titulo': 'Execução Fiscal — Município vs. Empresa XYZ Transportes (ISS)',
+        'especialidade': 'tributario',
         'status': 'ativo',
         'fase': 'instrucao',
-        'client_cpf': '341.628.597-04',
-        'cliente_nome': 'Carlos Alberto de Oliveira',
-        'cliente_cpf_cnpj': '341.628.597-04',
-        'parte_contraria': 'TransLog Transportes LTDA',
-        'parte_contraria_cpf_cnpj': '11.222.333/0001-44',
+        'client_cpf': '341.628.597/0001-04',
+        'cliente_nome': 'Empresa XYZ Transportes LTDA',
+        'cliente_cpf_cnpj': '341.628.597/0001-04',
+        'parte_contraria': 'Empresa XYZ Transportes LTDA (executada)',
+        'parte_contraria_cpf_cnpj': '341.628.597/0001-04',
         'tribunal': 'TJSP',
-        'vara_juizo': '7a Vara Cível do Foro Central',
+        'vara_juizo': '1a Vara da Fazenda Pública',
         'comarca': 'São Paulo',
         'valor_causa': Decimal('250000.00'),
-        'honorarios_combinados': Decimal('50000.00'),
+        'honorarios_combinados': Decimal('0.00'),
         'advogado_username': 'joao.silva',
-        'descricao': 'Ação de indenização por danos morais e materiais decorrentes de acidente de trânsito envolvendo veículo da empresa ré.',
+        'descricao': 'Execução fiscal de crédito tributário de ISS inscrito em Certidão de Dívida Ativa. Requerimento de SISBAJUD em andamento.',
     },
-    # Caso 2 — Cível
+    # Caso 2 — Defesa em Mandado de Segurança
     {
         'numero_processo': '1005678-90.2025.8.26.0100',
-        'titulo': 'Ação de Cobrança — Tech Solutions vs. Inovação Digital',
-        'especialidade': 'civel',
+        'titulo': 'Defesa em MS — Tech Solutions vs. Secretaria de Licitações',
+        'especialidade': 'administrativo',
         'status': 'ativo',
         'fase': 'inicial',
         'client_cpf': '12.345.678/0001-90',
-        'cliente_nome': 'Tech Solutions Brasil LTDA',
-        'cliente_cpf_cnpj': '12.345.678/0001-90',
-        'parte_contraria': 'Inovação Digital Sistemas LTDA',
-        'parte_contraria_cpf_cnpj': '55.666.777/0001-88',
+        'cliente_nome': 'Município de São Paulo (autoridade coatora)',
+        'cliente_cpf_cnpj': '46.374.254/0001-29',
+        'parte_contraria': 'Tech Solutions Brasil LTDA (impetrante)',
+        'parte_contraria_cpf_cnpj': '12.345.678/0001-90',
         'tribunal': 'TJSP',
-        'vara_juizo': '12a Vara Cível do Foro Central',
+        'vara_juizo': '5a Vara da Fazenda Pública de São Paulo',
         'comarca': 'São Paulo',
         'valor_causa': Decimal('180000.00'),
-        'honorarios_combinados': Decimal('36000.00'),
+        'honorarios_combinados': Decimal('0.00'),
         'advogado_username': 'joao.silva',
-        'descricao': 'Cobrança de valores referentes a contrato de prestação de serviços de TI inadimplido.',
+        'descricao': 'Defesa do ente público em mandado de segurança impetrado contra ato de inabilitação em licitação. Prazo para prestação de informações.',
     },
-    # Caso 3 — Trabalhista
+    # Caso 3 — Execução Fiscal (ICMS)
     {
-        'numero_processo': '0002345-67.2025.5.02.0045',
-        'titulo': 'Reclamação Trabalhista — Fernanda Barbosa vs. ComércioMax',
-        'especialidade': 'trabalhista',
+        'numero_processo': '0002345-67.2025.8.19.0001',
+        'titulo': 'Execução Fiscal — Estado vs. Distribuidora BH Alimentos (ICMS)',
+        'especialidade': 'tributario',
         'status': 'ativo',
         'fase': 'instrucao',
-        'client_cpf': '782.453.196-80',
-        'cliente_nome': 'Fernanda Cristina Barbosa',
-        'cliente_cpf_cnpj': '782.453.196-80',
-        'parte_contraria': 'ComércioMax Varejo LTDA',
-        'parte_contraria_cpf_cnpj': '22.333.444/0001-55',
-        'tribunal': 'TRT-2',
-        'vara_juizo': '45a Vara do Trabalho de São Paulo',
-        'comarca': 'São Paulo',
-        'valor_causa': Decimal('120000.00'),
-        'honorarios_combinados': Decimal('24000.00'),
-        'advogado_username': 'maria.santos',
-        'descricao': 'Reclamação trabalhista por verbas rescisórias, horas extras, adicional noturno e danos morais por assédio.',
-    },
-    # Caso 4 — Família
-    {
-        'numero_processo': '0003456-78.2025.8.13.0024',
-        'titulo': 'Divórcio Consensual — Roberto Mendes e Cláudia Souza',
-        'especialidade': 'familia',
-        'status': 'ativo',
-        'fase': 'inicial',
-        'client_cpf': '523.891.704-62',
-        'cliente_nome': 'Roberto Mendes da Silva',
-        'cliente_cpf_cnpj': '523.891.704-62',
-        'parte_contraria': 'Cláudia Helena Souza Mendes',
-        'parte_contraria_cpf_cnpj': '876.543.210-98',
+        'client_cpf': '523.891.704/0001-62',
+        'cliente_nome': 'Distribuidora BH Alimentos LTDA',
+        'cliente_cpf_cnpj': '523.891.704/0001-62',
+        'parte_contraria': 'Distribuidora BH Alimentos LTDA (executada)',
+        'parte_contraria_cpf_cnpj': '523.891.704/0001-62',
         'tribunal': 'TJMG',
-        'vara_juizo': '2a Vara de Família de Belo Horizonte',
+        'vara_juizo': '2a Vara da Fazenda Pública Estadual de Belo Horizonte',
         'comarca': 'Belo Horizonte',
-        'valor_causa': Decimal('500000.00'),
-        'honorarios_combinados': Decimal('15000.00'),
+        'valor_causa': Decimal('320000.00'),
+        'honorarios_combinados': Decimal('0.00'),
         'advogado_username': 'maria.santos',
-        'descricao': 'Divórcio consensual com partilha de bens, guarda compartilhada de dois filhos menores e fixação de alimentos.',
+        'descricao': 'Execução fiscal de crédito de ICMS. Executada apresentou embargos à execução fiscal. Análise dos embargos em andamento.',
     },
-    # Caso 5 — Criminal
+    # Caso 4 — PAD (Processo Administrativo Disciplinar)
     {
-        'numero_processo': '0004567-89.2025.8.16.0001',
-        'titulo': 'Defesa Criminal — Luciana Gomes (Estelionato art. 171 CP)',
-        'especialidade': 'criminal',
+        'numero_processo': 'PAD-2025-00034',
+        'titulo': 'PAD — Apuração de Irregularidade em Contrato Administrativo',
+        'especialidade': 'administrativo',
         'status': 'ativo',
         'fase': 'instrucao',
-        'client_cpf': '196.745.832-19',
-        'cliente_nome': 'Luciana Ferreira Gomes',
-        'cliente_cpf_cnpj': '196.745.832-19',
-        'parte_contraria': 'Ministério Público do Estado do Paraná',
+        'client_cpf': '196.745.832/0001-19',
+        'cliente_nome': 'Construtora Curitiba Obras LTDA',
+        'cliente_cpf_cnpj': '196.745.832/0001-19',
+        'parte_contraria': 'Servidor Público — indiciado',
         'parte_contraria_cpf_cnpj': '',
-        'tribunal': 'TJPR',
-        'vara_juizo': '3a Vara Criminal de Curitiba',
+        'tribunal': 'Administração Municipal',
+        'vara_juizo': 'Comissão Processante PAD',
         'comarca': 'Curitiba',
         'valor_causa': None,
-        'honorarios_combinados': Decimal('40000.00'),
+        'honorarios_combinados': Decimal('0.00'),
         'advogado_username': 'pedro.lima',
-        'descricao': 'Defesa em ação penal por suposta prática de estelionato. Ré primária, bons antecedentes.',
+        'descricao': 'PAD instaurado para apurar irregularidade na execução de contrato administrativo de obras. Fase de instrução com oitiva de testemunhas.',
     },
-    # Caso 6 — Tributário
+    # Caso 5 — Ação Civil Pública
     {
-        'numero_processo': '0005678-90.2025.8.13.0024',
-        'titulo': 'Mandado de Segurança Tributário — Dist. Nacional vs. Prefeitura Contagem',
+        'numero_processo': '0004567-89.2025.4.03.6100',
+        'titulo': 'Ação Civil Pública — Município vs. Empresa Poluidora',
+        'especialidade': 'administrativo',
+        'status': 'ativo',
+        'fase': 'instrucao',
+        'client_cpf': '658.214.379-53',
+        'cliente_nome': 'Município de Curitiba (autor)',
+        'cliente_cpf_cnpj': '76.017.353/0001-06',
+        'parte_contraria': 'Indústria Poluidora do Rio S.A.',
+        'parte_contraria_cpf_cnpj': '98.765.432/0001-10',
+        'tribunal': 'TRF-4',
+        'vara_juizo': '3a Vara Federal Ambiental de Curitiba',
+        'comarca': 'Curitiba',
+        'valor_causa': Decimal('5000000.00'),
+        'honorarios_combinados': Decimal('0.00'),
+        'advogado_username': 'pedro.lima',
+        'descricao': 'ACP proposta para reparação de dano ambiental causado por lançamento irregular de efluentes industriais em curso d\'água municipal.',
+    },
+    # Caso 6 — Impugnação em Licitação / Parecer
+    {
+        'numero_processo': 'PA-LICIT-2025-001',
+        'titulo': 'Parecer Jurídico — Licitação Pregão 012/2025 (Obras Viárias)',
+        'especialidade': 'administrativo',
+        'status': 'ativo',
+        'fase': 'recursal',
+        'client_cpf': '45.678.901/0001-23',
+        'cliente_nome': 'Secretaria de Obras Municipais',
+        'cliente_cpf_cnpj': '46.374.254/0001-29',
+        'parte_contraria': 'Licitante Impugnante — Construtora ABC LTDA',
+        'parte_contraria_cpf_cnpj': '11.222.333/0001-44',
+        'tribunal': 'Administrativo',
+        'vara_juizo': 'Comissão de Licitação',
+        'comarca': 'São Paulo',
+        'valor_causa': Decimal('8000000.00'),
+        'honorarios_combinados': Decimal('0.00'),
+        'advogado_username': 'joao.silva',
+        'descricao': 'Análise jurídica de impugnação ao edital do Pregão 012/2025 de obras viárias. Parecer sobre legalidade das exigências de habilitação técnica.',
+    },
+    # Caso 7 — Recurso Administrativo Tributário
+    {
+        'numero_processo': '0006789-01.2025.8.13.0024',
+        'titulo': 'Defesa em MS Tributário — Dist. Nacional vs. Município Contagem',
         'especialidade': 'tributario',
         'status': 'ativo',
         'fase': 'recursal',
         'client_cpf': '45.678.901/0001-23',
-        'cliente_nome': 'Distribuidora Nacional de Alimentos LTDA',
-        'cliente_cpf_cnpj': '45.678.901/0001-23',
-        'parte_contraria': 'Prefeitura Municipal de Contagem',
-        'parte_contraria_cpf_cnpj': '',
+        'cliente_nome': 'Município de Contagem (réu)',
+        'cliente_cpf_cnpj': '18.715.705/0001-74',
+        'parte_contraria': 'Distribuidora Nacional de Alimentos LTDA (impetrante)',
+        'parte_contraria_cpf_cnpj': '45.678.901/0001-23',
         'tribunal': 'TJMG',
         'vara_juizo': '1a Vara da Fazenda Pública de Contagem',
         'comarca': 'Contagem',
         'valor_causa': Decimal('350000.00'),
-        'honorarios_combinados': Decimal('70000.00'),
+        'honorarios_combinados': Decimal('0.00'),
         'advogado_username': 'joao.silva',
-        'descricao': 'Mandado de segurança contra cobrança de ISS sobre operações de industrialização por encomenda.',
+        'descricao': 'Defesa do município em MS impetrado contra cobrança de ISS sobre operações de industrialização por encomenda. Apelação contra sentença desfavorável.',
     },
-    # Caso 7 — Empresarial
+    # Caso 8 — Convênio / Contrato Administrativo
     {
-        'numero_processo': '1006789-01.2025.8.26.0100',
-        'titulo': 'Dissolução Parcial de Sociedade — Tech Solutions',
-        'especialidade': 'empresarial',
+        'numero_processo': 'PA-CONV-2025-007',
+        'titulo': 'Análise Jurídica — Convênio Estado/Município (Educação)',
+        'especialidade': 'administrativo',
         'status': 'aguardando',
         'fase': 'inicial',
-        'client_cpf': '12.345.678/0001-90',
-        'cliente_nome': 'Tech Solutions Brasil LTDA',
-        'cliente_cpf_cnpj': '12.345.678/0001-90',
-        'parte_contraria': 'Sócio Minoritário — André Luiz Moreira',
-        'parte_contraria_cpf_cnpj': '111.222.333-44',
-        'tribunal': 'TJSP',
-        'vara_juizo': '1a Vara Empresarial de São Paulo',
+        'client_cpf': '46.374.254/0001-29',
+        'cliente_nome': 'Secretaria Municipal de Educação',
+        'cliente_cpf_cnpj': '46.374.254/0001-29',
+        'parte_contraria': 'Estado de São Paulo (convenente)',
+        'parte_contraria_cpf_cnpj': '46.374.254/0001-29',
+        'tribunal': 'Administrativo',
+        'vara_juizo': 'Procuradoria Geral do Município',
         'comarca': 'São Paulo',
         'valor_causa': Decimal('2000000.00'),
-        'honorarios_combinados': Decimal('120000.00'),
-        'advogado_username': 'joao.silva',
-        'descricao': 'Dissolução parcial de sociedade com apuração de haveres do sócio minoritário retirante.',
-    },
-    # Caso 8 — Consumidor
-    {
-        'numero_processo': '0007890-12.2025.8.21.0001',
-        'titulo': 'Ação de Consumidor — Marcos Pereira vs. TeleCom Brasil',
-        'especialidade': 'consumidor',
-        'status': 'ativo',
-        'fase': 'julgamento',
-        'client_cpf': '658.214.379-53',
-        'cliente_nome': 'Marcos Antônio Pereira',
-        'cliente_cpf_cnpj': '658.214.379-53',
-        'parte_contraria': 'TeleCom Brasil Telecomunicações S.A.',
-        'parte_contraria_cpf_cnpj': '33.444.555/0001-66',
-        'tribunal': 'TJRS',
-        'vara_juizo': '5o Juizado Especial Cível de Porto Alegre',
-        'comarca': 'Porto Alegre',
-        'valor_causa': Decimal('45000.00'),
-        'honorarios_combinados': Decimal('13500.00'),
-        'advogado_username': 'pedro.lima',
-        'descricao': 'Ação por cobrança indevida de serviços não contratados, negativação indevida e danos morais.',
+        'honorarios_combinados': Decimal('0.00'),
+        'advogado_username': 'maria.santos',
+        'descricao': 'Elaboração de parecer jurídico e minutas para celebração de convênio de transferência de recursos estaduais para programa municipal de educação.',
     },
 ]
 
@@ -393,29 +393,29 @@ CASES_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 DEADLINES_DATA = [
-    # Caso 1 — Cível (Indenização Carlos)
-    {'case_idx': 0, 'titulo': 'Prazo para Réplica à Contestação', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 5, 'descricao': 'Prazo fatal para apresentação de réplica à contestação da ré'},
-    {'case_idx': 0, 'titulo': 'Audiência de Instrução e Julgamento', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 45, 'descricao': 'AIJ com oitiva de testemunhas'},
-    # Caso 2 — Cível (Cobrança Tech Solutions)
-    {'case_idx': 1, 'titulo': 'Prazo para Emenda à Inicial', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 10, 'descricao': 'Emenda à petição inicial conforme determinação do juízo'},
-    # Caso 3 — Trabalhista
-    {'case_idx': 2, 'titulo': 'Prazo para Contestação Trabalhista', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 3, 'descricao': 'Prazo fatal para apresentação de defesa na reclamatória'},
-    {'case_idx': 2, 'titulo': 'Juntada de Documentos Complementares', 'tipo': 'processual', 'prioridade': 'media', 'status': 'concluido', 'dias': -5, 'descricao': 'Juntada de holerites e comprovantes. Concluído.'},
-    # Caso 4 — Família
-    {'case_idx': 3, 'titulo': 'Prazo para Homologação do Acordo', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 15, 'descricao': 'Prazo para homologação do acordo de divórcio consensual'},
-    {'case_idx': 3, 'titulo': 'Avaliação de Bens do Casal', 'tipo': 'extrajudicial', 'prioridade': 'media', 'status': 'em_andamento', 'dias': 25, 'descricao': 'Avaliação dos imóveis e veículos para partilha'},
-    # Caso 5 — Criminal
-    {'case_idx': 4, 'titulo': 'Resposta à Acusação (art. 396 CPP)', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 8, 'descricao': 'Prazo para apresentação de resposta à acusação'},
-    {'case_idx': 4, 'titulo': 'Alegações Finais por Memorial', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 60, 'descricao': 'Prazo para apresentação de memoriais / alegações finais'},
-    # Caso 6 — Tributário
-    {'case_idx': 5, 'titulo': 'Prazo para Recurso de Apelação', 'tipo': 'recursal', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 12, 'descricao': 'Prazo para interposição de apelação contra sentença desfavorável'},
-    {'case_idx': 5, 'titulo': 'Juntada de Notas Fiscais', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'concluido', 'dias': -10, 'descricao': 'Juntada de NFs dos últimos 5 anos. Concluído.'},
-    # Caso 7 — Empresarial
-    {'case_idx': 6, 'titulo': 'Prazo para Contestação Empresarial', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 15, 'descricao': 'Contestação à ação de dissolução parcial'},
-    {'case_idx': 6, 'titulo': 'Perícia Contábil de Haveres', 'tipo': 'processual', 'prioridade': 'media', 'status': 'pendente', 'dias': 90, 'descricao': 'Perícia contábil para apuração de haveres do sócio retirante'},
-    # Caso 8 — Consumidor
-    {'case_idx': 7, 'titulo': 'Prazo para Manifestação sobre Sentença', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'atrasado', 'dias': -2, 'descricao': 'Prazo para se manifestar sobre a sentença proferida'},
-    {'case_idx': 7, 'titulo': 'Cumprimento de Sentença', 'tipo': 'processual', 'prioridade': 'media', 'status': 'pendente', 'dias': 30, 'descricao': 'Prazo para início do cumprimento de sentença'},
+    # Caso 1 — Execução Fiscal ISS
+    {'case_idx': 0, 'titulo': 'Prazo SISBAJUD — Penhora Eletrônica', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 5, 'descricao': 'Requerimento de penhora via SISBAJUD após citação sem pagamento'},
+    {'case_idx': 0, 'titulo': 'Análise de Embargos à Execução', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 45, 'descricao': 'Prazo para resposta aos embargos do executado (Lei 6.830/1980, Art. 19)'},
+    # Caso 2 — Defesa em MS
+    {'case_idx': 1, 'titulo': 'Prestação de Informações no MS', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 10, 'descricao': 'Prazo de 10 dias para prestação de informações pela autoridade coatora (Lei 12.016/2009, Art. 7o)'},
+    # Caso 3 — Execução Fiscal ICMS
+    {'case_idx': 2, 'titulo': 'Resposta aos Embargos à Execução', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 3, 'descricao': 'Prazo para impugnar os embargos à execução fiscal opostos pelo executado'},
+    {'case_idx': 2, 'titulo': 'Juntada de CDA Retificada', 'tipo': 'processual', 'prioridade': 'media', 'status': 'concluido', 'dias': -5, 'descricao': 'CDA retificada juntada nos autos. Concluído.'},
+    # Caso 4 — PAD
+    {'case_idx': 3, 'titulo': 'Notificação do Indiciado — Defesa Escrita', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 15, 'descricao': 'Prazo para notificação do servidor indiciado e início do prazo de defesa escrita'},
+    {'case_idx': 3, 'titulo': 'Conclusão do Relatório Final do PAD', 'tipo': 'extrajudicial', 'prioridade': 'media', 'status': 'em_andamento', 'dias': 25, 'descricao': 'Comissão deve concluir relatório final dentro do prazo regimental'},
+    # Caso 5 — ACP
+    {'case_idx': 4, 'titulo': 'Prazo para Tutela de Urgência — Laudo Pericial', 'tipo': 'processual', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 8, 'descricao': 'Prazo para juntada de laudo ambiental como fundamento de tutela de urgência'},
+    {'case_idx': 4, 'titulo': 'Audiência de Instrução — ACP', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 60, 'descricao': 'Audiência de instrução e julgamento da ACP ambiental'},
+    # Caso 6 — Licitação / Parecer
+    {'case_idx': 5, 'titulo': 'Prazo Resposta à Impugnação do Edital', 'tipo': 'recursal', 'prioridade': 'urgente', 'status': 'pendente', 'dias': 12, 'descricao': 'Prazo para a Comissão de Licitação responder à impugnação ao edital (Lei 14.133/2021, Art. 164)'},
+    {'case_idx': 5, 'titulo': 'Publicação do Parecer no DOU/DOE', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'concluido', 'dias': -10, 'descricao': 'Parecer jurídico publicado no Diário Oficial. Concluído.'},
+    # Caso 7 — MS Tributário
+    {'case_idx': 6, 'titulo': 'Prazo para Recurso de Apelação', 'tipo': 'processual', 'prioridade': 'alta', 'status': 'pendente', 'dias': 15, 'descricao': 'Interposição de apelação contra sentença concessiva do MS tributário'},
+    {'case_idx': 6, 'titulo': 'Sustentação Oral no Tribunal', 'tipo': 'processual', 'prioridade': 'media', 'status': 'pendente', 'dias': 90, 'descricao': 'Designação de data para sustentação oral no TJMG'},
+    # Caso 8 — Convênio
+    {'case_idx': 7, 'titulo': 'Prazo para Assinatura do Convênio', 'tipo': 'administrativo', 'prioridade': 'alta', 'status': 'pendente', 'dias': -2, 'descricao': 'Prazo para assinatura do convênio e publicação no Diário Oficial'},
+    {'case_idx': 7, 'titulo': 'Publicação no Diário Oficial', 'tipo': 'administrativo', 'prioridade': 'media', 'status': 'pendente', 'dias': 30, 'descricao': 'Publicação do extrato do convênio no Diário Oficial conforme exigência legal'},
 ]
 
 
@@ -424,34 +424,34 @@ DEADLINES_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 TASKS_DATA = [
-    # Caso 1
-    {'case_idx': 0, 'titulo': 'Elaborar réplica à contestação', 'descricao': 'Redigir réplica detalhada rebatendo todos os pontos da contestação da empresa ré', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 4},
-    {'case_idx': 0, 'titulo': 'Reunir documentação médica do autor', 'descricao': 'Coletar laudos médicos, receitas e comprovantes de despesas hospitalares', 'status': 'concluida', 'prioridade': 'alta', 'dias_limite': -3},
-    {'case_idx': 0, 'titulo': 'Preparar rol de testemunhas', 'descricao': 'Listar e qualificar testemunhas presenciais do acidente', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 20},
-    # Caso 2
-    {'case_idx': 1, 'titulo': 'Revisar contrato de prestação de serviços', 'descricao': 'Analisar cláusulas do contrato de TI para fundamentar a cobrança', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 7},
-    {'case_idx': 1, 'titulo': 'Calcular valores atualizados com juros', 'descricao': 'Elaborar planilha de cálculo com juros moratórios e correção monetária', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 9},
-    # Caso 3
-    {'case_idx': 2, 'titulo': 'Calcular verbas rescisórias devidas', 'descricao': 'Planilha detalhada: saldo salário, férias, 13o, FGTS, aviso prévio', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 5},
-    {'case_idx': 2, 'titulo': 'Reunir holerites e CTPS', 'descricao': 'Solicitar ao cliente todos os holerites e cópia da CTPS', 'status': 'concluida', 'prioridade': 'urgente', 'dias_limite': -2},
-    {'case_idx': 2, 'titulo': 'Pesquisar jurisprudência sobre assédio', 'descricao': 'Levantar precedentes do TST sobre assédio moral no trabalho', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 15},
-    # Caso 4
-    {'case_idx': 3, 'titulo': 'Inventariar bens do casal', 'descricao': 'Levantar todos os bens: imóveis, veículos, contas bancárias e investimentos', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 10},
-    {'case_idx': 3, 'titulo': 'Elaborar acordo de guarda compartilhada', 'descricao': 'Redigir termos de guarda, convivência e alimentos para os filhos', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 12},
-    # Caso 5
-    {'case_idx': 4, 'titulo': 'Organizar provas digitais', 'descricao': 'Coletar e autenticar prints de conversas, e-mails e registros bancários', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 6},
-    {'case_idx': 4, 'titulo': 'Arrolar testemunhas de defesa', 'descricao': 'Identificar e arrolar até 8 testemunhas de defesa (art. 401 CPP)', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 7},
-    {'case_idx': 4, 'titulo': 'Solicitar perícia em dispositivos', 'descricao': 'Requerer perícia técnica nos dispositivos eletrônicos apreendidos', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 15},
-    # Caso 6
-    {'case_idx': 5, 'titulo': 'Elaborar razões de apelação', 'descricao': 'Redigir peça recursal com fundamentos de fato e direito', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 10},
-    {'case_idx': 5, 'titulo': 'Contratar perito contábil assistente', 'descricao': 'Indicar assistente técnico para acompanhar perícia judicial', 'status': 'concluida', 'prioridade': 'alta', 'dias_limite': -7},
-    # Caso 7
-    {'case_idx': 6, 'titulo': 'Analisar contrato social da empresa', 'descricao': 'Revisar contrato social e alterações para identificar direitos do sócio retirante', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 12},
-    {'case_idx': 6, 'titulo': 'Levantar balanços patrimoniais', 'descricao': 'Solicitar balanços dos últimos 5 anos para cálculo de haveres', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 20},
-    # Caso 8
-    {'case_idx': 7, 'titulo': 'Analisar sentença e viabilidade de recurso', 'descricao': 'Estudar a sentença proferida e avaliar oportunidade de recurso', 'status': 'concluida', 'prioridade': 'urgente', 'dias_limite': -1},
-    {'case_idx': 7, 'titulo': 'Calcular valor atualizado da condenação', 'descricao': 'Elaborar cálculo de liquidação da sentença com juros e correção', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 15},
-    {'case_idx': 7, 'titulo': 'Requerer exclusão de negativação', 'descricao': 'Peticionar ao juízo para determinar exclusão do nome dos cadastros restritivos', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 5},
+    # Caso 1 — Execução Fiscal ISS
+    {'case_idx': 0, 'titulo': 'Verificar CDA e localizar bens do executado', 'descricao': 'Conferir a CDA, verificar dados do executado e realizar pesquisa patrimonial via SISBAJUD/SENATRAN', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 4},
+    {'case_idx': 0, 'titulo': 'Elaborar impugnação aos embargos', 'descricao': 'Redigir impugnação aos embargos à execução fiscal com fundamentos jurídicos e documentação da CDA', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 40},
+    {'case_idx': 0, 'titulo': 'Requerer penhora via SISBAJUD', 'descricao': 'Peticionar o bloqueio de ativos financeiros do executado via sistema SISBAJUD', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 10},
+    # Caso 2 — Defesa MS
+    {'case_idx': 1, 'titulo': 'Elaborar informações para autoridade coatora', 'descricao': 'Redigir as informações a serem prestadas pela autoridade coatora com defesa do ato administrativo de inabilitação', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 7},
+    {'case_idx': 1, 'titulo': 'Compilar documentação do processo licitatório', 'descricao': 'Reunir edital, ata de sessão, recursos interpostos e todos os documentos que embasaram o ato de inabilitação', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 5},
+    # Caso 3 — Execução Fiscal ICMS
+    {'case_idx': 2, 'titulo': 'Analisar embargos à execução fiscal', 'descricao': 'Estudar os embargos interpostos pelo executado, verificar prescrição alegada e preparar impugnação', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 5},
+    {'case_idx': 2, 'titulo': 'Verificar prescrição do crédito tributário', 'descricao': 'Confirmar que o crédito de ICMS não está prescrito (CTN, Art. 174), com análise de eventuais causas interruptivas', 'status': 'concluida', 'prioridade': 'urgente', 'dias_limite': -2},
+    {'case_idx': 2, 'titulo': 'Pesquisar jurisprudência sobre ICMS e embargos', 'descricao': 'Levantar precedentes do STJ e STF sobre a matéria de direito alegada nos embargos', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 15},
+    # Caso 4 — PAD
+    {'case_idx': 3, 'titulo': 'Elaborar portaria de instauração do PAD', 'descricao': 'Redigir portaria de instauração e nomeação da comissão processante conforme regulamento interno', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 10},
+    {'case_idx': 3, 'titulo': 'Notificar servidor indiciado', 'descricao': 'Elaborar ofício de notificação do servidor indiciado para apresentar defesa escrita no prazo regimental', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 12},
+    # Caso 5 — ACP
+    {'case_idx': 4, 'titulo': 'Obter laudo ambiental para instrução', 'descricao': 'Coordenar com órgão ambiental municipal a emissão de laudo técnico sobre o dano ao curso d\'água', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 6},
+    {'case_idx': 4, 'titulo': 'Avaliar cabimento de TAC', 'descricao': 'Verificar se a empresa ré tem capacidade de celebrar TAC para reparação do dano antes do ajuizamento', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 7},
+    {'case_idx': 4, 'titulo': 'Elaborar petição inicial da ACP', 'descricao': 'Redigir a petição inicial da ACP com pedido de tutela de urgência para cessação imediata do descarte irregular', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 20},
+    # Caso 6 — Licitação
+    {'case_idx': 5, 'titulo': 'Elaborar parecer sobre regularidade do edital', 'descricao': 'Analisar legalidade das cláusulas de habilitação técnica contestadas na impugnação', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 10},
+    {'case_idx': 5, 'titulo': 'Protocolar resposta à impugnação', 'descricao': 'Protocolar resposta fundamentada à impugnação ao edital dentro do prazo legal', 'status': 'concluida', 'prioridade': 'alta', 'dias_limite': -7},
+    # Caso 7 — MS Tributário
+    {'case_idx': 6, 'titulo': 'Elaborar razões de apelação', 'descricao': 'Redigir peça recursal com fundamentos jurídicos contra a sentença concessiva do MS', 'status': 'em_andamento', 'prioridade': 'urgente', 'dias_limite': 10},
+    {'case_idx': 6, 'titulo': 'Solicitar parecer da Consultoria Tributária', 'descricao': 'Consultar equipe de tributário municipal sobre a legalidade da cobrança de ISS no caso', 'status': 'pendente', 'prioridade': 'media', 'dias_limite': 20},
+    # Caso 8 — Convênio
+    {'case_idx': 7, 'titulo': 'Elaborar minuta do convênio', 'descricao': 'Redigir minuta do convênio de transferência de recursos com base no modelo padrão do TCE/TCU', 'status': 'concluida', 'prioridade': 'alta', 'dias_limite': -1},
+    {'case_idx': 7, 'titulo': 'Obter aprovação da Controladoria', 'descricao': 'Submeter a minuta do convênio à Controladoria Geral para verificação de conformidade fiscal', 'status': 'em_andamento', 'prioridade': 'alta', 'dias_limite': 15},
+    {'case_idx': 7, 'titulo': 'Publicar extrato no Diário Oficial', 'descricao': 'Providenciar a publicação do extrato do convênio no Diário Oficial Municipal após assinatura', 'status': 'pendente', 'prioridade': 'alta', 'dias_limite': 5},
 ]
 
 
@@ -460,11 +460,11 @@ TASKS_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 AUDIENCIAS_DATA = [
-    {'case_idx': 0, 'tipo': 'instrucao', 'status': 'agendada', 'dias': 45, 'hora': 14, 'local': '7a Vara Cível — Foro Central de São Paulo, Sala 305', 'juiz': 'Dr. Ricardo Moreira de Almeida'},
-    {'case_idx': 2, 'tipo': 'conciliacao', 'status': 'agendada', 'dias': 20, 'hora': 9, 'local': '45a Vara do Trabalho de São Paulo, Sala 201', 'juiz': 'Dra. Patrícia Helena Costa'},
-    {'case_idx': 3, 'tipo': 'conciliacao', 'status': 'realizada', 'dias': -10, 'hora': 15, 'local': '2a Vara de Família de Belo Horizonte, Sala 102', 'juiz': 'Dra. Camila de Souza Ferreira', 'resultado': 'Partes chegaram a acordo sobre partilha de bens. Guarda compartilhada acordada. Alimentos fixados em 30% dos rendimentos líquidos.'},
-    {'case_idx': 4, 'tipo': 'instrucao', 'status': 'agendada', 'dias': 55, 'hora': 10, 'local': '3a Vara Criminal de Curitiba, Sala 401', 'juiz': 'Dr. Eduardo Nascimento Silva'},
-    {'case_idx': 7, 'tipo': 'conciliacao', 'status': 'realizada', 'dias': -30, 'hora': 11, 'local': '5o Juizado Especial Cível de Porto Alegre', 'juiz': 'Dra. Mariana Lopes', 'resultado': 'Tentativa de conciliação frustrada. Réu não compareceu. Processo seguiu para julgamento.'},
+    {'case_idx': 0, 'tipo': 'instrucao', 'status': 'agendada', 'dias': 45, 'hora': 14, 'local': '1a Vara da Fazenda Pública — São Paulo, Sala 305', 'juiz': 'Dr. Ricardo Moreira de Almeida'},
+    {'case_idx': 2, 'tipo': 'instrucao', 'status': 'agendada', 'dias': 20, 'hora': 9, 'local': '2a Vara da Fazenda Pública Estadual de BH, Sala 201', 'juiz': 'Dra. Patrícia Helena Costa'},
+    {'case_idx': 3, 'tipo': 'instrucao', 'status': 'realizada', 'dias': -10, 'hora': 15, 'local': 'Comissão Processante PAD — Sala de Reuniões da PGM, Sala 102', 'juiz': 'Presidente da Comissão — Dr. Carlos Andrade', 'resultado': 'Oitiva de duas testemunhas realizada. Próxima sessão designada para oitiva do indiciado.'},
+    {'case_idx': 4, 'tipo': 'instrucao', 'status': 'agendada', 'dias': 55, 'hora': 10, 'local': '3a Vara Federal Ambiental de Curitiba, Sala 401', 'juiz': 'Dr. Eduardo Nascimento Silva'},
+    {'case_idx': 6, 'tipo': 'conciliacao', 'status': 'realizada', 'dias': -30, 'hora': 11, 'local': '1a Vara da Fazenda Pública de Contagem', 'juiz': 'Dra. Mariana Lopes', 'resultado': 'Tentativa de conciliação frustrada. Apelação em tramitação.'},
 ]
 
 
@@ -473,16 +473,16 @@ AUDIENCIAS_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 FINANCEIRO_DATA = [
-    {'case_idx': 0, 'tipo': 'custas', 'descricao': 'Custas processuais iniciais — Indenização', 'valor': '1250.00', 'status': 'pago', 'dias_vencimento': -15},
-    {'case_idx': 0, 'tipo': 'honorario', 'descricao': 'Honorários advocatícios — parcela 1/3', 'valor': '16666.67', 'status': 'pago', 'dias_vencimento': -30},
-    {'case_idx': 1, 'tipo': 'custas', 'descricao': 'Custas processuais — Cobrança', 'valor': '900.00', 'status': 'pago', 'dias_vencimento': -10},
-    {'case_idx': 2, 'tipo': 'honorario', 'descricao': 'Honorários trabalhistas — entrada', 'valor': '8000.00', 'status': 'pendente', 'dias_vencimento': 15},
-    {'case_idx': 3, 'tipo': 'honorario', 'descricao': 'Honorários — Divórcio consensual', 'valor': '15000.00', 'status': 'pendente', 'dias_vencimento': 30},
-    {'case_idx': 4, 'tipo': 'despesa', 'descricao': 'Despesas com cópias e autenticações', 'valor': '450.00', 'status': 'pago', 'dias_vencimento': -5},
-    {'case_idx': 5, 'tipo': 'custas', 'descricao': 'Custas — Mandado de Segurança', 'valor': '2500.00', 'status': 'pago', 'dias_vencimento': -20},
-    {'case_idx': 5, 'tipo': 'honorario', 'descricao': 'Honorários tributários — fase recursal', 'valor': '35000.00', 'status': 'pendente', 'dias_vencimento': 45},
-    {'case_idx': 6, 'tipo': 'custas', 'descricao': 'Custas — Dissolução societária', 'valor': '3500.00', 'status': 'pendente', 'dias_vencimento': 10},
-    {'case_idx': 7, 'tipo': 'despesa', 'descricao': 'Despesas com certidões e buscas', 'valor': '280.00', 'status': 'pago', 'dias_vencimento': -8},
+    {'case_idx': 0, 'tipo': 'custas', 'descricao': 'Custas processuais — Execução Fiscal ISS', 'valor': '1250.00', 'status': 'pago', 'dias_vencimento': -15},
+    {'case_idx': 0, 'tipo': 'honorario', 'descricao': 'Honorários sucumbenciais — Execução Fiscal ISS (parcial)', 'valor': '0.00', 'status': 'pendente', 'dias_vencimento': 90},
+    {'case_idx': 1, 'tipo': 'custas', 'descricao': 'Custas processuais — Defesa em MS', 'valor': '900.00', 'status': 'pago', 'dias_vencimento': -10},
+    {'case_idx': 2, 'tipo': 'custas', 'descricao': 'Custas processuais — Execução Fiscal ICMS', 'valor': '1500.00', 'status': 'pago', 'dias_vencimento': -5},
+    {'case_idx': 3, 'tipo': 'despesa', 'descricao': 'Despesas com cópias e diligências — PAD', 'valor': '350.00', 'status': 'pago', 'dias_vencimento': -8},
+    {'case_idx': 4, 'tipo': 'despesa', 'descricao': 'Despesas com laudo ambiental — ACP', 'valor': '8500.00', 'status': 'pendente', 'dias_vencimento': 20},
+    {'case_idx': 5, 'tipo': 'custas', 'descricao': 'Despesas administrativas — Licitação', 'valor': '200.00', 'status': 'pago', 'dias_vencimento': -20},
+    {'case_idx': 6, 'tipo': 'custas', 'descricao': 'Custas — Mandado de Segurança Tributário', 'valor': '2500.00', 'status': 'pago', 'dias_vencimento': -25},
+    {'case_idx': 6, 'tipo': 'honorario', 'descricao': 'Honorários sucumbenciais — MS Tributário (fase recursal)', 'valor': '0.00', 'status': 'pendente', 'dias_vencimento': 45},
+    {'case_idx': 7, 'tipo': 'despesa', 'descricao': 'Despesas com publicação no Diário Oficial', 'valor': '280.00', 'status': 'pago', 'dias_vencimento': -8},
 ]
 
 
@@ -491,109 +491,109 @@ FINANCEIRO_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 LEAD_STAGES_DATA = [
-    {'name': 'Novo Lead', 'order': 1, 'color': '#6B7280'},
-    {'name': 'Consulta Agendada', 'order': 2, 'color': '#3B82F6'},
-    {'name': 'Proposta Enviada', 'order': 3, 'color': '#F59E0B'},
-    {'name': 'Negociação', 'order': 4, 'color': '#8B5CF6'},
-    {'name': 'Cliente Ganho', 'order': 5, 'color': '#10B981', 'is_won': True},
-    {'name': 'Perdido', 'order': 6, 'color': '#EF4444', 'is_lost': True},
+    {'name': 'Nova Demanda', 'order': 1, 'color': '#6B7280'},
+    {'name': 'Análise Jurídica', 'order': 2, 'color': '#3B82F6'},
+    {'name': 'Parecer em Elaboração', 'order': 3, 'color': '#F59E0B'},
+    {'name': 'Em Aprovação', 'order': 4, 'color': '#8B5CF6'},
+    {'name': 'Concluído', 'order': 5, 'color': '#10B981', 'is_won': True},
+    {'name': 'Arquivado', 'order': 6, 'color': '#EF4444', 'is_lost': True},
 ]
 
 LEADS_DATA = [
     {
-        'name': 'Juliana Aparecida Rocha',
-        'email': 'juliana.rocha@email.com',
-        'phone': '(11) 98765-1111',
-        'description': 'Precisa de advogado para reclamação trabalhista. Demissão sem justa causa com verbas em aberto.',
-        'specialty': 'trabalhista',
+        'name': 'Secretaria de Saúde — Contrato Emergencial 005/2025',
+        'email': 'juridico.saude@municipio.gov.br',
+        'phone': '(11) 3000-1111',
+        'description': 'Solicitação de parecer jurídico sobre legalidade de contratação emergencial de insumos hospitalares.',
+        'specialty': 'administrativo',
         'source': 'indicacao',
         'temperature': 'hot',
-        'stage_name': 'Consulta Agendada',
-        'estimated_value': Decimal('60000.00'),
-        'responsible_username': 'maria.santos',
+        'stage_name': 'Análise Jurídica',
+        'estimated_value': Decimal('0.00'),
+        'responsible_username': 'joao.silva',
     },
     {
-        'name': 'Eduardo Campos Neto',
-        'email': 'eduardo.campos@empresa.com',
-        'phone': '(11) 91234-2222',
-        'description': 'Consultoria tributária para planejamento fiscal de holding familiar.',
+        'name': 'Secretaria de Finanças — Dívida Ativa ISS Lote 12',
+        'email': 'divida.ativa@municipio.gov.br',
+        'phone': '(11) 3000-2222',
+        'description': 'Ajuizamento de lote de execuções fiscais de ISS com valor acima de R$ 50 mil cada.',
         'specialty': 'tributario',
-        'source': 'google',
+        'source': 'interno',
         'temperature': 'warm',
-        'stage_name': 'Proposta Enviada',
-        'estimated_value': Decimal('90000.00'),
-        'responsible_username': 'joao.silva',
-    },
-    {
-        'name': 'Patrícia Souza Lima',
-        'email': 'patricia.lima@gmail.com',
-        'phone': '(21) 99876-3333',
-        'description': 'Inventário extrajudicial — espólio com 3 imóveis e aplicações financeiras.',
-        'specialty': 'familia',
-        'source': 'instagram',
-        'temperature': 'warm',
-        'stage_name': 'Novo Lead',
-        'estimated_value': Decimal('25000.00'),
+        'stage_name': 'Parecer em Elaboração',
+        'estimated_value': Decimal('500000.00'),
         'responsible_username': 'maria.santos',
     },
     {
-        'name': 'Ricardo Teixeira Alves',
-        'email': 'ricardo@alvesteixeira.com',
-        'phone': '(31) 98888-4444',
-        'description': 'Ação de despejo de imóvel comercial inadimplente há 6 meses.',
-        'specialty': 'imobiliario',
-        'source': 'site',
-        'temperature': 'cold',
-        'stage_name': 'Novo Lead',
-        'estimated_value': Decimal('30000.00'),
-        'responsible_username': 'pedro.lima',
-    },
-    {
-        'name': 'Daniela Vieira Costa',
-        'email': 'daniela.vieira@empresa.com',
-        'phone': '(11) 97654-5555',
-        'description': 'Defesa em ação de consumidor — recall de produto automotivo.',
-        'specialty': 'consumidor',
-        'source': 'whatsapp',
-        'temperature': 'hot',
-        'stage_name': 'Negociação',
-        'estimated_value': Decimal('45000.00'),
-        'responsible_username': 'pedro.lima',
-    },
-    {
-        'name': 'Henrique Bastos Correia',
-        'email': 'henrique.correia@outlook.com',
-        'phone': '(41) 96543-6666',
-        'description': 'Abertura de empresa — contrato social e registro na Junta Comercial.',
-        'specialty': 'empresarial',
-        'source': 'indicacao',
-        'temperature': 'hot',
-        'stage_name': 'Cliente Ganho',
-        'estimated_value': Decimal('8000.00'),
+        'name': 'SEMAD — Impugnação Edital Pregão 022/2025',
+        'email': 'licitacoes@municipio.gov.br',
+        'phone': '(21) 3000-3333',
+        'description': 'Análise de impugnação ao Pregão Eletrônico 022/2025 de aquisição de equipamentos de informática.',
+        'specialty': 'administrativo',
+        'source': 'interno',
+        'temperature': 'warm',
+        'stage_name': 'Nova Demanda',
+        'estimated_value': Decimal('0.00'),
         'responsible_username': 'joao.silva',
     },
     {
-        'name': 'Camila Rodrigues Farias',
-        'email': 'camila.farias@email.com',
-        'phone': '(51) 95432-7777',
-        'description': 'Processo de guarda unilateral contra ex-marido.',
-        'specialty': 'familia',
-        'source': 'telefone',
+        'name': 'RH Municipal — PAD Servidor Cargo Comissionado',
+        'email': 'rh@municipio.gov.br',
+        'phone': '(31) 3000-4444',
+        'description': 'Instauração de PAD para apurar abandono de cargo por servidor de nível comissionado.',
+        'specialty': 'administrativo',
+        'source': 'interno',
+        'temperature': 'cold',
+        'stage_name': 'Nova Demanda',
+        'estimated_value': Decimal('0.00'),
+        'responsible_username': 'pedro.lima',
+    },
+    {
+        'name': 'Procuradoria Estadual — Convênio AIS/2025',
+        'email': 'convenios@procuradoria.gov.br',
+        'phone': '(11) 3000-5555',
+        'description': 'Análise e parecer sobre minuta de convênio de repasse estadual para programa de assistência social.',
+        'specialty': 'administrativo',
+        'source': 'interno',
+        'temperature': 'hot',
+        'stage_name': 'Em Aprovação',
+        'estimated_value': Decimal('0.00'),
+        'responsible_username': 'pedro.lima',
+    },
+    {
+        'name': 'SEMED — Mandado de Segurança em Concurso Público',
+        'email': 'juridico.semed@municipio.gov.br',
+        'phone': '(41) 3000-6666',
+        'description': 'Defesa do Município em MS impetrado por candidato excluído de concurso público para professor.',
+        'specialty': 'administrativo',
+        'source': 'interno',
+        'temperature': 'hot',
+        'stage_name': 'Concluído',
+        'estimated_value': Decimal('0.00'),
+        'responsible_username': 'joao.silva',
+    },
+    {
+        'name': 'Controladoria — Revisão de Contrato Vigente',
+        'email': 'controladoria@municipio.gov.br',
+        'phone': '(51) 3000-7777',
+        'description': 'Revisão jurídica de contrato administrativo vigente com suspeita de superfaturamento.',
+        'specialty': 'administrativo',
+        'source': 'interno',
         'temperature': 'warm',
-        'stage_name': 'Consulta Agendada',
-        'estimated_value': Decimal('20000.00'),
+        'stage_name': 'Análise Jurídica',
+        'estimated_value': Decimal('0.00'),
         'responsible_username': 'maria.santos',
     },
     {
-        'name': 'Bruno Martins Prado',
-        'email': 'bruno.prado@hotmail.com',
-        'phone': '(11) 94321-8888',
-        'description': 'Consulta sobre revisão contratual de financiamento imobiliário.',
-        'specialty': 'civel',
-        'source': 'google',
+        'name': 'TCE — Resposta a Diligência de Auditoria',
+        'email': 'auditoria@municipio.gov.br',
+        'phone': '(11) 3000-8888',
+        'description': 'Elaboração de resposta técnica e jurídica à diligência do TCE sobre execução de convênio educacional.',
+        'specialty': 'administrativo',
+        'source': 'interno',
         'temperature': 'cold',
-        'stage_name': 'Perdido',
-        'estimated_value': Decimal('15000.00'),
+        'stage_name': 'Arquivado',
+        'estimated_value': Decimal('0.00'),
         'responsible_username': 'joao.silva',
     },
 ]
@@ -606,14 +606,14 @@ LEADS_DATA = [
 TIMESHEET_ACTIVITIES = [
     'Análise de documentos e provas',
     'Elaboração de peça processual',
-    'Pesquisa de jurisprudência',
-    'Reunião com cliente',
-    'Audiência judicial',
-    'Despacho com juiz',
-    'Revisão de contrato',
+    'Pesquisa de jurisprudência e doutrina',
+    'Reunião com representante do ente público',
+    'Audiência judicial / sessão administrativa',
+    'Despacho com juiz / autoridade',
+    'Revisão de contrato administrativo',
     'Elaboração de parecer jurídico',
     'Acompanhamento processual e diligências',
-    'Protocolo de petição e conferência',
+    'Protocolo de petição e conferência no PJe/EPROC',
 ]
 
 
@@ -623,40 +623,40 @@ TIMESHEET_ACTIVITIES = [
 
 REMINDERS_DATA = [
     {
-        'title': 'Verificar publicações do DJE',
-        'description': 'Consultar o Diário de Justiça Eletrônico para novas publicações dos processos ativos.',
+        'title': 'Verificar publicações do DJE e Diário Oficial',
+        'description': 'Consultar o Diário de Justiça Eletrônico e o Diário Oficial para novas publicações dos processos e atos administrativos.',
         'frequency': 'daily',
         'dias': 1,
         'priority': 'high',
         'username': 'joao.silva',
     },
     {
-        'title': 'Reunião semanal de equipe',
-        'description': 'Reunião de alinhamento semanal com todos os advogados do escritório.',
+        'title': 'Reunião semanal de equipe da Procuradoria',
+        'description': 'Reunião de alinhamento semanal com todos os procuradores e assessores.',
         'frequency': 'weekly',
         'dias': 7,
         'priority': 'medium',
         'username': 'joao.silva',
     },
     {
-        'title': 'Revisar prazos da semana — Trabalhista',
-        'description': 'Conferir todos os prazos trabalhistas da próxima semana.',
+        'title': 'Revisar prazos da semana — Execuções Fiscais',
+        'description': 'Conferir todos os prazos das execuções fiscais ativas na próxima semana.',
         'frequency': 'weekly',
         'dias': 5,
         'priority': 'high',
         'username': 'maria.santos',
     },
     {
-        'title': 'Acompanhar andamento processual criminal',
-        'description': 'Consultar andamento do caso Luciana Gomes no TJPR.',
+        'title': 'Acompanhar andamento da ACP ambiental',
+        'description': 'Consultar movimentações da ACP ambiental no TRF-4 e verificar publicações.',
         'frequency': 'biweekly',
         'dias': 14,
         'priority': 'medium',
         'username': 'pedro.lima',
     },
     {
-        'title': 'Entregar relatório mensal de horas',
-        'description': 'Consolidar e entregar relatório de horas trabalhadas do mês ao sócio.',
+        'title': 'Entregar relatório mensal de atividades',
+        'description': 'Consolidar e entregar relatório mensal de atividades da Procuradoria ao Procurador-Geral.',
         'frequency': 'monthly',
         'dias': 30,
         'priority': 'medium',
@@ -670,16 +670,16 @@ REMINDERS_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 NOTIFICATIONS_DATA = [
-    {'username': 'joao.silva', 'type': 'deadline', 'priority': 'urgent', 'title': 'Prazo URGENTE: Réplica à Contestação', 'message': 'O prazo para réplica no caso Carlos Oliveira vs. TransLog vence em 5 dias. Ação necessária.', 'link': '/cases', 'is_read': False},
-    {'username': 'joao.silva', 'type': 'case', 'priority': 'high', 'title': 'Novo caso atribuído: Dissolução Societária', 'message': 'Você foi designado como advogado responsável no caso de dissolução parcial da Tech Solutions.', 'link': '/cases', 'is_read': True},
-    {'username': 'maria.santos', 'type': 'deadline', 'priority': 'urgent', 'title': 'Prazo URGENTE: Contestação Trabalhista', 'message': 'Prazo fatal para contestação no caso Fernanda Barbosa vs. ComércioMax vence em 3 dias.', 'link': '/cases', 'is_read': False},
-    {'username': 'maria.santos', 'type': 'task', 'priority': 'medium', 'title': 'Tarefa concluída: Reunir holerites', 'message': 'A tarefa "Reunir holerites e CTPS" do caso trabalhista foi marcada como concluída.', 'link': '/cases', 'is_read': True},
-    {'username': 'pedro.lima', 'type': 'case', 'priority': 'high', 'title': 'Audiência de instrução agendada', 'message': 'AIJ no caso Luciana Gomes (Criminal) agendada para daqui a 55 dias na 3a Vara Criminal de Curitiba.', 'link': '/cases', 'is_read': False},
-    {'username': 'pedro.lima', 'type': 'document', 'priority': 'medium', 'title': 'Documento gerado: Resposta à Acusação', 'message': 'O documento "Resposta à Acusação" foi gerado pelo Copilot e está pronto para revisão.', 'link': '/documents', 'is_read': False},
-    {'username': 'ana.costa', 'type': 'task', 'priority': 'medium', 'title': 'Nova tarefa atribuída', 'message': 'Você foi designada para a tarefa "Pesquisar jurisprudência sobre assédio" no caso trabalhista.', 'link': '/cases', 'is_read': False},
-    {'username': 'joao.silva', 'type': 'case_update', 'priority': 'medium', 'title': 'Movimentação financeira registrada', 'message': 'Pagamento de custas processuais de R$ 2.500,00 registrado no caso tributário.', 'link': '/financeiro', 'is_read': True},
-    {'username': 'maria.santos', 'type': 'case_update', 'priority': 'low', 'title': 'Lead convertido em cliente', 'message': 'O lead Henrique Bastos Correia foi convertido em cliente. Caso empresarial criado.', 'link': '/crm', 'is_read': True},
-    {'username': 'joao.silva', 'type': 'deadline', 'priority': 'high', 'title': 'Prazo recursal se aproxima', 'message': 'O prazo para interposição de apelação no caso tributário vence em 12 dias.', 'link': '/cases', 'is_read': False},
+    {'username': 'joao.silva', 'type': 'deadline', 'priority': 'urgent', 'title': 'Prazo URGENTE: SISBAJUD — Execução Fiscal ISS', 'message': 'O prazo para requerimento de penhora via SISBAJUD na execução fiscal de ISS vence em 5 dias. Ação necessária.', 'link': '/cases', 'is_read': False},
+    {'username': 'joao.silva', 'type': 'case', 'priority': 'high', 'title': 'Novo caso atribuído: Defesa em MS Licitatório', 'message': 'Você foi designado como procurador responsável no caso de defesa do MS impetrado pela Tech Solutions.', 'link': '/cases', 'is_read': True},
+    {'username': 'maria.santos', 'type': 'deadline', 'priority': 'urgent', 'title': 'Prazo URGENTE: Resposta Embargos Fiscais', 'message': 'Prazo fatal para resposta aos embargos à execução fiscal de ICMS vence em 3 dias.', 'link': '/cases', 'is_read': False},
+    {'username': 'maria.santos', 'type': 'task', 'priority': 'medium', 'title': 'Tarefa concluída: CDA Retificada Juntada', 'message': 'A tarefa "Juntada de CDA Retificada" foi marcada como concluída nos autos da execução fiscal.', 'link': '/cases', 'is_read': True},
+    {'username': 'pedro.lima', 'type': 'case', 'priority': 'high', 'title': 'Audiência de instrução — ACP Ambiental', 'message': 'AIJ na ACP ambiental agendada para daqui a 55 dias na 3a Vara Federal Ambiental de Curitiba.', 'link': '/cases', 'is_read': False},
+    {'username': 'pedro.lima', 'type': 'document', 'priority': 'medium', 'title': 'Documento gerado: Petição Inicial ACP', 'message': 'O documento "Petição Inicial — ACP Ambiental" foi gerado pelo Copilot e está pronto para revisão.', 'link': '/documents', 'is_read': False},
+    {'username': 'ana.costa', 'type': 'task', 'priority': 'medium', 'title': 'Nova tarefa atribuída', 'message': 'Você foi designada para a tarefa "Pesquisar jurisprudência sobre execução fiscal e prescrição" no caso tributário.', 'link': '/cases', 'is_read': False},
+    {'username': 'joao.silva', 'type': 'case_update', 'priority': 'medium', 'title': 'Movimentação financeira registrada', 'message': 'Pagamento de custas processuais de R$ 2.500,00 registrado no caso de MS tributário.', 'link': '/financeiro', 'is_read': True},
+    {'username': 'maria.santos', 'type': 'case_update', 'priority': 'low', 'title': 'Nova demanda registrada no pipeline', 'message': 'A demanda "Secretaria de Finanças — Dívida Ativa ISS Lote 12" foi registrada no pipeline da Procuradoria.', 'link': '/crm', 'is_read': True},
+    {'username': 'joao.silva', 'type': 'deadline', 'priority': 'high', 'title': 'Prazo recursal se aproxima', 'message': 'O prazo para interposição de apelação no caso de MS tributário vence em 12 dias.', 'link': '/cases', 'is_read': False},
 ]
 
 
@@ -690,40 +690,40 @@ NOTIFICATIONS_DATA = [
 CONTRACTS_DATA = [
     {
         'case_idx': 0,
-        'client_cpf': '341.628.597-04',
-        'contract_type': 'honorarios',
-        'title': 'Contrato de Honorários Advocatícios — Ação de Indenização Carlos Oliveira',
+        'client_cpf': '341.628.597/0001-04',
+        'contract_type': 'prestacao_servicos',
+        'title': 'Contrato Administrativo de Serviços — Execução Fiscal ISS (Lote 2025-01)',
         'status': 'signed',
-        'content_html': '<h1>Contrato de Honorários Advocatícios</h1><p>Pelo presente instrumento particular, de um lado <strong>Carlos Alberto de Oliveira</strong>, doravante denominado CONTRATANTE, e de outro <strong>Silva & Associados Advocacia</strong>, inscrito na OAB/SP sob nº 123.456, doravante denominado CONTRATADO...</p><p>Cláusula 1ª - DO OBJETO: O presente contrato tem por objeto a prestação de serviços advocatícios na Ação de Indenização por Danos Morais e Materiais...</p><p>Cláusula 2ª - DOS HONORÁRIOS: O valor dos honorários advocatícios fica estipulado em R$ 50.000,00 (cinquenta mil reais), a ser pago em 3 parcelas iguais...</p>',
+        'content_html': '<h1>Instrumento de Formalização de Atuação Processual</h1><p>A <strong>Procuradoria Geral do Município</strong>, representada pelo Procurador-Geral, no exercício de suas atribuições legais, formaliza a atuação do Procurador <strong>João Silva</strong> no acompanhamento da execução fiscal...</p><p>Cláusula 1ª - DO OBJETO: O presente instrumento registra a designação para atuação na execução fiscal referente ao ISS inscrito em dívida ativa...</p>',
         'honorarios_detail': {
-            'fee_type': 'mixed',
-            'fixed_amount': '50000.00',
-            'success_percentage': '20.00',
-            'payment_terms': 'Entrada de R$ 16.666,67 + 2 parcelas de R$ 16.666,67. Ad êxito de 20% sobre o valor obtido.',
-            'installments': 3,
-            'includes_expenses': False,
+            'fee_type': 'fixed',
+            'fixed_amount': '0.00',
+            'success_percentage': '0.00',
+            'payment_terms': 'Não aplicável — procurador é servidor público.',
+            'installments': 1,
+            'includes_expenses': True,
         },
     },
     {
         'case_idx': 2,
-        'client_cpf': '782.453.196-80',
+        'client_cpf': '523.891.704/0001-62',
         'contract_type': 'procuracao',
-        'title': 'Procuração Ad Judicia — Fernanda Cristina Barbosa',
-        'status': 'pending_signature',
-        'content_html': '<h1>Procuração Ad Judicia et Extra</h1><p>OUTORGANTE: <strong>Fernanda Cristina Barbosa</strong>, brasileira, solteira, CPF nº 782.453.196-80...</p><p>OUTORGADO: <strong>Dra. Maria Santos</strong>, OAB/SP nº 234.567...</p><p>PODERES: Para o foro em geral, com os poderes da cláusula "ad judicia et extra", podendo propor ações, contestar, recorrer, transigir, desistir, dar quitação...</p>',
+        'title': 'Portaria de Designação — Execução Fiscal ICMS',
+        'status': 'signed',
+        'content_html': '<h1>Portaria de Designação de Procurador</h1><p>O <strong>Procurador-Geral do Estado</strong>, no uso de suas atribuições legais, <strong>designa</strong> a Dra. <strong>Maria Santos</strong>, Procuradora do Estado, matrícula nº XXXXXX, para atuar na Execução Fiscal nº 0002345-67.2025.8.19.0001...</p><p>Esta portaria entra em vigor na data de sua publicação no Diário Oficial.</p>',
         'procuracao_detail': {
             'powers_type': 'ad_judicia_extra',
-            'special_powers': 'Poderes para transigir, desistir, reconhecer a procedência do pedido, receber e dar quitação, substabelecer com ou sem reserva de poderes.',
-            'court_scope': 'Todas as instâncias do Poder Judiciário, Juizados Especiais e Tribunais Superiores',
+            'special_powers': 'Poderes para praticar todos os atos do processo judicial e administrativo, incluindo interpor recursos, desistir de recursos, transigir e firmar acordos em nome do Estado.',
+            'court_scope': 'Todas as instâncias do Poder Judiciário do Estado de Minas Gerais e Tribunais Superiores',
         },
     },
     {
-        'case_idx': 1,
-        'client_cpf': '12.345.678/0001-90',
+        'case_idx': 5,
+        'client_cpf': '46.374.254/0001-29',
         'contract_type': 'prestacao_servicos',
-        'title': 'Contrato de Prestação de Serviços Jurídicos — Assessoria Tech Solutions',
+        'title': 'Nota de Designação — Parecer Licitação Pregão 012/2025',
         'status': 'draft',
-        'content_html': '<h1>Contrato de Prestação de Serviços Jurídicos</h1><p>CONTRATANTE: <strong>Tech Solutions Brasil Serviços de TI LTDA</strong>, CNPJ nº 12.345.678/0001-90...</p><p>CONTRATADO: <strong>Silva & Associados Advocacia</strong>...</p><p>Cláusula 1ª - Assessoria jurídica empresarial permanente, incluindo análise de contratos, consultoria trabalhista preventiva e contencioso cível...</p>',
+        'content_html': '<h1>Nota de Designação para Elaboração de Parecer Jurídico</h1><p>O <strong>Gerente da Procuradoria</strong> designa o Procurador <strong>João Silva</strong> para elaborar parecer jurídico sobre a regularidade das cláusulas do Pregão 012/2025 — Obras Viárias...</p><p>Prazo: 5 dias úteis. Urgência: Alta.</p>',
     },
 ]
 
@@ -733,18 +733,17 @@ CONTRACTS_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 WORKFLOW_TEMPLATE_DATA = {
-    'name': 'Ação Cível — Procedimento Comum',
-    'description': 'Workflow padrão para ações cíveis de procedimento comum, desde a petição inicial até o trânsito em julgado.',
-    'specialty': 'civel',
+    'name': 'Execução Fiscal — Procedimento Padrão (Lei 6.830/1980)',
+    'description': 'Workflow padrão para execuções fiscais de crédito inscrito em dívida ativa, desde a propositura até a extinção.',
+    'specialty': 'tributario',
     'steps': [
-        {'name': 'Petição Inicial', 'description': 'Elaboração e protocolo da petição inicial', 'order': 1, 'auto_advance': False, 'deadline_days': 10},
-        {'name': 'Citação do Réu', 'description': 'Aguardar citação do réu pelo juízo', 'order': 2, 'auto_advance': False, 'deadline_days': 30},
-        {'name': 'Contestação', 'description': 'Prazo para contestação da parte contrária', 'order': 3, 'auto_advance': False, 'deadline_days': 15},
-        {'name': 'Réplica', 'description': 'Elaboração e protocolo da réplica', 'order': 4, 'auto_advance': False, 'deadline_days': 15},
-        {'name': 'Saneamento', 'description': 'Decisão saneadora e fixação de pontos controvertidos', 'order': 5, 'auto_advance': False, 'deadline_days': 30},
-        {'name': 'Instrução Probatória', 'description': 'Produção de provas: documental, testemunhal e pericial', 'order': 6, 'auto_advance': False, 'deadline_days': 60},
-        {'name': 'Alegações Finais', 'description': 'Apresentação de alegações finais ou memoriais', 'order': 7, 'auto_advance': False, 'deadline_days': 15},
-        {'name': 'Sentença', 'description': 'Aguardar sentença do juízo', 'order': 8, 'auto_advance': False, 'deadline_days': 30},
+        {'name': 'Verificação da CDA', 'description': 'Conferência da Certidão de Dívida Ativa: dados do devedor, valor, multa, juros e prazo prescricional', 'order': 1, 'auto_advance': False, 'deadline_days': 5},
+        {'name': 'Petição Inicial', 'description': 'Elaboração e protocolo da petição inicial de execução fiscal na vara competente', 'order': 2, 'auto_advance': False, 'deadline_days': 10},
+        {'name': 'Citação do Executado', 'description': 'Acompanhar citação do executado e prazo de 3 dias para pagamento (LEF, Art. 8o)', 'order': 3, 'auto_advance': False, 'deadline_days': 30},
+        {'name': 'Penhora / SISBAJUD', 'description': 'Requerer penhora eletrônica via SISBAJUD ou indicar bens à penhora', 'order': 4, 'auto_advance': False, 'deadline_days': 15},
+        {'name': 'Embargos à Execução', 'description': 'Analisar e responder eventuais embargos interpostos pelo executado', 'order': 5, 'auto_advance': False, 'deadline_days': 30},
+        {'name': 'Hasta Pública', 'description': 'Acompanhar designação e realização de hasta pública para alienação dos bens penhorados', 'order': 6, 'auto_advance': False, 'deadline_days': 60},
+        {'name': 'Extinção da Execução', 'description': 'Requerer extinção da execução após satisfação integral do crédito ou outra causa extintiva', 'order': 7, 'auto_advance': False, 'deadline_days': 15},
     ],
 }
 
@@ -754,76 +753,76 @@ WORKFLOW_TEMPLATE_DATA = {
 # ═══════════════════════════════════════════════════════════════════
 
 RISK_ASSESSMENTS_DATA = [
-    # Caso 0 — Cível (Carlos Oliveira) — 2 avaliações mostrando evolução
-    {
-        'case_idx': 0,
-        'risk_level': 'high',
-        'risk_score': 75,
-        'factors': [
-            {'name': 'Complexidade processual', 'weight': 0.3, 'description': 'Necessidade de prova pericial e múltiplas testemunhas'},
-            {'name': 'Valor da causa elevado', 'weight': 0.25, 'description': 'R$ 250.000,00 — risco financeiro significativo'},
-            {'name': 'Jurisprudência desfavorável', 'weight': 0.2, 'description': 'Tribunal tem sido restritivo em indenizações de trânsito'},
-        ],
-        'analysis': 'Caso apresenta risco alto inicial. A parte contrária é empresa de grande porte com departamento jurídico próprio. A jurisprudência do TJSP para acidentes de trânsito com veículos de empresa tem variado. Recomenda-se reforço na produção probatória.',
-        'recommendation': 'Intensificar coleta de provas documentais e testemunhais. Considerar proposta de acordo se o valor for razoável.',
-        'trigger': 'inicio_caso',
-        'previous_level': '',
-        'level_changed': False,
-        'ai_generated': True,
-        'ai_model': 'claude-3-5-sonnet',
-        'tokens_used': 1250,
-        'days_ago': 45,
-    },
+    # Caso 0 — Execução Fiscal ISS — 2 avaliações mostrando evolução
     {
         'case_idx': 0,
         'risk_level': 'medium',
         'risk_score': 55,
         'factors': [
-            {'name': 'Prova pericial favorável', 'weight': 0.3, 'description': 'Laudo pericial confirmou nexo causal do acidente'},
-            {'name': 'Testemunha ocular confirmada', 'weight': 0.25, 'description': 'Testemunha presencial do acidente confirmada'},
-            {'name': 'Valor da causa elevado', 'weight': 0.2, 'description': 'R$ 250.000,00 — risco financeiro persiste'},
+            {'name': 'Embargos à execução opostos', 'weight': 0.3, 'description': 'Executado opôs embargos alegando prescrição e excesso de execução'},
+            {'name': 'CDA com dados corretos', 'weight': -0.25, 'description': 'CDA verificada e sem vícios formais — ponto favorável ao Município'},
+            {'name': 'Valor expressivo de ISS', 'weight': 0.2, 'description': 'R$ 250.000,00 em dívida ativa — interesse relevante de recuperação'},
         ],
-        'analysis': 'Após produção de prova pericial favorável e confirmação de testemunha ocular, o risco reduziu de alto para médio. O laudo pericial é elemento forte. A contestação da ré apresentou argumentos frágeis sobre culpa exclusiva da vítima.',
-        'recommendation': 'Manter a estratégia atual. Preparar testemunha para AIJ. Avaliar possibilidade de acordo com base no laudo favorável.',
+        'analysis': 'Execução fiscal com risco médio em razão dos embargos opostos. A alegação de prescrição precisa ser rebatida com demonstração de causas interruptivas. A CDA não apresenta vícios formais, ponto favorável ao Município.',
+        'recommendation': 'Impugnar os embargos com robusta fundamentação sobre as causas interruptivas da prescrição. Apresentar extrato detalhado da inscrição em dívida ativa.',
+        'trigger': 'inicio_caso',
+        'previous_level': '',
+        'level_changed': False,
+        'ai_generated': True,
+        'ai_model': 'claude-sonnet-4-6',
+        'tokens_used': 1250,
+        'days_ago': 45,
+    },
+    {
+        'case_idx': 0,
+        'risk_level': 'low',
+        'risk_score': 30,
+        'factors': [
+            {'name': 'Embargos rejeitados liminarmente', 'weight': -0.3, 'description': 'Juízo rejeitou preliminar de prescrição alegada'},
+            {'name': 'SISBAJUD bloqueou valores', 'weight': -0.25, 'description': 'Penhora eletrônica de R$ 180.000,00 efetivada'},
+            {'name': 'Saldo devedor em análise', 'weight': 0.1, 'description': 'Diferença de R$ 70.000,00 ainda pendente de constrição'},
+        ],
+        'analysis': 'Após rejeição da preliminar de prescrição e efetivação de penhora via SISBAJUD, o risco reduziu substancialmente. O valor bloqueado corresponde a 72% do débito. Aguardar resposta do banco sobre o saldo.',
+        'recommendation': 'Prosseguir com a execução. Requerer penhora adicional para o saldo remanescente. Monitorar prazo para impugnar o laudo de avaliação.',
         'trigger': 'nova_prova',
-        'previous_level': 'high',
+        'previous_level': 'medium',
         'level_changed': True,
         'ai_generated': False,
         'ai_model': '',
         'tokens_used': 0,
         'days_ago': 10,
     },
-    # Caso 4 — Criminal (Luciana Gomes) — 2 avaliações
+    # Caso 1 — Defesa em MS — 2 avaliações
     {
-        'case_idx': 4,
+        'case_idx': 1,
         'risk_level': 'high',
         'risk_score': 70,
         'factors': [
-            {'name': 'Provas documentais contra a ré', 'weight': 0.35, 'description': 'Registros bancários e conversas em aplicativo'},
-            {'name': 'Tipo penal grave', 'weight': 0.25, 'description': 'Estelionato (art. 171 CP) — pena de 1 a 5 anos'},
-            {'name': 'Réu primário', 'weight': -0.2, 'description': 'Fator atenuante — ré primária e bons antecedentes'},
+            {'name': 'Prazo apertado para informações', 'weight': 0.35, 'description': 'Apenas 10 dias para prestar informações (Lei 12.016/2009, Art. 7o)'},
+            {'name': 'Liminar concedida contra o ente', 'weight': 0.25, 'description': 'Juízo concedeu liminar suspendendo a inabilitação no pregão'},
+            {'name': 'Ato administrativo bem fundamentado', 'weight': -0.2, 'description': 'A inabilitação foi devidamente justificada no processo licitatório'},
         ],
-        'analysis': 'Apesar de ré primária, as provas documentais são robustas. O Ministério Público apresentou registros bancários que indicam transferências suspeitas. Necessário contestar a autenticidade das provas digitais.',
-        'recommendation': 'Requerer perícia nos dispositivos eletrônicos. Preparar tese de insuficiência probatória. Avaliar possibilidade de acordo de não persecução penal.',
+        'analysis': 'Situação de risco alto pela liminar concedida que suspendeu a inabilitação. É necessário elaborar informações robustas e avaliar pedido de suspensão da liminar. O ato administrativo está bem fundamentado, o que favorece a defesa.',
+        'recommendation': 'Elaborar as informações com foco na regularidade do ato. Avaliar cabimento de agravo regimental ou pedido de SS. Reunir toda a documentação do processo licitatório.',
         'trigger': 'inicio_caso',
         'previous_level': '',
         'level_changed': False,
         'ai_generated': True,
-        'ai_model': 'claude-3-5-sonnet',
+        'ai_model': 'claude-sonnet-4-6',
         'tokens_used': 980,
         'days_ago': 40,
     },
     {
-        'case_idx': 4,
+        'case_idx': 1,
         'risk_level': 'medium',
-        'risk_score': 50,
+        'risk_score': 45,
         'factors': [
-            {'name': 'Perícia contestou provas', 'weight': 0.3, 'description': 'Perito identificou inconsistências nos registros digitais'},
-            {'name': 'Testemunha de defesa forte', 'weight': 0.25, 'description': 'Testemunha confirma álibi em parte do período'},
-            {'name': 'Réu primário', 'weight': -0.2, 'description': 'Fator atenuante mantido'},
+            {'name': 'Informações protocoladas a tempo', 'weight': -0.3, 'description': 'Informações foram apresentadas no prazo legal'},
+            {'name': 'Liminar em vigor', 'weight': 0.25, 'description': 'Liminar ainda em vigor, pregão temporariamente suspenso'},
+            {'name': 'Jurisprudência favorável ao ente', 'weight': -0.2, 'description': 'STJ tem mantido inabilitações em licitação quando fundamentadas'},
         ],
-        'analysis': 'A perícia técnica identificou possíveis adulterações nos prints apresentados pelo MP. Uma testemunha de defesa confirmou a presença da ré em outro local durante parte do período apontado. Risco reduzido substancialmente.',
-        'recommendation': 'Reforçar tese de insuficiência probatória nas alegações finais. Requerer absolvição por falta de provas (art. 386, VII, CPP).',
+        'analysis': 'Informações protocoladas no prazo. A jurisprudência do STJ favorece a Administração quando o ato de inabilitação está bem fundamentado. Risco reduzido após apresentação das informações.',
+        'recommendation': 'Acompanhar julgamento do mérito. Preparar sustentação oral. Monitorar publicações do tribunal.',
         'trigger': 'resultado_pericia',
         'previous_level': 'high',
         'level_changed': True,
@@ -845,16 +844,16 @@ COURT_FEES_DATA = [
         'fee_type': 'custas_iniciais',
         'court': 'TJSP',
         'state': 'SP',
-        'calculated_amount': '3127.50',
+        'calculated_amount': '1250.00',
         'case_value': '250000.00',
-        'calculation_formula': '1% sobre o valor da causa (mínimo R$ 100,00, máximo R$ 3.127,50)',
+        'calculation_formula': 'Custas de distribuição da execução fiscal — valor fixo conforme Tabela de Custas TJSP',
         'due_date_days': -20,
         'payment_status': 'paid',
-        'barcode': '23793.38128 60000.000003 00000.000405 1 84340000312750',
-        'notes': 'Guia DARE-SP recolhida. Comprovante juntado aos autos.',
+        'barcode': '23793.38128 60000.000003 00000.000405 1 84340000125000',
+        'notes': 'Guia DARE-SP recolhida. Comprovante juntado aos autos da execução fiscal.',
     },
     {
-        'case_idx': 5,
+        'case_idx': 6,
         'fee_type': 'custas_recursais',
         'court': 'TJMG',
         'state': 'MG',
@@ -864,20 +863,20 @@ COURT_FEES_DATA = [
         'due_date_days': 10,
         'payment_status': 'pending',
         'barcode': '23793.38128 60000.000003 00000.000406 1 95670000457500',
-        'notes': 'Guia para preparo do recurso de apelação. Prazo fatal em 10 dias.',
+        'notes': 'Guia para preparo do recurso de apelação no MS tributário. Prazo fatal em 10 dias.',
     },
     {
-        'case_idx': 2,
+        'case_idx': 4,
         'fee_type': 'pericia',
-        'court': 'TRT-2',
-        'state': 'SP',
-        'calculated_amount': '2800.00',
-        'case_value': '120000.00',
-        'calculation_formula': 'Honorários periciais fixados pelo juízo — perícia contábil',
-        'due_date_days': -3,
-        'payment_status': 'overdue',
-        'barcode': '23793.38128 60000.000003 00000.000407 1 86780000280000',
-        'notes': 'ATENÇÃO: Guia vencida há 3 dias. Risco de preclusão da prova pericial. Entrar em contato com o cliente urgentemente.',
+        'court': 'TRF-4',
+        'state': 'PR',
+        'calculated_amount': '8500.00',
+        'case_value': '5000000.00',
+        'calculation_formula': 'Honorários periciais ambientais fixados pelo juízo — laudo de impacto ambiental',
+        'due_date_days': 20,
+        'payment_status': 'pending',
+        'barcode': '23793.38128 60000.000003 00000.000407 1 86780000850000',
+        'notes': 'Guia de honorários periciais para laudo ambiental na ACP. Verificar possibilidade de isenção pelo ente público.',
     },
 ]
 
@@ -892,15 +891,15 @@ PROTOCOLS_DATA = [
         'protocol_number': 'ESAJ-2025-0045678',
         'court_system': 'esaj',
         'status': 'accepted',
-        'petition_type': 'Réplica à Contestação',
+        'petition_type': 'Impugnação aos Embargos à Execução Fiscal',
         'protocol_receipt': 'Protocolo recebido pelo sistema e-SAJ em 15/05/2025 às 14:32:15. Número de protocolo: ESAJ-2025-0045678. Prazo atendido.',
     },
     {
-        'case_idx': 5,
+        'case_idx': 6,
         'protocol_number': '',
         'court_system': 'projudi',
         'status': 'pending',
-        'petition_type': 'Recurso de Apelação',
+        'petition_type': 'Recurso de Apelação — MS Tributário',
         'protocol_receipt': '',
     },
 ]
@@ -949,28 +948,25 @@ DIGITAL_SIGNATURES_DATA = [
 
 EMAIL_TEMPLATES_DATA = [
     {
-        'name': 'Boas-vindas ao Cliente',
-        'subject': 'Bem-vindo(a) ao escritório Silva & Associados — {{nome_cliente}}',
+        'name': 'Notificação à Parte Interessada',
+        'subject': 'Notificação — Processo nº {{numero_processo}} — {{nome_parte}}',
         'category': 'client',
         'body_html': '''<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-<h2>Prezado(a) {{nome_cliente}},</h2>
-<p>É com satisfação que informamos que seu cadastro em nosso escritório foi concluído com sucesso.</p>
-<p>Seu advogado responsável será <strong>{{nome_advogado}}</strong>, OAB/{{estado_oab}} nº {{numero_oab}}.</p>
-<p>Caso já possua um processo em andamento, o número é: <strong>{{numero_processo}}</strong>.</p>
-<p>Para acessar o portal do cliente e acompanhar seu caso, utilize o link abaixo:</p>
-<p><a href="{{link_portal}}" style="background-color: #2563EB; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Acessar Portal do Cliente</a></p>
-<p>Em caso de dúvidas, estamos à disposição pelo telefone {{telefone_escritorio}} ou e-mail {{email_escritorio}}.</p>
-<p>Atenciosamente,<br>Equipe Silva & Associados</p>
+<h2>Prezado(a) {{nome_parte}},</h2>
+<p>A <strong>Procuradoria {{nome_procuradoria}}</strong> informa sobre movimentação no processo abaixo:</p>
+<p>Processo nº: <strong>{{numero_processo}}</strong>.</p>
+<p>Para acompanhar o processo, acesse o portal ou entre em contato com a Procuradoria.</p>
+<p><a href="{{link_portal}}" style="background-color: #2563EB; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Acessar Portal</a></p>
+<p>Em caso de dúvidas, estamos à disposição pelo telefone {{telefone_procuradoria}} ou e-mail {{email_procuradoria}}.</p>
+<p>Atenciosamente,<br>{{nome_procuradoria}}</p>
 </div>''',
         'variables': [
-            {'name': 'nome_cliente', 'description': 'Nome completo do cliente'},
-            {'name': 'nome_advogado', 'description': 'Nome do advogado responsável'},
-            {'name': 'estado_oab', 'description': 'Estado da OAB do advogado'},
-            {'name': 'numero_oab', 'description': 'Número da OAB do advogado'},
-            {'name': 'numero_processo', 'description': 'Número do processo (se houver)'},
-            {'name': 'link_portal', 'description': 'Link para o portal do cliente'},
-            {'name': 'telefone_escritorio', 'description': 'Telefone do escritório'},
-            {'name': 'email_escritorio', 'description': 'E-mail do escritório'},
+            {'name': 'nome_parte', 'description': 'Nome da parte interessada ou ente notificado'},
+            {'name': 'nome_procuradoria', 'description': 'Nome da Procuradoria'},
+            {'name': 'numero_processo', 'description': 'Número do processo'},
+            {'name': 'link_portal', 'description': 'Link para o portal de acompanhamento'},
+            {'name': 'telefone_procuradoria', 'description': 'Telefone da Procuradoria'},
+            {'name': 'email_procuradoria', 'description': 'E-mail da Procuradoria'},
         ],
     },
     {
@@ -979,9 +975,9 @@ EMAIL_TEMPLATES_DATA = [
         'category': 'deadline',
         'body_html': '''<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
 <div style="background-color: #FEF3C7; border-left: 4px solid #F59E0B; padding: 15px; margin-bottom: 20px;">
-<strong>⚠ ATENÇÃO: Prazo judicial próximo do vencimento</strong>
+<strong>ATENÇÃO: Prazo judicial próximo do vencimento</strong>
 </div>
-<p>Prezado(a) {{nome_advogado}},</p>
+<p>Prezado(a) {{nome_procurador}},</p>
 <p>Informamos que o prazo abaixo vencerá em breve:</p>
 <table style="width: 100%; border-collapse: collapse;">
 <tr><td style="padding: 8px; border: 1px solid #E5E7EB;"><strong>Caso:</strong></td><td style="padding: 8px; border: 1px solid #E5E7EB;">{{titulo_caso}}</td></tr>
@@ -993,7 +989,7 @@ EMAIL_TEMPLATES_DATA = [
 <p>Acesse o sistema para mais detalhes e providências necessárias.</p>
 </div>''',
         'variables': [
-            {'name': 'nome_advogado', 'description': 'Nome do advogado responsável'},
+            {'name': 'nome_procurador', 'description': 'Nome do procurador responsável'},
             {'name': 'titulo_caso', 'description': 'Título do caso'},
             {'name': 'numero_processo', 'description': 'Número do processo'},
             {'name': 'titulo_prazo', 'description': 'Título/descrição do prazo'},
@@ -1002,35 +998,34 @@ EMAIL_TEMPLATES_DATA = [
         ],
     },
     {
-        'name': 'Audiência Agendada',
+        'name': 'Audiência / Sessão Agendada',
         'subject': 'Audiência agendada — {{tipo_audiencia}} — {{titulo_caso}}',
         'category': 'notification',
         'body_html': '''<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-<h2>Audiência Agendada</h2>
-<p>Prezado(a) {{nome_cliente}},</p>
-<p>Informamos que foi agendada uma audiência de <strong>{{tipo_audiencia}}</strong> no seu processo:</p>
+<h2>Audiência / Sessão Agendada</h2>
+<p>Prezado(a) {{nome_procurador}},</p>
+<p>Informamos que foi agendada uma audiência de <strong>{{tipo_audiencia}}</strong> no processo abaixo:</p>
 <table style="width: 100%; border-collapse: collapse;">
 <tr><td style="padding: 8px; border: 1px solid #E5E7EB;"><strong>Processo:</strong></td><td style="padding: 8px; border: 1px solid #E5E7EB;">{{numero_processo}}</td></tr>
 <tr><td style="padding: 8px; border: 1px solid #E5E7EB;"><strong>Data/Hora:</strong></td><td style="padding: 8px; border: 1px solid #E5E7EB;">{{data_hora_audiencia}}</td></tr>
 <tr><td style="padding: 8px; border: 1px solid #E5E7EB;"><strong>Local:</strong></td><td style="padding: 8px; border: 1px solid #E5E7EB;">{{local_audiencia}}</td></tr>
 <tr><td style="padding: 8px; border: 1px solid #E5E7EB;"><strong>Juiz(a):</strong></td><td style="padding: 8px; border: 1px solid #E5E7EB;">{{nome_juiz}}</td></tr>
 </table>
-<p><strong>Orientações importantes:</strong></p>
+<p><strong>Orientações:</strong></p>
 <ul>
 <li>Compareça ao local com pelo menos 15 minutos de antecedência</li>
-<li>Leve documento de identidade com foto (RG ou CNH)</li>
-<li>Vista-se de forma adequada para o ambiente forense</li>
+<li>Porte credencial funcional e documentos do processo</li>
+<li>Verifique eventual necessidade de sustentação oral ou manifestação prévia</li>
 </ul>
-<p>Seu advogado {{nome_advogado}} estará presente e entrará em contato para orientações adicionais.</p>
+<p>O procurador responsável {{nome_procurador}} deverá confirmar ciência pelo sistema.</p>
 </div>''',
         'variables': [
-            {'name': 'nome_cliente', 'description': 'Nome do cliente'},
-            {'name': 'tipo_audiencia', 'description': 'Tipo de audiência (conciliação, instrução, etc.)'},
+            {'name': 'nome_procurador', 'description': 'Nome do procurador responsável'},
+            {'name': 'tipo_audiencia', 'description': 'Tipo de audiência (instrução, conciliação, julgamento, etc.)'},
             {'name': 'numero_processo', 'description': 'Número do processo'},
             {'name': 'data_hora_audiencia', 'description': 'Data e hora da audiência'},
             {'name': 'local_audiencia', 'description': 'Local da audiência'},
             {'name': 'nome_juiz', 'description': 'Nome do juiz'},
-            {'name': 'nome_advogado', 'description': 'Nome do advogado'},
         ],
     },
     {
@@ -1039,8 +1034,8 @@ EMAIL_TEMPLATES_DATA = [
         'category': 'notification',
         'body_html': '''<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
 <h2>Documento Disponível para Revisão</h2>
-<p>Prezado(a) {{nome_advogado}},</p>
-<p>O documento <strong>{{nome_documento}}</strong> referente ao caso <strong>{{titulo_caso}}</strong> (Processo nº {{numero_processo}}) foi gerado e está pronto para sua revisão.</p>
+<p>Prezado(a) {{nome_procurador}},</p>
+<p>O documento <strong>{{nome_documento}}</strong> referente ao processo <strong>{{titulo_caso}}</strong> (nº {{numero_processo}}) foi gerado e está pronto para sua revisão.</p>
 <p><strong>Detalhes:</strong></p>
 <ul>
 <li>Tipo: {{tipo_documento}}</li>
@@ -1051,46 +1046,41 @@ EMAIL_TEMPLATES_DATA = [
 <p>Após revisão, favor aprovar ou solicitar ajustes pelo sistema.</p>
 </div>''',
         'variables': [
-            {'name': 'nome_advogado', 'description': 'Nome do advogado'},
+            {'name': 'nome_procurador', 'description': 'Nome do procurador responsável'},
             {'name': 'nome_documento', 'description': 'Nome do documento'},
-            {'name': 'titulo_caso', 'description': 'Título do caso'},
+            {'name': 'titulo_caso', 'description': 'Título do processo/caso'},
             {'name': 'numero_processo', 'description': 'Número do processo'},
             {'name': 'tipo_documento', 'description': 'Tipo do documento'},
-            {'name': 'gerado_por', 'description': 'Quem gerou (Copilot, advogado, etc.)'},
+            {'name': 'gerado_por', 'description': 'Quem gerou (Copilot, procurador, etc.)'},
             {'name': 'data_geracao', 'description': 'Data de geração'},
             {'name': 'link_documento', 'description': 'Link para o documento'},
         ],
     },
     {
-        'name': 'Fatura / Cobrança de Honorários',
-        'subject': 'Fatura nº {{numero_fatura}} — Honorários Advocatícios',
+        'name': 'Guia de Custas Processuais',
+        'subject': 'Guia nº {{numero_guia}} — Custas Processuais — {{titulo_caso}}',
         'category': 'billing',
         'body_html': '''<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-<h2>Fatura de Honorários Advocatícios</h2>
-<p>Prezado(a) {{nome_cliente}},</p>
-<p>Segue abaixo os detalhes da fatura referente aos serviços jurídicos prestados:</p>
+<h2>Guia de Recolhimento de Custas Processuais</h2>
+<p>Prezado(a) {{nome_procurador}},</p>
+<p>Segue guia de recolhimento de custas referente ao processo abaixo:</p>
 <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-<tr style="background-color: #F3F4F6;"><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Fatura nº</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{numero_fatura}}</td></tr>
-<tr><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Referência</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{referencia}}</td></tr>
-<tr style="background-color: #F3F4F6;"><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Valor</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB; font-size: 18px; color: #059669;"><strong>R$ {{valor}}</strong></td></tr>
-<tr><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Vencimento</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{data_vencimento}}</td></tr>
+<tr style="background-color: #F3F4F6;"><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Guia nº</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{numero_guia}}</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Processo</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{numero_processo}}</td></tr>
+<tr style="background-color: #F3F4F6;"><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Tipo de custa</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{tipo_custa}}</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Valor</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB; font-size: 18px; color: #059669;"><strong>R$ {{valor}}</strong></td></tr>
+<tr style="background-color: #F3F4F6;"><td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>Vencimento</strong></td><td style="padding: 10px; border: 1px solid #E5E7EB;">{{data_vencimento}}</td></tr>
 </table>
-<p>O pagamento pode ser realizado via:</p>
-<ul>
-<li>PIX: {{chave_pix}}</li>
-<li>Boleto bancário (em anexo)</li>
-<li>Transferência bancária: {{dados_bancarios}}</li>
-</ul>
-<p>Em caso de dúvidas sobre esta fatura, entre em contato com nosso departamento financeiro.</p>
+<p>Observação: em caso de isenção ou imunidade tributária do ente público, anexar certidão correspondente ao recolhimento.</p>
+<p>Em caso de dúvidas, acesse o sistema ou entre em contato com a Procuradoria.</p>
 </div>''',
         'variables': [
-            {'name': 'nome_cliente', 'description': 'Nome do cliente'},
-            {'name': 'numero_fatura', 'description': 'Número da fatura'},
-            {'name': 'referencia', 'description': 'Mês/ano ou descrição de referência'},
-            {'name': 'valor', 'description': 'Valor da fatura'},
-            {'name': 'data_vencimento', 'description': 'Data de vencimento'},
-            {'name': 'chave_pix', 'description': 'Chave PIX do escritório'},
-            {'name': 'dados_bancarios', 'description': 'Dados bancários para transferência'},
+            {'name': 'nome_procurador', 'description': 'Nome do procurador responsável'},
+            {'name': 'numero_guia', 'description': 'Número da guia de recolhimento'},
+            {'name': 'numero_processo', 'description': 'Número do processo'},
+            {'name': 'tipo_custa', 'description': 'Tipo de custa (preparo, diligência, pericial, etc.)'},
+            {'name': 'valor', 'description': 'Valor a recolher'},
+            {'name': 'data_vencimento', 'description': 'Data de vencimento da guia'},
         ],
     },
 ]
@@ -1102,13 +1092,13 @@ EMAIL_TEMPLATES_DATA = [
 
 KB_DATA = [
     {
-        'name': 'Legislação Civil Brasileira',
-        'description': 'Base de conhecimento contendo os principais artigos do Código Civil, Código de Processo Civil e legislação complementar relevante para o contencioso cível.',
+        'name': 'Legislação Administrativa e Fiscal',
+        'description': 'Base de conhecimento contendo os principais diplomas legais aplicáveis à Procuradoria: Lei 6.830/1980 (LEF), Lei 8.666/1993 e 14.133/2021 (licitações), Lei 8.112/1990 (PAD), Lei 9.784/1999 (processo administrativo), CPC e legislação tributária complementar.',
         'kb_layer': 'global',
     },
     {
-        'name': 'Jurisprudência Trabalhista — TST',
-        'description': 'Compilação de súmulas, orientações jurisprudenciais e decisões relevantes do Tribunal Superior do Trabalho sobre temas como verbas rescisórias, horas extras, assédio moral e estabilidades.',
+        'name': 'Jurisprudência em Execução Fiscal e Mandado de Segurança',
+        'description': 'Compilação de súmulas, orientações jurisprudenciais e decisões relevantes do STJ e STF sobre execução fiscal (dívida ativa, penhora, embargos, SISBAJUD), mandado de segurança contra atos do poder público, ação civil pública e controle de legalidade de atos administrativos.',
         'kb_layer': 'global',
     },
 ]
@@ -1119,11 +1109,11 @@ KB_DATA = [
 # ═══════════════════════════════════════════════════════════════════
 
 EXTRA_NOTIFICATIONS_DATA = [
-    {'username': 'joao.silva', 'type': 'contract', 'priority': 'high', 'title': 'Contrato aguardando assinatura', 'message': 'A procuração da cliente Fernanda Barbosa está aguardando assinatura. Por favor, encaminhe para assinatura digital.', 'link': '/contratos', 'is_read': False},
-    {'username': 'maria.santos', 'type': 'compliance', 'priority': 'medium', 'title': 'Verificação LGPD pendente', 'message': 'O caso trabalhista de Fernanda Barbosa contém dados sensíveis que precisam de revisão de conformidade LGPD.', 'link': '/compliance', 'is_read': False},
-    {'username': 'pedro.lima', 'type': 'system', 'priority': 'low', 'title': 'Backup semanal concluído', 'message': 'O backup semanal dos documentos do escritório foi concluído com sucesso. 1.247 arquivos processados.', 'link': '', 'is_read': True},
-    {'username': 'joao.silva', 'type': 'simulation', 'priority': 'medium', 'title': 'Simulação de risco atualizada', 'message': 'A avaliação de risco do caso Carlos Oliveira foi atualizada: risco reduziu de Alto para Médio após produção de prova pericial favorável.', 'link': '/risk', 'is_read': False},
-    {'username': 'ana.costa', 'type': 'message', 'priority': 'high', 'title': 'Nova mensagem do portal do cliente', 'message': 'O cliente Carlos Oliveira enviou uma mensagem pelo portal do cliente solicitando atualização sobre o andamento do processo.', 'link': '/messages', 'is_read': False},
+    {'username': 'joao.silva', 'type': 'contract', 'priority': 'high', 'title': 'Portaria de designação pendente de assinatura', 'message': 'A Portaria de Designação do procurador para o PAD nº 001/2025 está aguardando assinatura da chefia. Por favor, encaminhe para assinatura digital.', 'link': '/contratos', 'is_read': False},
+    {'username': 'maria.santos', 'type': 'compliance', 'priority': 'medium', 'title': 'Verificação LGPD — processo com dados de servidor', 'message': 'O PAD instaurado contra servidor público contém dados pessoais sensíveis que precisam de revisão de conformidade com a LGPD antes da publicação no Diário Oficial.', 'link': '/compliance', 'is_read': False},
+    {'username': 'pedro.lima', 'type': 'system', 'priority': 'low', 'title': 'Backup semanal concluído', 'message': 'O backup semanal dos documentos da Procuradoria foi concluído com sucesso. 1.247 arquivos processados.', 'link': '', 'is_read': True},
+    {'username': 'joao.silva', 'type': 'simulation', 'priority': 'medium', 'title': 'Avaliação de risco atualizada — Execução Fiscal ISS', 'message': 'A avaliação de risco da Execução Fiscal ISS foi atualizada: risco reduziu de Alto para Médio após penhora de ativos via SISBAJUD confirmada pelo tribunal.', 'link': '/risk', 'is_read': False},
+    {'username': 'ana.costa', 'type': 'message', 'priority': 'high', 'title': 'Nova movimentação processual detectada', 'message': 'O sistema detectou nova movimentação no processo de Defesa em MS Licitatório: decisão liminar publicada. Verifique e adote as providências cabíveis.', 'link': '/messages', 'is_read': False},
 ]
 
 
@@ -1162,8 +1152,8 @@ class Command(BaseCommand):
 
         admin_user = users.get('usuario_demo') or users.get('joao.silva')
 
-        # ─── 2. CLIENTES ───
-        self.stdout.write(self.style.MIGRATE_HEADING('2. Criando clientes...'))
+        # ─── 2. PARTES / CLIENTES ───
+        self.stdout.write(self.style.MIGRATE_HEADING('2. Criando partes/clientes (entes públicos e partes adversas)...'))
         clients = {}
         for c_data in CLIENTS_DATA:
             cpf = c_data['cpf_cnpj']
@@ -1736,7 +1726,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(
             f'\n=== SEED PRODUCTION DEMO CONCLUIDO ===\n'
             f'  Usuarios:         {len(USERS_DATA)}\n'
-            f'  Clientes:         {len(CLIENTS_DATA)} (5 PF + 3 PJ)\n'
+            f'  Partes/Clientes:  {len(CLIENTS_DATA)} (entes públicos e partes adversas)\n'
             f'  Casos:            {len(CASES_DATA)}\n'
             f'  Prazos:           {total_deadlines}\n'
             f'  Tarefas:          {total_tasks}\n'
