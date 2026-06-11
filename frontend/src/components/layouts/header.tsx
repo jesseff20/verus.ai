@@ -36,19 +36,41 @@ import { GlobalSearch } from '@/components/navigation/GlobalSearch';
 import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 const roleLabels: Record<string, string> = {
-  superadmin: 'Super Administrador',
-  manager:    'Gestor',
-  analyst:    'Analista',
-  reviewer:   'Revisor',
-  viewer:     'Visualizador',
+  // Roles de procuradoria (verus.ai)
+  superadmin:           'Super Admin',
+  admin:                'Administrador',
+  procurador_geral:     'Procurador(a) Geral',
+  subprocurador_geral:  'Subprocurador(a) Geral',
+  gerente:              'Gerente',
+  procurador:           'Procurador(a)',
+  assessor_gerencial:   'Assessor(a) Gerencial',
+  assessor_gabinete:    'Assessor(a) Gabinete',
+  distribuidor:         'Distribuidor(a)',
+  servidor:             'Servidor(a)',
+  visualizador:         'Visualizador',
+  // Aliases legados BravoJus
+  manager:              'Gestor',
+  analyst:              'Analista',
+  reviewer:             'Revisor',
+  viewer:               'Visualizador',
 };
 
 const roleColors: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-  superadmin: 'destructive',
-  manager:    'default',
-  analyst:    'secondary',
-  reviewer:   'default',
-  viewer:     'outline',
+  superadmin:           'destructive',
+  admin:                'destructive',
+  procurador_geral:     'default',
+  subprocurador_geral:  'default',
+  gerente:              'default',
+  procurador:           'secondary',
+  assessor_gerencial:   'secondary',
+  assessor_gabinete:    'outline',
+  distribuidor:         'outline',
+  servidor:             'outline',
+  visualizador:         'outline',
+  manager:              'default',
+  analyst:              'secondary',
+  reviewer:             'default',
+  viewer:               'outline',
 };
 
 export function Header() {

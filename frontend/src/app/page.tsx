@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {
   ArrowRight, GitBranch, Brain, ShieldCheck, FileText,
   Users, ChevronDown, CheckCircle2, Workflow, Zap, Scale,
-  Building2, Timer, Lock, Database
+  Building2, Timer, Lock, Database, Menu, X
 } from 'lucide-react';
 
 /* ─── Scroll reveal hook ───────────────────────────────────── */
@@ -154,7 +154,7 @@ export default function LandingPage() {
             <a href="#seguranca" className="hover:text-white transition-colors">Segurança</a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link
               href="/login"
               className="hidden sm:block text-sm text-white/60 hover:text-white transition-colors px-4 py-2"
@@ -163,13 +163,62 @@ export default function LandingPage() {
             </Link>
             <a
               href="#cta"
-              className="text-sm font-medium px-4 py-2 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors"
+              className="hidden sm:block text-sm font-medium px-4 py-2 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors"
             >
               Solicitar demo
             </a>
+            {/* Hamburger mobile */}
+            <button
+              className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile menu dropdown */}
+      {menuOpen && (
+        <div className="md:hidden border-t border-white/[0.06] bg-[#0A0A0A]/98 backdrop-blur-xl">
+          <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
+            {[
+              { href: '#problema', label: 'Problema' },
+              { href: '#plataforma', label: 'Plataforma' },
+              { href: '#fluxos', label: 'Workflows' },
+              { href: '#ia', label: 'IA' },
+              { href: '#seguranca', label: 'Segurança' },
+            ].map(item => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="py-3 px-2 text-sm text-white/70 hover:text-white border-b border-white/[0.05] last:border-0 transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+            <div className="pt-3 flex flex-col gap-2">
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                className="py-2.5 text-sm text-center text-white/60 border border-white/10 rounded-lg hover:border-white/20 hover:text-white transition-colors"
+              >
+                Entrar
+              </Link>
+              <a
+                href="#cta"
+                onClick={() => setMenuOpen(false)}
+                className="py-2.5 text-sm text-center font-medium rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors"
+              >
+                Solicitar demo
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <div className="relative pt-32 pb-24 px-6 overflow-hidden">
@@ -193,28 +242,19 @@ export default function LandingPage() {
             Centro de operações{' '}
             <br className="hidden sm:block" />
             para{' '}
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #7030A0 0%, #8B5CF6 50%, #5B2EE0 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              procuradorias
-            </span>
+            <span className="text-[#C084FC]">procuradorias</span>
           </h1>
 
-          <p className="text-lg text-white/55 max-w-2xl mx-auto leading-relaxed mb-10">
+          <p className="text-lg text-white/70 max-w-2xl mx-auto leading-relaxed mb-10">
             Processos judiciais e administrativos, fluxos BPMN por papel,
             geração de peças com IA e peticionamento — em uma plataforma construída
             para a realidade do setor público.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full sm:w-auto">
             <a
-              href="#cta"
-              className="group flex items-center gap-2 px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm"
+              href="mailto:demo@bravonix.com.br"
+              className="group flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm"
               style={{ boxShadow: '0 0 24px rgba(112,48,160,0.4)' }}
             >
               Solicitar demonstração
@@ -222,7 +262,7 @@ export default function LandingPage() {
             </a>
             <Link
               href="/login"
-              className="flex items-center gap-2 px-6 py-3 rounded-lg border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all font-medium text-sm text-white/70 hover:text-white"
+              className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all font-medium text-sm text-white/70 hover:text-white"
             >
               Já tenho acesso
             </Link>
@@ -334,30 +374,41 @@ export default function LandingPage() {
             </div>
 
             {/* Flow visualization */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 space-y-3">
-              <p className="text-xs text-white/30 font-mono mb-4">
+            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6">
+              <p className="text-xs text-white/30 font-mono mb-5">
                 Fluxograma Judicial — 1º Grau (exemplo)
               </p>
-              {FLOW_STEPS.map((step, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div
-                    className="shrink-0 w-2 h-2 rounded-full"
-                    style={{ background: step.color, boxShadow: `0 0 6px ${step.color}80` }}
-                  />
-                  <div className="flex-1 p-3 rounded-lg border border-white/6 bg-white/[0.03]">
-                    <p className="text-xs text-white/35 mb-0.5">{step.role}</p>
-                    <p className="text-sm font-medium">{step.action}</p>
-                  </div>
-                  {i < FLOW_STEPS.length - 1 && (
-                    <div className="hidden sm:flex items-center">
-                      <div className="w-px h-6 bg-white/10 ml-[-13px] mt-3 absolute" />
+              <div className="relative pl-5">
+                {/* Linha vertical conectora */}
+                <div
+                  className="absolute left-[6px] top-[14px] w-px bg-white/[0.08]"
+                  style={{ bottom: '28px' }}
+                />
+                <div className="space-y-2">
+                  {FLOW_STEPS.map((step, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div
+                        className="relative z-10 shrink-0 w-3 h-3 rounded-full"
+                        style={{
+                          background: step.color,
+                          boxShadow: `0 0 6px ${step.color}80`,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <div className="flex-1 p-3 rounded-lg border border-white/6 bg-white/[0.03]">
+                        <p className="text-xs text-white/35 mb-0.5">{step.role}</p>
+                        <p className="text-sm font-medium">{step.action}</p>
+                      </div>
                     </div>
-                  )}
+                  ))}
+                  <div className="flex items-center gap-3 pt-1">
+                    <div
+                      className="relative z-10 shrink-0 w-3 h-3 rounded-full"
+                      style={{ background: '#34D399', boxShadow: '0 0 6px rgba(52,211,153,0.5)' }}
+                    />
+                    <p className="text-xs text-white/30 font-mono">Processo arquivado</p>
+                  </div>
                 </div>
-              ))}
-              <div className="pt-2 flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-400" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.5)' }} />
-                <p className="text-xs text-white/30 font-mono">Processo arquivado</p>
               </div>
             </div>
           </div>
@@ -496,9 +547,6 @@ export default function LandingPage() {
                 background: 'radial-gradient(ellipse at 50% 0%, rgba(91,46,224,0.08) 0%, transparent 70%)',
               }}
             />
-            <p className="text-xs font-mono text-[#8B5CF6] uppercase tracking-widest mb-6 relative">
-              Pronto para começar
-            </p>
             <h2 className="text-3xl font-bold tracking-tight mb-4 relative">
               Leve sua procuradoria para o próximo nível
             </h2>
@@ -508,7 +556,7 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center relative">
               <a
-                href="mailto:contato@verus.ai"
+                href="mailto:demo@bravonix.com.br"
                 className="group flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm"
                 style={{ boxShadow: '0 0 32px rgba(112,48,160,0.35)' }}
               >
