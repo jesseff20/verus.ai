@@ -143,4 +143,15 @@ export const publicApi = axios.create({
   },
 });
 
+// publicApi não precisa de interceptor de auth, mas deve logar erros de servidor
+publicApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status >= 500) {
+      console.error('[publicApi] Server error:', error.response?.status, error.config?.url);
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

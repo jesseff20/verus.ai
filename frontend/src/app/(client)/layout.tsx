@@ -45,20 +45,26 @@ export default function ClientLayout({
   const { client, loading, isAuthenticated, logout } = useClientPortalAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const [hasToken, setHasToken] = useState(false);
+  // Lazy initializer lê localStorage imediatamente — sem race condition entre os dois effects
+  const [hasToken, setHasToken] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !!localStorage.getItem('client_portal_access_token');
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isLoginPage = pathname === '/portal/login';
 
+  // Mantém o estado de token sincronizado quando o estado de autenticação muda
   useEffect(() => {
     setHasToken(!!localStorage.getItem('client_portal_access_token'));
-  }, [isAuthenticated, loading]);
+  }, [isAuthenticated]);
 
+  // Redireciona só quando a query terminou E não há token E não está autenticado
   useEffect(() => {
     if (!loading && !isAuthenticated && !isLoginPage && !hasToken) {
       router.push('/portal/login');
     }
-  }, [isAuthenticated, loading, hasToken, isLoginPage, router]);
+  }, [loading, isAuthenticated, hasToken, isLoginPage, router]);
 
   // Close sidebar on route change
   useEffect(() => {
@@ -84,7 +90,16 @@ export default function ClientLayout({
   }
 
   if (!isAuthenticated && !hasToken) {
-    return null;
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-primary/20 border-t-primary" />
+          <p className="text-sm text-muted-foreground font-mono tracking-wide">
+            Redirecionando...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   function isActive(href: string, exact?: boolean) {

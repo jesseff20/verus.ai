@@ -1,8 +1,22 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+
+function isAuthError(error: Error): boolean {
+  const msg = error?.message?.toLowerCase() ?? '';
+  const digest = (error as any)?.digest ?? '';
+  return (
+    msg.includes('401') ||
+    msg.includes('unauthorized') ||
+    msg.includes('unauthenticated') ||
+    msg.includes('token') ||
+    msg.includes('sessão expirada') ||
+    digest.includes('401')
+  );
+}
 
 export default function ClientPortalError({
   error,
@@ -11,9 +25,25 @@ export default function ClientPortalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
+    if (isAuthError(error)) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      router.push('/login');
+      return;
+    }
     console.error('Client portal error:', error);
-  }, [error]);
+  }, [error, router]);
+
+  if (isAuthError(error)) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-primary/20 border-t-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center min-h-[60vh]">

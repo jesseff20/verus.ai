@@ -14,23 +14,23 @@ export default function DashboardLayout({
 }) {
   const { isAuthenticated, loading } = useAuth();
   const router = useRouter();
-  // Estado client-only para evitar hydration mismatch (localStorage não existe no servidor)
-  const [hasToken, setHasToken] = useState(false);
+  // Lazy initializer lê localStorage imediatamente — sem race condition entre os dois effects
+  const [hasToken, setHasToken] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !!localStorage.getItem('access_token');
+  });
 
+  // Mantém o estado de token sincronizado quando o estado de autenticação muda
   useEffect(() => {
     setHasToken(!!localStorage.getItem('access_token'));
-  }, [isAuthenticated, loading]);
+  }, [isAuthenticated]);
 
+  // Redireciona só quando a query terminou E não há token E não está autenticado
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      // Só redireciona para /login se não houver token salvo no localStorage.
-      // Se houver token mas a API falhou (ex: ERR_TOO_MANY_REDIRECTS, timeout),
-      // mantém o usuário na página — o token provavelmente ainda é válido.
-      if (!hasToken) {
-        router.push('/login');
-      }
+    if (!loading && !isAuthenticated && !hasToken) {
+      router.push('/login');
     }
-  }, [isAuthenticated, loading, hasToken, router]);
+  }, [loading, isAuthenticated, hasToken, router]);
 
   if (loading) {
     return (
@@ -48,7 +48,16 @@ export default function DashboardLayout({
   // Renderiza o layout mesmo com isAuthenticated=false se houver token —
   // pode ser erro de rede temporário; o backend protege as rotas de API.
   if (!isAuthenticated && !hasToken) {
-    return null;
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-primary/20 border-t-primary" />
+          <p className="text-sm text-muted-foreground font-mono tracking-wide">
+            Redirecionando...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

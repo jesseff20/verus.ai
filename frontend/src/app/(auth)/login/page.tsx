@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
+import { resetRedirectFlag } from '@/lib/api';
 import { useBrandSettings } from '@/hooks/use-brand-settings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -117,9 +119,22 @@ export default function LoginPage() {
   const [showClientPassword, setShowClientPassword] = useState(false);
   const [activeTab, setActiveTab] = useState('advogado');
   const [mounted, setMounted] = useState(false);
-  const { login, loading, error } = useAuth();
+  const { login, loading, error, isAuthenticated } = useAuth();
   const { brandSettings } = useBrandSettings();
   const { isDark, toggle } = useLoginTheme();
+  const router = useRouter();
+
+  // Reset redirect flag when landing on login (e.g. after session expiry redirect)
+  useEffect(() => {
+    resetRedirectFlag();
+  }, []);
+
+  // Redirect already-authenticated users to dashboard
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, loading, router]);
 
   useEffect(() => setMounted(true), []);
 
