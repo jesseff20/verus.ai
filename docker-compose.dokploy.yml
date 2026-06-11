@@ -1,0 +1,189 @@
+# Deploy do Verus.AI no Dokploy (Traefik path-based no mesmo domínio):
+#   /                              -> verus-ai-frontend:3000 (Next.js standalone)
+#   /admin, /static, /media        -> verus-backend:8000 (Django/gunicorn)
+# NOTA: /api NÃO vai direto ao backend — passa pelo Route Handler do Next.js
+# (src/app/api/v1/[...path]/route.ts) que proxia internamente para o backend via
+# Docker network. Isso evita ERR_TOO_MANY_REDIRECTS e permite controle de timeout,
+# headers de segurança e tratamento de erros.
+# verus-db e verus-redis ficam só na rede interna (verus-net);
+# backend/frontend também na dokploy-network (external) para o Traefik rotear.
+# Nomes prefixados (verus-db / verus-redis) evitam colisão de DNS na
+# dokploy-network, onde outros stacks já registram aliases 'db' e 'redis'.
+
+x-backend-env: &backend-env
+  ENVIRONMENT: production
+  DEBUG: "False"
+  # local.py é dirigido por env (WhiteNoise, CORS, lê DB_*/SECRET_KEY); wsgi.py
+  # aponta para config.settings.production (inexistente) — sobrescrevemos aqui.
+  DJANGO_SETTINGS_MODULE: config.settings.local
+  SECRET_KEY: ${SECRET_KEY}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+  DOMAIN: ${DOMAIN}
+  BACKEND_URL: ${BACKEND_URL}
+  FRONTEND_URL: ${FRONTEND_URL}
+  DB_NAME: ${DB_NAME}
+  DB_USER: ${DB_USER}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DB_HOST: verus-db
+  DB_PORT: "5432"
+  DATABASE_URL: ${DATABASE_URL}
+  REDIS_PASSWORD: ${REDIS_PASSWORD}
+  REDIS_URL: ${REDIS_URL}
+  CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+  CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+  OPENAI_API_KEY: ${OPENAI_API_KEY}
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+  WATSONX_API_KEY: ${WATSONX_API_KEY}
+  WATSONX_PROJECT_ID: ${WATSONX_PROJECT_ID}
+  WATSONX_URL: ${WATSONX_URL}
+  WATSONX_MODEL_ID: ${WATSONX_MODEL_ID}
+  WATSONX_DISABLED: ${WATSONX_DISABLED:-false}
+  IBM_API_KEY: ${IBM_API_KEY}
+  TAVILY_API_KEY: ${TAVILY_API_KEY}
+  TAVILY_SEARCH_DEPTH: ${TAVILY_SEARCH_DEPTH:-advanced}
+  TAVILY_MAX_RESULTS: ${TAVILY_MAX_RESULTS:-8}
+  DEFAULT_LLM_PROVIDER: ${DEFAULT_LLM_PROVIDER:-watsonx}
+  TINYMCE_API_KEY: ${TINYMCE_API_KEY:-}
+  USE_R2: ${USE_R2:-False}
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+  AWS_STORAGE_BUCKET_NAME: ${AWS_STORAGE_BUCKET_NAME:-}
+  AWS_S3_ENDPOINT_URL: ${AWS_S3_ENDPOINT_URL:-}
+  AWS_S3_REGION_NAME: ${AWS_S3_REGION_NAME:-auto}
+  AWS_S3_CUSTOM_DOMAIN: ${AWS_S3_CUSTOM_DOMAIN:-}
+  EMAIL_BACKEND: ${EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
+  EMAIL_HOST: ${EMAIL_HOST:-}
+  EMAIL_PORT: ${EMAIL_PORT:-587}
+  EMAIL_USE_TLS: ${EMAIL_USE_TLS:-True}
+  EMAIL_HOST_USER: ${EMAIL_HOST_USER:-}
+  EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD:-}
+  SENTRY_DSN: ${SENTRY_DSN:-}
+  SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-production}
+  CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+  CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS}
+  SECURE_SSL_REDIRECT: ${SECURE_SSL_REDIRECT:-False}
+  SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-True}
+  CSRF_COOKIE_SECURE: ${CSRF_COOKIE_SECURE:-True}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+services:
+  verus-db:
+    image: pgvector/pgvector:pg15
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [verus-net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  verus-redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    networks: [verus-net]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  verus-backend:
+    build:
+      context: ./backend
+    environment: *backend-env
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      verus-db:
+        condition: service_healthy
+      verus-redis:
+        condition: service_healthy
+    networks: [verus-net, dokploy-network]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/admin/login/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  verus-celery:
+    build:
+      context: ./backend
+    entrypoint: ["celery"]
+    command: ["-A", "config", "worker", "-l", "info", "--concurrency=2"]
+    environment: *backend-env
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      verus-db:
+        condition: service_healthy
+      verus-redis:
+        condition: service_healthy
+    networks: [verus-net]
+    restart: unless-stopped
+
+  verus-celery-beat:
+    build:
+      context: ./backend
+    entrypoint: ["celery"]
+    command: ["-A", "config", "beat", "-l", "info"]
+    environment: *backend-env
+    depends_on:
+      verus-db:
+        condition: service_healthy
+      verus-redis:
+        condition: service_healthy
+    networks: [verus-net]
+    restart: unless-stopped
+
+  verus-ai-frontend:
+    build:
+      context: ./frontend
+      args:
+        # NEXT_PUBLIC_* são embutidas no bundle JS em build time — passar como ARG.
+        # NEXT_PUBLIC_API_URL vazio: client usa URLs relativas; Route Handler proxia /api/v1/* para o backend.
+        NEXT_PUBLIC_API_URL: ""
+        NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-Verus.AI}
+        NEXT_PUBLIC_APP_VERSION: ${NEXT_PUBLIC_APP_VERSION:-1.0.0}
+        NEXT_PUBLIC_API_BASE_PATH: ${NEXT_PUBLIC_API_BASE_PATH:-/api/v1}
+        NEXT_PUBLIC_TINYMCE_API_KEY: ${NEXT_PUBLIC_TINYMCE_API_KEY:-}
+        # BACKEND_URL em build time para que os rewrites em next.config.js usem
+        # o hostname correto da rede Docker (verus-backend:8000) em vez de localhost:8000.
+        BACKEND_URL: "http://verus-backend:8000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      # URL interna Docker para o Next.js usar nos rewrites server-side (não exposta ao browser).
+      BACKEND_URL: http://verus-backend:8000
+    depends_on:
+      - verus-backend
+    networks: [verus-net, dokploy-network]
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3000', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  media_data:
+
+networks:
+  verus-net:
+    driver: bridge
+  dokploy-network:
+    external: true

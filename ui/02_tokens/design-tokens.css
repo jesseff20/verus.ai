@@ -1,0 +1,53 @@
+/* Bravonix — tokens CSS para agentes de IA e front-end
+   Idioma: pt-BR
+   Codificação obrigatória: UTF-8 com acentuação correta.
+*/
+:root {
+  --bnx-ink: #0A0A0A;
+  --bnx-ink-soft: #1A1A1A;
+  --bnx-paper: #FFFFFF;
+  --bnx-bone: #EDEAE2;
+  --bnx-purple: #7030A0;
+  --bnx-electric-purple: #5B2EE0;
+  --bnx-purple-bright: #8B5CF6;
+  --bnx-purple-deep: #2A0E4A;
+
+  --bnx-success: #22C55E;
+  --bnx-warning: #F59E0B;
+  --bnx-danger: #EF4444;
+  --bnx-info: #3B82F6;
+
+  --bnx-text-on-dark: #FFFFFF;
+  --bnx-text-on-dark-secondary: rgba(255, 255, 255, 0.72);
+  --bnx-text-on-light: #0A0A0A;
+  --bnx-text-on-light-secondary: rgba(10, 10, 10, 0.68);
+
+  --bnx-line-on-dark: rgba(255, 255, 255, 0.14);
+  --bnx-line-on-light: rgba(10, 10, 10, 0.12);
+
+  --bnx-radius-sm: 8px;
+  --bnx-radius-md: 14px;
+  --bnx-radius-lg: 22px;
+  --bnx-radius-xl: 28px;
+
+  --bnx-space-xs: 4px;
+  --bnx-space-sm: 8px;
+  --bnx-space-md: 16px;
+  --bnx-space-lg: 24px;
+  --bnx-space-xl: 40px;
+  --bnx-space-xxl: 64px;
+
+  --bnx-rhythm-tight: 12px;
+  --bnx-rhythm-regular: 24px;
+  --bnx-rhythm-relaxed: 40px;
+  --bnx-rhythm-section-operational: 32px;
+  --bnx-rhythm-section-editorial: 80px;
+  --bnx-rhythm-section-executive: 56px;
+
+  --bnx-font-sans: Inter, "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --bnx-motion-fast: 150ms;
+  --bnx-motion-base: 220ms;
+  --bnx-motion-slow: 320ms;
+  --bnx-motion-ease: cubic-bezier(.2, .8, .2, 1);
+}

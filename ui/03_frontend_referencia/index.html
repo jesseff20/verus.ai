@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bravonix &mdash; Inteligência Artificial Governada">
+  <meta name="theme-color" content="#0A0A0A">
+  <title>Bravonix | IA Governada</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Inline minimal hero styles ───────────────────────────────────── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Sora', system-ui, -apple-system, sans-serif;
+      background: #0A0A0A;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .chrome {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      padding-bottom: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+    .wordmark {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      font-size: 16px;
+    }
+    .hero-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 60px;
+    }
+    .hero-content { padding: 60px 0; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      color: #8B5CF6;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .hero-content h1 {
+      max-width: 700px;
+      font-size: clamp(48px, 6vw, 80px);
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin: 16px 0 20px;
+    }
+    .hero-content h1 span { color: #8B5CF6; }
+    .hero-content p {
+      max-width: 520px;
+      color: rgba(255,255,255,0.72);
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      appearance: none;
+      border: none;
+      background: #7030A0;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: #5B2EE0; }
+    .btn-secondary {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: transparent;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.06); }
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rings {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      border: 2px solid rgba(139,92,246,0.2);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rings::before {
+      content: '';
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      border: 2px solid rgba(112,48,160,0.3);
+    }
+    .rings::after {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(112,48,160,0.08);
+      border: 2px solid rgba(139,92,246,0.15);
+    }
+    .rings-inner {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(139,92,246,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #8B5CF6;
+      z-index: 2;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media (max-width: 768px) {
+      .hero { padding: 24px 20px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 0; }
+      .hero-visual { display: none; }
+      .hero-content h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <header class="chrome">
+      <strong class="wordmark">BRAVONIX</strong>
+      <span>// INTELIGÊNCIA ARTIFICIAL GOVERNADA</span>
+      <span>2026</span>
+    </header>
+
+    <div class="hero-grid">
+      <div class="hero-content">
+        <p class="eyebrow">// AGENTE DE IA _</p>
+        <h1>No centro do que <span>importa</span>.</h1>
+        <p>
+          Orquestração, governança e auditoria para IA em escala institucional.
+          Converse com o Agente Bravonix e descubra o poder da análise
+          documental com IBM WatsonX.
+        </p>
+        <div class="hero-actions">
+          <a href="agent.html" class="btn-primary">
+            ✦ Iniciar conversa
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="rings">
+          <img class="rings-logo" src="assets/logo.png" alt="Bravonix"
+               style="width:64px;height:auto;object-fit:contain;z-index:2">
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      BRAVONIX // SISTEMA DE IA GOVERNADA // IBM WATSONX
+    </div>
+  </section>
+</body>
+</html>

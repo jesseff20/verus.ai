@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Agente Bravonix — Assistente de IA com IBM WatsonX">
+  <meta name="theme-color" content="#7030A0">
+  <meta name="color-scheme" content="light dark">
+  <title>Agente Bravonix</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <!-- Preconnect for faster font/CDN loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <!-- Google Fonts with display=swap for zero render-blocking -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=3">
+</head>
+<body>
+  <div class="bnx-app" id="app">
+
+    <!-- Offline Banner -->
+    <div class="bnx-offline-banner" id="bnx-offline-banner" role="alert" hidden>
+      <span class="bnx-offline-icon">&#9888;</span>
+      <span>Sem conexão com a internet. O agente está operando offline.</span>
+    </div>
+
+    <!-- Header -->
+    <header class="bnx-header">
+      <div class="bnx-header-left">
+        <a href="/" class="bnx-logo" aria-label="Bravonix — Página inicial">
+          <img class="bnx-logo-img" src="assets/logo.png" alt="Bravonix" width="32" height="32">
+          <span class="bnx-wordmark">BRAVONIX</span>
+        </a>
+      </div>
+      <div class="bnx-header-right">
+        <div class="bnx-status" id="bnx-status-area">
+          <span class="bnx-status-dot offline" id="bnx-status-dot" title="Verificando conexão..." role="status"></span>
+          <span id="bnx-status-label" class="bnx-chip-text">Agente</span>
+          <span class="bnx-fink-status" id="bnx-fink-status" role="status"></span>
+        </div>
+        <kbd class="bnx-kbd-hint" title="Atalhos: Enter enviar, Shift+Enter nova linha, Ctrl+Enter enviar, Esc limpar">?</kbd>
+        <button class="bnx-new-btn" id="bnx-new-btn" title="Nova conversa" aria-label="Nova conversa">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+        <button class="bnx-theme-btn" id="bnx-theme-btn" aria-label="Alternar tema claro/escuro">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path class="icon-sun" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Chat Messages (aria-live for screen readers) -->
+    <main class="bnx-chat" id="bnx-chat" role="log" aria-live="polite" aria-label="Conversa com o agente">
+      <div class="bnx-chat-inner" id="bnx-chat-inner">
+        <!-- Messages rendered by app.js -->
+      </div>
+
+      <!-- Scroll-to-bottom floating button -->
+      <button class="bnx-scroll-bottom" id="bnx-scroll-bottom" title="Rolar para o final" aria-label="Rolar para o final" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+    </main>
+
+    <!-- Input Area -->
+    <footer class="bnx-input-area">
+      <div class="bnx-input-inner">
+        <textarea
+          class="bnx-input"
+          id="bnx-input"
+          placeholder="Digite sua mensagem para o Agente Bravonix..."
+          rows="1"
+          aria-label="Mensagem para o agente"
+          maxlength="10000"
+        ></textarea>
+        <button class="bnx-send-btn" id="bnx-send" aria-label="Enviar mensagem" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+      <div class="bnx-input-footer">
+        <span>Enter enviar</span>
+        <span class="bnx-input-sep">·</span>
+        <span>Shift+Enter nova linha</span>
+        <span class="bnx-input-sep">·</span>
+        <span id="bnx-char-count">0/10000</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Chart.js + html2canvas (deferred, non-blocking) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+
+  <!-- Application Scripts (deferred + cache bust v3) -->
+  <script src="visual-blocks.js?v=3" defer></script>
+  <script src="app.js?v=3" defer></script>
+</body>
+</html>

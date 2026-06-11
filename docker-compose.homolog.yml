@@ -1,0 +1,49 @@
+name: verus_ai_homolog
+
+# Sandbox isolado para validar migrations e features antes de aplicar em produção.
+# Usa portas DIFERENTES do dev local (db 5435/6390 vs dev 5433/6379) para subir em paralelo.
+#
+# Uso:
+#   ENVIRONMENT=homolog no .env
+#   docker compose -f docker-compose.homolog.yml up -d
+#   python manage.py migrate
+#   ...validar...
+#   docker compose -f docker-compose.homolog.yml down -v   # apaga tudo
+
+services:
+  db_homolog:
+    image: pgvector/pgvector:pg15
+    container_name: verus_ai_db_homolog
+    environment:
+      POSTGRES_DB: ${HOMOLOG_DB_NAME:-verus_ai_homolog}
+      POSTGRES_USER: ${HOMOLOG_DB_USER:-verus_ai}
+      POSTGRES_PASSWORD: ${HOMOLOG_DB_PASSWORD:-homolog_local_secret}
+    volumes:
+      - postgres_data_homolog:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${HOMOLOG_DB_USER:-verus_ai}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis_homolog:
+    image: redis:7-alpine
+    container_name: verus_ai_redis_homolog
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data_homolog:/data
+    ports:
+      - "6390:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data_homolog:
+  redis_data_homolog:

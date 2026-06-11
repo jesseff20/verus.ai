@@ -1,0 +1,165 @@
+{
+  "created_at": "2026-05-25T12:34:56.530646",
+  "files": [
+    {
+      "path": "README.md",
+      "size_bytes": 3613,
+      "sha256": "529e3de7504fa774913e4c83afcecc2c4a45eac9266640d77f260b7a5d2073a3"
+    },
+    {
+      "path": "00_leia_primeiro/INSTRUCOES_PARA_AGENTES.md",
+      "size_bytes": 2732,
+      "sha256": "ce2e496de0feb6d56efe26cbfd150fa4c01430a215f1fe46ec46f241c18d4382"
+    },
+    {
+      "path": "01_identidade_visual/DESIGN_SYSTEM_BRAVONIX.md",
+      "size_bytes": 24534,
+      "sha256": "35a2a4e45f3d239730b5ed3822968109a5d137dfca5d5bf6bf7aa0cb5b75e138"
+    },
+    {
+      "path": "01_identidade_visual/GUIA_FRONTEND_BRAVONIX.md",
+      "size_bytes": 3868,
+      "sha256": "e3a0ff922a84fb6d2c707026f1c5ca11c776853c7790c5ebd19669224887cfe2"
+    },
+    {
+      "path": "02_tokens/design-tokens.css",
+      "size_bytes": 1450,
+      "sha256": "644c2dcc8335bf8581cfa95a489853038c7afd2bcd7eda70198a155b1f3c20b9"
+    },
+    {
+      "path": "02_tokens/design-tokens.json",
+      "size_bytes": 2237,
+      "sha256": "b036aced1ce6153643ac5b198352835aec0b5596c96881b7b3b3b1111ab8f25d"
+    },
+    {
+      "path": "03_frontend_referencia/agent.html",
+      "size_bytes": 5156,
+      "sha256": "1af4515cab2030436b7aab3a5e9f8a9baaa059f736353a1542fe200361765a9d"
+    },
+    {
+      "path": "03_frontend_referencia/app.js",
+      "size_bytes": 51539,
+      "sha256": "9b31402f61c4d46760e55d9b119347c5c76af70ce8a61bac4a82b6cd5bf34e16"
+    },
+    {
+      "path": "03_frontend_referencia/deck-stage.js",
+      "size_bytes": 22637,
+      "sha256": "0ef6f7c6769051fbfb597416a364edfdcb63635e0454080104df4e1b1737a390"
+    },
+    {
+      "path": "03_frontend_referencia/index.html",
+      "size_bytes": 6234,
+      "sha256": "ea2dd480a678a26c9cc51a75066b0ff38c6b3b5919e9adaeaaec07275b054cd5"
+    },
+    {
+      "path": "03_frontend_referencia/styles.css",
+      "size_bytes": 67851,
+      "sha256": "f00161d68bdd7c3f348e7e0309ff7f9885d5ec9f6de0aa80bbba8acf39ce9e24"
+    },
+    {
+      "path": "03_frontend_referencia/tweaks-panel.jsx",
+      "size_bytes": 18078,
+      "sha256": "82e4c3ddd5ec70cfbdfb25ce8e4f5c88c173823ac7b8bc3a8e56fa366e301004"
+    },
+    {
+      "path": "03_frontend_referencia/assets/bravonix-dark.png",
+      "size_bytes": 26348,
+      "sha256": "e738c55020c87660609ccd1c6a3ffe6ca66736d87e48d77639fc8a663cc18f59"
+    },
+    {
+      "path": "03_frontend_referencia/assets/bravonix-light.png",
+      "size_bytes": 28627,
+      "sha256": "c51ab7b7003707fa4d28791183a4bf7889c2cef83f200cc6bc2f1d6ce07940bc"
+    },
+    {
+      "path": "03_frontend_referencia/assets/bravonix-logo-light.png",
+      "size_bytes": 53670,
+      "sha256": "a243ea059048d18b0900413a71abfac343294b338e87a3e2b595389b04db1c60"
+    },
+    {
+      "path": "03_frontend_referencia/assets/bravonix-logo.png",
+      "size_bytes": 53819,
+      "sha256": "8af7ab14686ba114929e7843220136ce7329165213013101fda36752f0dd9d7b"
+    },
+    {
+      "path": "03_frontend_referencia/assets/bravonix-purple-on-light.png",
+      "size_bytes": 27819,
+      "sha256": "1dcb5f02916b017ef016398048117eecd51da2b8231e325a1f2d021c6eebe67b"
+    },
+    {
+      "path": "03_frontend_referencia/assets/favicon.png",
+      "size_bytes": 5430,
+      "sha256": "4f5797b5be591849e16be1d26cb050332d0bd8993fe43687a4f10841adbc39cb"
+    },
+    {
+      "path": "03_frontend_referencia/assets/logo.png",
+      "size_bytes": 5430,
+      "sha256": "4f5797b5be591849e16be1d26cb050332d0bd8993fe43687a4f10841adbc39cb"
+    },
+    {
+      "path": "03_frontend_referencia/assets/orchestrate.png",
+      "size_bytes": 3171,
+      "sha256": "3c8abbbc0ba4edad3f95d8c9a6582589566fe5447c1e8b4d12622fdd153a6f27"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/visual-block.schema.json",
+      "size_bytes": 832,
+      "sha256": "5c5a116febe75454b312abd3b84e860843e5d45aaffe7b600030118293d55a7c"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/visual-blocks.js",
+      "size_bytes": 120052,
+      "sha256": "bbfe5ebc20b2db5e505f38f82afa018711f84b8d31a3e0737894da6018512948"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/CATALOGO_21ST_COMPONENTS.md",
+      "size_bytes": 47853,
+      "sha256": "ad70b930c87f28a2f2508fc993a30c8bf9b99cb5d29bde6d65f3fdde875691c2"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/21st_component_guides/marketing-blocks.md",
+      "size_bytes": 32604,
+      "sha256": "3e2cdba711fbc4b50a034be8aa76ae2ec06e9f41f9eb0c121c2f9650be59fec1"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/21st_component_guides/forms-inputs.md",
+      "size_bytes": 30128,
+      "sha256": "b14509951bb2fa45d45efbe0c1edabb280816b29b84e46e82e0ccc3e703f756a"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/21st_component_guides/navigation-overlays-actions.md",
+      "size_bytes": 39802,
+      "sha256": "ba001bc53a07f9f91e471582b6c20825c995054a888e607300dcc47239ba4bd8"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/21st_component_guides/data-feedback-content.md",
+      "size_bytes": 29217,
+      "sha256": "7f7fa386d384a876332464359b1da794a61285b9c0902774a2fc0669d0c66c8e"
+    },
+    {
+      "path": "04_componentes_blocos_visuais/21st_component_guides/advanced-media-ai.md",
+      "size_bytes": 28907,
+      "sha256": "3e5e883f49acc1fcb8d0df44f3aca12c13e8aea0d702fb3f6d574ca71e654336"
+    },
+    {
+      "path": "05_prompts_para_agentes/PROMPT_MESTRE_FRONTEND_BRAVONIX.md",
+      "size_bytes": 2163,
+      "sha256": "889f668d098cdcffbdefb46a44ed7ac9c8ffe96b36c34fcc07a68b81d0e8ccde"
+    },
+    {
+      "path": "05_prompts_para_agentes/WEB_DESIGNER_PRO_MAX.md",
+      "size_bytes": 8876,
+      "sha256": "e0c94438276b8a006ecdcdd018676e554a593e3d1255c00d5b64a2e5e33401c7"
+    },
+    {
+      "path": "06_qualidade_e_governanca/CHECKLIST_FRONTEND.md",
+      "size_bytes": 3747,
+      "sha256": "4c7516d36d5c309379b2742bd0f547c2ef0c45c1be19b7caa5902c3898eaa756"
+    },
+    {
+      "path": "07_exemplos_de_uso/EXEMPLO_BRIEFING_DASHBOARD.md",
+      "size_bytes": 814,
+      "sha256": "f3aa814f2c12ae276ae5a7227b3ccc14bc444da1dfd6ba0ed0412cd25437dc62"
+    }
+  ]
+}

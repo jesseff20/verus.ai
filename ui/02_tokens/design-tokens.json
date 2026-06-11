@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "name": "Bravonix AI Front-end Reference",
+    "language": "pt-BR",
+    "encoding": "UTF-8",
+    "accent_policy": "Obrigatório preservar acentuação correta do português brasileiro. Não usar ASCII-only."
+  },
+  "colors": {
+    "ink": "#0A0A0A",
+    "inkSoft": "#1A1A1A",
+    "paper": "#FFFFFF",
+    "bone": "#EDEAE2",
+    "bravonixPurple": "#7030A0",
+    "electricPurple": "#5B2EE0",
+    "purpleBright": "#8B5CF6",
+    "purpleDeep": "#2A0E4A",
+    "success": "#22C55E",
+    "warning": "#F59E0B",
+    "danger": "#EF4444",
+    "info": "#3B82F6"
+  },
+  "radii": {
+    "sm": "8px",
+    "md": "14px",
+    "lg": "22px",
+    "xl": "28px"
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "40px",
+    "xxl": "64px"
+  },
+  "rhythm": {
+    "tight": "12px",
+    "regular": "24px",
+    "relaxed": "40px",
+    "sectionOperational": "32px",
+    "sectionEditorial": "80px",
+    "sectionExecutive": "56px",
+    "profiles": {
+      "editorial": "Seções amplas, títulos fortes, pausas visuais generosas e progressão narrativa.",
+      "operational": "Densidade controlada, módulos próximos, ações junto do contexto e leitura por varredura.",
+      "executive": "Síntese forte, evidência próxima, baixa ornamentação e hierarquia rígida.",
+      "mobile": "Blocos verticais curtos, ação principal próxima e scroll previsível."
+    }
+  },
+  "typography": {
+    "preferredFamilies": [
+      "Inter",
+      "IBM Plex Sans",
+      "system-ui",
+      "Arial",
+      "sans-serif"
+    ],
+    "headline": {
+      "weight": 700,
+      "letterSpacing": "-0.04em"
+    },
+    "body": {
+      "weight": 400,
+      "lineHeight": 1.55
+    },
+    "label": {
+      "weight": 600,
+      "letterSpacing": "0.02em"
+    }
+  },
+  "motion": {
+    "fast": "150ms",
+    "base": "220ms",
+    "slow": "320ms",
+    "ease": "cubic-bezier(.2, .8, .2, 1)",
+    "principles": [
+      "Comunicar estado e continuidade",
+      "Respeitar prefers-reduced-motion",
+      "Preferir opacity e transform",
+      "Evitar transition: all"
+    ]
+  },
+  "principles": [
+    "Tecnológica",
+    "Institucional",
+    "Auditável",
+    "Editorial",
+    "Minimalista com presença",
+    "Governada e segura"
+  ]
+}

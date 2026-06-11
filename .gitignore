@@ -1,0 +1,251 @@
+# ======================
+# Python & Django
+# ======================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+backend/venv/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+*.pot
+*.pyc
+
+# ======================
+# Frontend (Next.js)
+# ======================
+node_modules/
+.next/
+out/
+build/
+dist/
+.cache/
+.pnp
+.pnp.js
+*.tsbuildinfo
+next-env.d.ts
+
+# Package managers
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+
+# Production
+/build
+/.next/
+/out/
+
+# ======================
+# Environment & Secrets
+# ======================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+*.env
+.env.*
+!.env.example
+!.env.local.example
+# frontend/.env.production não contém segredos (apenas NEXT_PUBLIC_* variáveis),
+# por isso é versionado para garantir que NEXT_PUBLIC_API_URL seja sempre vazio
+# em produção. Um valor não-vazio (ex: https://verus.ai) causa
+# ERR_TOO_MANY_REDIRECTS porque o axios envia requests para o domínio público
+# em vez de usar URLs relativas.
+!frontend/.env.production
+
+# Secrets
+secrets.toml
+.streamlit/secrets.toml
+config/settings/secrets.py
+
+# ======================
+# IDE & Editors
+# ======================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# ======================
+# Testing & Coverage
+# ======================
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+coverage/
+.nyc_output
+junit.xml
+
+# ======================
+# Docker
+# ======================
+*.pid
+*.seed
+*.pid.lock
+docker-compose.override.yml
+
+# Docker volumes data (persistente)
+postgres_data*/
+redis_data*/
+chromadb_data*/
+
+# Backups
+backups/
+*.sql
+*.sql.gz
+
+# Nginx logs e SSL (Let's Encrypt)
+nginx/logs/
+nginx/ssl/*.key
+nginx/ssl/*.crt
+nginx/ssl/*.pem
+
+# ======================
+# OS Files
+# ======================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ======================
+# Temporary & Cache
+# ======================
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.class
+*.orig
+
+# ======================
+# Logs
+# ======================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ======================
+# AI Models & Data
+# ======================
+modelos/
+/models/
+*.pkl
+*.h5
+*.pt
+*.pth
+data/chromadb/
+data/input/*.pdf
+data/output/
+
+# ======================
+# Documentation (Markdown)
+# ======================
+# Arquivos de documentação temporária/debug
+CHANGELOG_*.md
+DEBUG_*.md
+EXPLICACAO_*.md
+CORRECAO_*.md
+GUIA_*.md
+INTEGRACAO_*.md
+INTERFACE_*.md
+PLANO_*.md
+RESUMO_*.md
+NOVO_*.md
+pasted_content.txt
+readme.txt
+
+# ======================
+# Claude Code
+# ======================
+.claude/
+
+# ======================
+# Backup & Old Files
+# ======================
+*.backup
+*.old
+*-old
+*-backup
+
+*exemplos_PMJP/
+
+# Submodulos legados
+BravoChat/
+BravoSim/
+
+# docs/GIT_WORKFLOW.md
+# docs/.*
+senhas.md
+apikey.json
+test_watsonx.py
+docs/GIT_WORKFLOW.md
+horas.md
+how_to.txt
+# Templates locais e debug artifacts
+caixa de texto.md
+*.har
+
+# Planning e desenvolvimento
+.planning/
+Planning/
+*.md.bak
+
+# Skill QA (interno)
+skill-qa.md
+CLAUDE.md

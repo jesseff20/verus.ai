@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BravoJus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
+            background: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+            margin: 30px 0 20px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #003366;
+            border-bottom: 1px solid #003366;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 14px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #003366;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 12pt;
+        }
+
+        .info-box {
+            background-color: #f5f5f5;
+            border-left: 4px solid #003366;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .info-box strong {
+            color: #003366;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11pt;
+        }
+
+        table th {
+            background-color: #003366;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            font-size: 10pt;
+            text-align: center;
+            color: #666;
+        }
+
+        .signature-section {
+            margin-top: 60px;
+        }
+
+        .signature-box {
+            margin-top: 80px;
+            text-align: center;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 15mm;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #ffffcc;
+            padding: 2px 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- CABEÇALHO -->
+    <div class="header">
+        <div class="logo">{{orgao}}</div>
+        <div class="subtitle">{{unidade_administrativa}}</div>
+    </div>
+
+    <!-- TÍTULO DO DOCUMENTO -->
+    <h1>Estudo Técnico Preliminar</h1>
+    <h1>{{objeto_contratacao}}</h1>
+
+    <!-- INFORMAÇÕES DO PROCESSO -->
+    <div class="info-box">
+        <p><strong>Processo nº:</strong> {{numero_processo}}</p>
+        <p><strong>Objeto:</strong> {{objeto_contratacao}}</p>
+        <p><strong>Responsável pela elaboração:</strong> {{responsavel_elaboracao}}</p>
+        <p><strong>Data:</strong> {{data_elaboracao}}</p>
+    </div>
+
+    <!-- 1. INTRODUÇÃO -->
+    <h2>1. INTRODUÇÃO</h2>
+    <p>{{introducao}}</p>
+
+    <!-- 2. DESCRIÇÃO DA NECESSIDADE -->
+    <h2>2. DESCRIÇÃO DA NECESSIDADE</h2>
+
+    <h3>2.1. Contexto da Demanda</h3>
+    <p>{{contexto_demanda}}</p>
+
+    <h3>2.2. Justificativa da Contratação</h3>
+    <p>{{justificativa_contratacao}}</p>
+
+    <h3>2.3. Relação com o Planejamento Estratégico</h3>
+    <p>{{relacao_planejamento}}</p>
+
+    <!-- 3. ÁREA REQUISITANTE -->
+    <h2>3. ÁREA REQUISITANTE</h2>
+    <p><strong>Unidade Requisitante:</strong> {{area_requisitante}}</p>
+    <p><strong>Responsável:</strong> {{responsavel_area}}</p>
+    <p><strong>Contato:</strong> {{contato_area}}</p>
+
+    <!-- 4. DESCRIÇÃO DOS REQUISITOS -->
+    <h2>4. DESCRIÇÃO DOS REQUISITOS DA CONTRATAÇÃO</h2>
+
+    <h3>4.1. Requisitos do Objeto</h3>
+    <p>{{requisitos_objeto}}</p>
+
+    <h3>4.2. Requisitos Técnicos</h3>
+    <p>{{requisitos_tecnicos}}</p>
+
+    <h3>4.3. Requisitos de Qualidade</h3>
+    <p>{{requisitos_qualidade}}</p>
+
+    <h3>4.4. Requisitos de Capacitação</h3>
+    <p>{{requisitos_capacitacao}}</p>
+
+    <div class="page-break"></div>
+
+    <!-- 5. LEVANTAMENTO DE MERCADO -->
+    <h2>5. LEVANTAMENTO DE MERCADO</h2>
+
+    <h3>5.1. Pesquisa de Preços</h3>
+    <p>{{pesquisa_precos}}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fornecedor</th>
+                <th>Valor Unitário</th>
+                <th>Quantidade</th>
+                <th>Valor Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{fornecedor_1}}</td>
+                <td>R$ {{valor_unitario_1}}</td>
+                <td>{{quantidade_1}}</td>
+                <td>R$ {{valor_total_1}}</td>
+            </tr>
+            <tr>
+                <td>{{fornecedor_2}}</td>
+                <td>R$ {{valor_unitario_2}}</td>
+                <td>{{quantidade_2}}</td>
+                <td>R$ {{valor_total_2}}</td>
+            </tr>
+            <tr>
+                <td>{{fornecedor_3}}</td>
+                <td>R$ {{valor_unitario_3}}</td>
+                <td>{{quantidade_3}}</td>
+                <td>R$ {{valor_total_3}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.2. Análise das Propostas</h3>
+    <p>{{analise_propostas}}</p>
+
+    <!-- 6. ESTIMATIVA DE CUSTOS -->
+    <h2>6. ESTIMATIVA DE CUSTOS</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Descrição</th>
+                <th>Valor Estimado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Valor Global da Contratação</td>
+                <td>{{descricao_valor_global}}</td>
+                <td>R$ {{valor_global}}</td>
+            </tr>
+            <tr>
+                <td>Custos com Treinamento</td>
+                <td>{{descricao_custos_treinamento}}</td>
+                <td>R$ {{custos_treinamento}}</td>
+            </tr>
+            <tr>
+                <td>Custos Adicionais</td>
+                <td>{{descricao_custos_adicionais}}</td>
+                <td>R$ {{custos_adicionais}}</td>
+            </tr>
+            <tr style="background-color: #e6f2ff; font-weight: bold;">
+                <td colspan="2">TOTAL ESTIMADO</td>
+                <td>R$ {{valor_total_estimado}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Fonte de Recursos:</strong> {{fonte_recursos}}</p>
+    <p><strong>Natureza de Despesa:</strong> {{natureza_despesa}}</p>
+    <p><strong>Rubrica Orçamentária:</strong> {{rubrica_orcamentaria}}</p>
+
+    <!-- 7. DESCRIÇÃO DA SOLUÇÃO -->
+    <h2>7. DESCRIÇÃO DA SOLUÇÃO COMO UM TODO</h2>
+    <p>{{descricao_solucao}}</p>
+
+    <h3>7.1. Forma de Prestação do Serviço/Fornecimento</h3>
+    <p>{{forma_prestacao}}</p>
+
+    <h3>7.2. Prazos de Execução</h3>
+    <p>{{prazos_execucao}}</p>
+
+    <div class="page-break"></div>
+
+    <!-- 8. JUSTIFICATIVA PARA O PARCELAMENTO -->
+    <h2>8. JUSTIFICATIVA PARA O PARCELAMENTO OU NÃO DA SOLUÇÃO</h2>
+    <p>{{justificativa_parcelamento}}</p>
+
+    <!-- 9. CONTRATAÇÕES CORRELATAS -->
+    <h2>9. CONTRATAÇÕES CORRELATAS E/OU INTERDEPENDENTES</h2>
+    <p>{{contratacoes_correlatas}}</p>
+
+    <!-- 10. ALINHAMENTO COM LEGISLAÇÃO -->
+    <h2>10. ALINHAMENTO ENTRE A CONTRATAÇÃO E O PLANEJAMENTO</h2>
+    <p>{{alinhamento_planejamento}}</p>
+
+    <h3>10.1. Conformidade com a Lei nº 14.133/2021</h3>
+    <p>{{conformidade_lei_14133}}</p>
+
+    <h3>10.2. Outras Normas Aplicáveis</h3>
+    <p>{{outras_normas}}</p>
+
+    <!-- 11. POSSÍVEIS IMPACTOS AMBIENTAIS -->
+    <h2>11. ANÁLISE DOS POSSÍVEIS IMPACTOS AMBIENTAIS</h2>
+    <p>{{impactos_ambientais}}</p>
+
+    <!-- 12. BENEFÍCIOS DIRETOS E INDIRETOS -->
+    <h2>12. BENEFÍCIOS DIRETOS E INDIRETOS</h2>
+
+    <h3>12.1. Benefícios Diretos</h3>
+    <p>{{beneficios_diretos}}</p>
+
+    <h3>12.2. Benefícios Indiretos</h3>
+    <p>{{beneficios_indiretos}}</p>
+
+    <!-- 13. PROVIDÊNCIAS A SEREM ADOTADAS -->
+    <h2>13. PROVIDÊNCIAS A SEREM ADOTADAS</h2>
+    <p>{{providencias}}</p>
+
+    <!-- 14. POSSÍVEIS RISCOS -->
+    <h2>14. ANÁLISE DOS RISCOS</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Risco Identificado</th>
+                <th>Probabilidade</th>
+                <th>Impacto</th>
+                <th>Medidas de Mitigação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{risco_1}}</td>
+                <td>{{probabilidade_1}}</td>
+                <td>{{impacto_1}}</td>
+                <td>{{mitigacao_1}}</td>
+            </tr>
+            <tr>
+                <td>{{risco_2}}</td>
+                <td>{{probabilidade_2}}</td>
+                <td>{{impacto_2}}</td>
+                <td>{{mitigacao_2}}</td>
+            </tr>
+            <tr>
+                <td>{{risco_3}}</td>
+                <td>{{probabilidade_3}}</td>
+                <td>{{impacto_3}}</td>
+                <td>{{mitigacao_3}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 15. CONCLUSÃO -->
+    <h2>15. CONCLUSÃO E RECOMENDAÇÕES</h2>
+    <p>{{conclusao}}</p>
+
+    <!-- ASSINATURAS -->
+    <div class="signature-section">
+        <div class="signature-box">
+            <strong>{{responsavel_elaboracao}}</strong><br>
+            {{cargo_responsavel}}<br>
+            {{matricula_responsavel}}
+        </div>
+
+        <div class="signature-box">
+            <strong>{{aprovador}}</strong><br>
+            {{cargo_aprovador}}<br>
+            Aprovação
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="footer">
+        <p>Documento gerado pelo Sistema BravoJus</p>
+        <p>{{orgao}} - {{data_geracao}}</p>
+    </div>
+</body>
+</html>

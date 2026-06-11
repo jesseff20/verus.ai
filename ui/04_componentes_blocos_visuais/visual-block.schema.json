@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bravonix Visual Block",
+  "description": "Contrato básico para agentes gerarem blocos visuais renderizáveis em português brasileiro.",
+  "type": "object",
+  "required": [
+    "type",
+    "title"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "card",
+        "metric",
+        "table",
+        "chart",
+        "alert",
+        "timeline",
+        "steps"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "content": {},
+    "source": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string"
+    },
+    "unit": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,35 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block content %}
+    {% if summary_cards %}
+    <div style="margin: 20px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+        <!-- Card: Conversas -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">💬 Conversas (30 dias)</div>
+            <div style="font-size: 32px; font-weight: bold;">{{ summary_cards.total_conversations }}</div>
+        </div>
+
+        <!-- Card: Mensagens -->
+        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">📝 Mensagens (30 dias)</div>
+            <div style="font-size: 32px; font-weight: bold;">{{ summary_cards.total_messages }}</div>
+        </div>
+
+        <!-- Card: Feedbacks -->
+        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">👍 Feedbacks (30 dias)</div>
+            <div style="font-size: 32px; font-weight: bold;">{{ summary_cards.total_feedbacks }}</div>
+        </div>
+
+        <!-- Card: Satisfação -->
+        <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">📈 Taxa de Satisfação Média</div>
+            <div style="font-size: 32px; font-weight: bold;">{{ summary_cards.avg_satisfaction }}%</div>
+        </div>
+    </div>
+
+    {% endif %}
+
+    {{ block.super }}
+{% endblock %}

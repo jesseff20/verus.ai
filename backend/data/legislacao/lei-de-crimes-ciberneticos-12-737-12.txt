@@ -1,0 +1,46 @@
+L12737
+LEI Nş 12.737, DE 30 DE NOVEMBRO DE 2012.
+Vigęncia
+Dispőe sobre a tipificaçăo criminal de delitos informáticos; altera o Decreto-Lei nş 2.848, de 7 de dezembro de 1940 - Código Penal; e dá outras providęncias.
+A PRESIDENTA DA REPÚBLICA
+Faço saber que o Congresso Nacional decreta e eu sanciono a seguinte Lei:
+Art. 1ş Esta Lei dispőe sobre a tipificaçăo criminal de delitos informáticos e dá outras providęncias.
+Art. 2ş O Decreto-Lei nş 2.848, de 7 de dezembro de 1940 - Código Penal, fica acrescido dos seguintes arts. 154-A e 154-B:
+“Invasăo de dispositivo informático
+Art. 154-A.
+Invadir dispositivo informático alheio, conectado ou năo ŕ rede de computadores, mediante violaçăo indevida de mecanismo de segurança e com o fim de obter, adulterar ou destruir dados ou informaçőes sem autorizaçăo expressa ou tácita do titular do dispositivo ou instalar vulnerabilidades para obter vantagem ilícita:
+Pena - detençăo, de 3 (tręs) meses a 1 (um) ano, e multa.
+§ 1ş Na mesma pena incorre quem produz, oferece, distribui, vende ou difunde dispositivo ou programa de computador com o intuito de permitir a prática da conduta definida no
+caput
+.
+§ 2ş Aumenta-se a pena de um sexto a um terço se da invasăo resulta prejuízo econômico.
+§ 3ş Se da invasăo resultar a obtençăo de conteúdo de comunicaçőes eletrônicas privadas, segredos comerciais ou industriais, informaçőes sigilosas, assim definidas em lei, ou o controle remoto năo autorizado do dispositivo invadido:
+Pena - reclusăo, de 6 (seis) meses a 2 (dois) anos, e multa, se a conduta năo constitui crime mais grave.
+§ 4ş Na hipótese do § 3ş , aumenta-se a pena de um a dois terços se houver divulgaçăo, comercializaçăo ou transmissăo a terceiro, a qualquer título, dos dados ou informaçőes obtidos.
+§ 5ş Aumenta-se a pena de um terço ŕ metade se o crime for praticado contra:
+I - Presidente da República, governadores e prefeitos;
+II - Presidente do Supremo Tribunal Federal;
+III - Presidente da Câmara dos Deputados, do Senado Federal, de Assembleia Legislativa de Estado, da Câmara Legislativa do Distrito Federal ou de Câmara Municipal; ou
+IV - dirigente máximo da administraçăo direta e indireta federal, estadual, municipal ou do Distrito Federal.”
+“Açăo penal
+Art. 154-B.
+Nos crimes definidos no art. 154-A, somente se procede mediante representaçăo, salvo se o crime é cometido contra a administraçăo pública direta ou indireta de qualquer dos Poderes da Uniăo, Estados, Distrito Federal ou Municípios ou contra empresas concessionárias de serviços públicos.”
+Art. 3ş Os arts. 266 e 298 do Decreto-Lei nş 2.848, de 7 de dezembro de 1940 - Código Penal, passam a vigorar com a seguinte redaçăo:
+“Interrupçăo ou perturbaçăo de serviço telegráfico, telefônico, informático, telemático ou de informaçăo de utilidade pública
+Art. 266..
+.......................................................................
+§ 1ş
+Incorre na mesma pena quem interrompe serviço telemático ou de informaçăo de utilidade pública, ou impede ou dificulta-lhe o restabelecimento.
+§ 2ş Aplicam-se as penas em dobro se o crime é cometido por ocasiăo de calamidade pública.” (NR)
+“Falsificaçăo de documento particular
+Art. 298..
+.......................................................................
+Falsificaçăo de cartăo
+Parágrafo único. Para fins do disposto no
+caput
+, equipara-se a documento particular o cartăo de crédito ou débito.” (NR)
+Art. 4ş Esta Lei entra em vigor após decorridos 120 (cento e vinte) dias de sua publicaçăo oficial.
+Brasília, 30 de novembro de 2012; 191ş da Independęncia e 124ş da República.
+DILMA ROUSSEFF
+José Eduardo Cardozo
+Este texto năo substitui o publicado no DOU de 3.12.2012

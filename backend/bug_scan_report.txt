@@ -1,0 +1,174 @@
+VERUS.AI BACKEND - RELATÓRIO DE BUGS E ERROS
+===============================================
+Escaneamento exaustivo realizado em 27/05/2026
+Diretório base: /mnt/c/bravonix/bravojus/backend/
+Arquivos escaneados: 254 (target: views, services, models, urls)
+
+================================================================================
+BUG 1 - SYNTAX ERROR: Decorator inválido com dois pontos
+================================================================================
+Arquivo: /mnt/c/bravonix/bravojus/backend/apps/collaboration/views.py
+Linha:   264
+Erro:    invalid syntax
+
+Código incorreto:
+  @operations.mapping.post: 'create_operation'
+
+Problema:
+  O decorator contém dois pontos (:) que não é permitido na sintaxe Python.
+  O ':' torna o decorator ilegível para o parser do Python, resultando em
+  SyntaxError na importação do módulo.
+
+Correção sugerida (trocar para @action padrão do DRF):
+  @action(detail=True, methods=['post'], url_path='operations')
+
+Isso substitui o decorator quebrado e registra 'create_operation' como um
+POST sob o mesmo endpoint /operations/ (separado do GET operations).
+
+Impacto: BLOQUEANTE - O arquivo inteiro falha ao ser importado.
+
+================================================================================
+BUG 2 - SYNTAX ERROR: Definição de classe sem parênteses na herança
+================================================================================
+Arquivo: /mnt/c/bravonix/bravojus/backend/apps/core/tests/test_e2e_bravojus.py
+Linha:   35
+Erro:    invalid syntax
+
+Código incorreto:
+  class TestVersionamentoSemantic E2ETestCase:
+
+Problema:
+  Falta o parêntese de abertura antes de 'E2ETestCase'. A sintaxe correta
+  para herança de classe em Python requer parênteses ao redor da classe base.
+
+Correção:
+  class TestVersionamentoSemantic(E2ETestCase):
+
+Impacto: BLOQUEANTE - O arquivo inteiro falha ao ser importado.
+
+================================================================================
+BUG 3 - SYNTAX ERROR: Definição de classe sem parênteses na herança
+================================================================================
+Arquivo: /mnt/c/bravonix/bravojus/backend/apps/core/tests/test_e2e_bravojus.py
+Linha:   461
+Erro:    invalid syntax
+
+Código incorreto:
+  class TestFluxoComplet E2ETestCase:
+
+Problema:
+  Mesmo erro do Bug 2 - falta parêntese de abertura na herança.
+
+Correção:
+  class TestFluxoComplet(E2ETestCase):
+
+Impacto: BLOQUEANTE - O arquivo inteiro falha ao ser importado.
+
+================================================================================
+BUG 4 - BROKEN URL: Referência a view inexistente em urls.py
+================================================================================
+Arquivo: /mnt/c/bravonix/bravojus/backend/apps/intelligent_assistant/urls.py
+Linhas:  119-120
+Erro:    Atributo 'copilot_views' não existe no módulo 'views'
+
+Código incorreto:
+  path('copilot/suggest/', views.copilot_views.suggest_copilot, name='copilot-suggest'),
+  path('copilot/commands/', views.copilot_views.list_copilot_commands, name='copilot-commands'),
+
+Problema:
+  O arquivo urls.py faz `from . import views`, que carrega o módulo
+  `apps/intelligent_assistant/views/__init__.py`. Este __init__.py
+  importa as funções diretamente do submódulo copilot_views:
+  
+    from .copilot_views import (suggest_copilot, list_copilot_commands)
+  
+  Portanto, as views estão disponíveis como `views.suggest_copilot` e
+  `views.list_copilot_commands`, NÃO como `views.copilot_views.suggest_copilot`.
+  O atributo `copilot_views` não existe no namespace do módulo `views`.
+
+Correção:
+  path('copilot/suggest/', views.suggest_copilot, name='copilot-suggest'),
+  path('copilot/commands/', views.list_copilot_commands, name='copilot-commands'),
+
+Impacto: BLOQUEANTE - AttributeError ao carregar as URLs, impedindo
+  inicialização do servidor Django.
+
+================================================================================
+BUG 5 - PARÂMETRO INCORRETO: OpenApiResponse usado como parâmetro de query
+================================================================================
+Arquivo: /mnt/c/bravonix/bravojus/backend/apps/collaboration/views.py
+Linha:   237
+Erro:    Uso incorreto de OpenApiResponse no lugar de OpenApiParameter
+
+Código incorreto:
+  parameters=[
+      OpenApiResponse(name='since_version', description='Versão mínima'),
+  ],
+
+Problema:
+  OpenApiResponse (de drf_spectacular.utils) é uma classe para descrever
+  respostas HTTP, não parâmetros de query string. O nome do parâmetro
+  'name' não é um argumento válido para OpenApiResponse. O correto é
+  usar OpenApiParameter para descrever parâmetros de URL/query.
+
+  Nota: O 'parameters' list espera instâncias de OpenApiParameter.
+  OpenApiResponse aceita 'description', 'response', 'examples' mas NÃO 'name'.
+
+Correção:
+  from drf_spectacular.utils import OpenApiParameter
+  parameters=[
+      OpenApiParameter(name='since_version', description='Versão mínima'),
+  ],
+
+Impacto: MÉDIO - Drf-spectacular pode ignorar ou processar incorretamente,
+  resultando em documentação OpenAPI incorreta. Dependendo da versão,
+  pode causar erro 500 na geração do schema.
+
+================================================================================
+BUG 6 - PARÂMETRO INCORRETO: OpenApiResponse usado como parâmetro de query
+================================================================================
+Arquivo: /mnt/c/bravonix/bravojus/backend/apps/legal_library/views.py
+Linhas:  232-234
+Erro:    Uso incorreto de OpenApiResponse no lugar de OpenApiParameter (mesmo
+         padrão do Bug 5, em 3 ocorrências)
+
+Código incorreto:
+  parameters=[
+      OpenApiResponse(name='query', description='Texto da busca'),
+      OpenApiResponse(name='specialty', description='Especialidade'),
+      OpenApiResponse(name='tribunal', description='Tribunal'),
+  ],
+
+Correção:
+  from drf_spectacular.utils import OpenApiParameter
+  parameters=[
+      OpenApiParameter(name='query', description='Texto da busca'),
+      OpenApiParameter(name='specialty', description='Especialidade'),
+      OpenApiParameter(name='tribunal', description='Tribunal'),
+  ],
+
+Impacto: MÉDIO - Documentação OpenAPI incorreta para estes parâmetros.
+
+================================================================================
+RESUMO
+================================================================================
+Total de bugs:     6
+  Bloqueantes:     4 (Bugs 1, 2, 3, 4 - impedem importação/inicialização)
+  Médio:           2 (Bugs 5, 6 - documentação OpenAPI incorreta)
+
+Arquivos afetados: 3
+  - apps/collaboration/views.py       (Bugs 1, 5)
+  - apps/core/tests/test_e2e_bravojus.py (Bugs 2, 3)
+  - apps/intelligent_assistant/urls.py (Bug 4)
+  - apps/legal_library/views.py       (Bug 6)
+
+Nenhum problema encontrado em:
+  - Importações quebradas (módulos não-existentes)
+  - Decorators com typos (permissions_classes, authentications_classes, etc.)
+  - Referências circulares entre módulos internos
+  - Indentação inconsistente (sem mistura tabs/espaços)
+  - Typos comuns (recieved, occured, formated, etc.)
+  - list_route/detail_route (nenhum uso de decorators deprecated)
+  - Configuração de URLs em apps/cases, apps/copilot, apps/templates,
+    apps/rag, apps/kb, apps/forms, apps/agents, apps/core, apps/documents,
+    apps/integration, apps/collaboration, apps/legal_library

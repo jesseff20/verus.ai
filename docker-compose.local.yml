@@ -1,0 +1,40 @@
+name: verus_ai_local
+services:
+  # PostgreSQL 15 com pgvector
+  db:
+    image: pgvector/pgvector:pg15
+    container_name: verus_ai_local
+    environment:
+      POSTGRES_DB: ${LOCAL_DB_NAME:-verus_ai}
+      POSTGRES_USER: ${LOCAL_DB_USER:-verus_ai}
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:-verus_ai123}
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LOCAL_DB_USER:-verus_ai}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: verus_ai_redis_dev
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data_dev:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data_dev:
+  redis_data_dev:

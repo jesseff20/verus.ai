@@ -1,0 +1,102 @@
+# Verus.AI - Teste Local das Imagens de Produção
+name: verus_ai
+services:
+  db:
+    image: pgvector/pgvector:pg15
+    container_name: verus_ai_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-verus_ai}
+      POSTGRES_USER: ${DB_USER:-verus_ai}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-verus_ai123}
+    volumes:
+      - verus_ai_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-verus_ai}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - verus_ai_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: verus_ai_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
+    volumes:
+      - verus_ai_redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis123}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - verus_ai_network
+
+  backend:
+    image: mqmaellson39/verus-backend:latest
+    container_name: verus_ai_backend
+    restart: unless-stopped
+    command: >
+      sh -c "
+      python manage.py migrate --noinput &&
+      python manage.py seed_legal_domain &&
+      python manage.py seed_legal_blueprints &&
+      python manage.py seed_legal_agents &&
+      python manage.py collectstatic --noinput &&
+      gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 2 --threads 2 --timeout 120 --access-logfile - --error-logfile -
+      "
+    volumes:
+      - verus_ai_media:/app/media
+      - verus_ai_static:/app/staticfiles
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=development
+      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - DB_HOST=db
+      - DB_PORT=5432
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - CORS_ALLOWED_ORIGINS=https://verus.ai,http://localhost:3001,http://localhost:3000,http://127.0.0.1:3001,http://127.0.0.1:3000
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - verus_ai_network
+
+  frontend:
+    image: mqmaellson39/verus-ai-frontend:latest
+    container_name: verus_ai_frontend
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:8001
+      - NEXT_PUBLIC_API_BASE_PATH=/api/v1
+      - NEXT_PUBLIC_APP_NAME=Verus.AI
+      - NEXT_PUBLIC_APP_VERSION=1.0.0
+    depends_on:
+      - backend
+    networks:
+      - verus_ai_network
+
+volumes:
+  verus_ai_postgres_data:
+  verus_ai_redis_data:
+  verus_ai_media:
+  verus_ai_static:
+
+networks:
+  verus_ai_network:
+    driver: bridge

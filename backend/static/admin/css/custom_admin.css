@@ -1,0 +1,29 @@
+/* BravoJus - Customização global do Django Admin */
+
+/* Todos os textareas: altura mínima, redimensionável, scroll */
+textarea {
+    min-height: 120px;
+    resize: vertical;
+    overflow-y: auto !important;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Textareas de prompts (system_prompt, user_prompt_template): ainda maiores */
+#id_system_prompt,
+#id_user_prompt_template {
+    min-height: 350px;
+}
+
+/* JSONField: altura confortável */
+textarea[name="questions"],
+textarea[name="default_config"],
+textarea[name="custom_config"],
+textarea[name="web_search_config"],
+textarea[name="section_fields"],
+textarea[name="metadata"] {
+    min-height: 150px;
+    font-family: monospace;
+    font-size: 12px;
+}
