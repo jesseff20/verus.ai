@@ -122,7 +122,7 @@ export function useAuth() {
       distribuidor: 30,
       servidor: 15,
       visualizador: 1,
-      // Aliases do ROLE_ALIASES do backend (compatibilidade BravoJus)
+      // Aliases legados do ROLE_ALIASES do backend (compatibilidade com dados migrados)
       socio: 85,           // → procurador_geral
       gestor: 70,          // → gerente
       coordenador: 70,     // → gerente

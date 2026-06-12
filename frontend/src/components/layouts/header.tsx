@@ -48,7 +48,7 @@ const roleLabels: Record<string, string> = {
   distribuidor:         'Distribuidor(a)',
   servidor:             'Servidor(a)',
   visualizador:         'Visualizador',
-  // Aliases legados BravoJus
+  // Aliases legados (compatibilidade com dados migrados)
   manager:              'Gestor',
   analyst:              'Analista',
   reviewer:             'Revisor',

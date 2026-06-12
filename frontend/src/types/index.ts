@@ -16,7 +16,7 @@ export interface User {
     | 'distribuidor'
     | 'servidor'
     | 'visualizador'
-    // Aliases BravoJus (ROLE_ALIASES — compatibilidade com dados legados)
+    // Aliases legados (ROLE_ALIASES — compatibilidade com dados migrados)
     | 'socio' | 'advogado_senior' | 'advogado_pleno' | 'advogado_junior' | 'estagiario'
     | 'gestor' | 'coordenador' | 'supervisor'
     | 'analista' | 'assistente' | 'paralegal' | 'secretaria'

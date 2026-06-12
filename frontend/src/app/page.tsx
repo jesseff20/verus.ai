@@ -5,8 +5,27 @@ import Link from 'next/link';
 import {
   ArrowRight, GitBranch, Brain, ShieldCheck, FileText,
   Users, ChevronDown, CheckCircle2, Workflow, Zap, Scale,
-  Building2, Timer, Lock, Database, Menu, X
+  Building2, Timer, Lock, Database, Menu, X, Sun, Moon
 } from 'lucide-react';
+
+const SCHEDULE_URL = 'https://lgpdnow-4.youcanbook.me/';
+
+/* ─── Theme hook (padrão: light) ───────────────────────────── */
+function useLandingTheme() {
+  const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    const saved = localStorage.getItem('verus-landing-theme');
+    if (saved === 'dark') setIsDark(true);
+  }, []);
+  const toggle = () => {
+    const next = !isDark;
+    setIsDark(next);
+    localStorage.setItem('verus-landing-theme', next ? 'dark' : 'light');
+  };
+  return { isDark, toggle, mounted };
+}
 
 /* ─── Scroll reveal hook ───────────────────────────────────── */
 function useReveal(threshold = 0.12) {
@@ -123,15 +142,69 @@ const FLOW_STEPS = [
 /* ─── Main page ─────────────────────────────────────────────── */
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isDark, toggle, mounted } = useLandingTheme();
+
+  const t = {
+    /* backgrounds */
+    bg:           isDark ? 'bg-[#0A0A0A]'            : 'bg-[#FAFAFA]',
+    text:         isDark ? 'text-white'               : 'text-gray-900',
+    muted:        isDark ? 'text-white/60'            : 'text-gray-500',
+    faint:        isDark ? 'text-white/40'            : 'text-gray-400',
+    /* nav */
+    navBg:        isDark ? 'bg-[#0A0A0A]/85'          : 'bg-white/90',
+    navBorder:    isDark ? 'border-white/5'           : 'border-gray-200',
+    navLinks:     isDark ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-gray-900',
+    navEnter:     isDark ? 'text-white/60 hover:text-white' : 'text-gray-600 hover:text-gray-900',
+    mobileBg:     isDark ? 'bg-[#0A0A0A]/98'          : 'bg-white/98',
+    mobileDivider:isDark ? 'border-white/[0.06]'      : 'border-gray-100',
+    mobileItem:   isDark ? 'text-white/70 hover:text-white border-white/[0.05]' : 'text-gray-600 hover:text-gray-900 border-gray-100',
+    mobileLogin:  isDark ? 'text-white/60 border-white/10 hover:border-white/20 hover:text-white' : 'text-gray-600 border-gray-200 hover:border-gray-400 hover:text-gray-900',
+    /* cards */
+    card:         isDark ? 'border-white/6 bg-white/[0.02]'  : 'border-gray-200 bg-white',
+    cardHover:    isDark ? 'hover:bg-white/[0.04] hover:border-white/10' : 'hover:shadow-md hover:border-gray-300',
+    cardInner:    isDark ? 'border-white/6 bg-white/[0.03]'  : 'border-gray-200 bg-gray-50',
+    iconBg:       isDark ? 'bg-[#7030A0]/15'          : 'bg-purple-100',
+    /* section divider */
+    divider:      isDark ? 'border-white/5'           : 'border-gray-100',
+    /* IA cards */
+    iaCard:       isDark ? 'border-[#7030A0]/20 bg-[#7030A0]/5 hover:bg-[#7030A0]/8 hover:border-[#7030A0]/35' : 'border-purple-200 bg-purple-50 hover:bg-purple-100 hover:border-purple-300',
+    iaCaption:    isDark ? 'text-white/30'            : 'text-gray-400',
+    iaBody:       isDark ? 'text-white/45'            : 'text-gray-600',
+    iaTagColor:   isDark ? '#C084FC'                  : '#7030A0',
+    iaTagBorder:  isDark ? 'rgba(112,48,160,0.25)'    : 'rgba(112,48,160,0.3)',
+    iaTagBg:      isDark ? 'rgba(112,48,160,0.08)'    : 'rgba(112,48,160,0.06)',
+    iaPanel:      isDark ? 'border-white/6 bg-white/[0.02]' : 'border-gray-200 bg-gray-50',
+    /* flow viz */
+    flowBorder:   isDark ? 'border-white/8 bg-white/[0.02]' : 'border-gray-200 bg-white',
+    flowLine:     isDark ? 'bg-white/[0.08]'          : 'bg-gray-300',
+    flowCaption:  isDark ? 'text-white/30'            : 'text-gray-400',
+    flowRole:     isDark ? 'text-white/35'            : 'text-gray-400',
+    /* CTA */
+    ctaBorder:    isDark ? 'border-[#7030A0]/25'      : 'border-purple-200',
+    ctaBg:        isDark
+      ? 'radial-gradient(ellipse at center top, rgba(112,48,160,0.12) 0%, rgba(10,10,10,0) 70%)'
+      : 'radial-gradient(ellipse at center top, rgba(112,48,160,0.07) 0%, rgba(250,250,250,0) 70%)',
+    ctaInner:     isDark
+      ? 'radial-gradient(ellipse at 50% 0%, rgba(91,46,224,0.08) 0%, transparent 70%)'
+      : 'radial-gradient(ellipse at 50% 0%, rgba(91,46,224,0.04) 0%, transparent 70%)',
+    ctaBody:      isDark ? 'text-white/50'            : 'text-gray-500',
+    /* footer */
+    footerCaption:isDark ? 'text-white/25'            : 'text-gray-400',
+    footerLinks:  isDark ? 'text-white/30 hover:text-white/60' : 'text-gray-400 hover:text-gray-600',
+    /* secondary btn */
+    secBtn:       isDark
+      ? 'border-white/10 hover:border-white/20 hover:bg-white/5 text-white/70 hover:text-white'
+      : 'border-gray-200 hover:border-gray-400 hover:bg-gray-100 text-gray-600 hover:text-gray-900',
+  };
 
   return (
     <div
-      className="min-h-screen bg-[#0A0A0A] text-white"
+      className={`min-h-screen transition-colors duration-500 ${t.bg} ${t.text}`}
       style={{ fontFamily: 'var(--font-sora, Sora, sans-serif)' }}
     >
-      {/* ── Noise texture overlay ── */}
+      {/* Noise texture */}
       <div
-        className="fixed inset-0 pointer-events-none z-0 opacity-[0.025]"
+        className={`fixed inset-0 pointer-events-none z-0 ${isDark ? 'opacity-[0.025]' : 'opacity-[0.012]'}`}
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           backgroundSize: '200px 200px',
@@ -139,37 +212,53 @@ export default function LandingPage() {
       />
 
       {/* ── Nav ─────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-xl bg-[#0A0A0A]/80">
+      <nav className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl transition-colors duration-300 ${t.navBorder} ${t.navBg}`}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="text-lg font-semibold tracking-tight">
+          <span className={`text-lg font-semibold tracking-tight ${t.text}`}>
             Verus<span className="text-[#8B5CF6]">.</span>AI
           </span>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8 text-sm text-white/60">
-            <a href="#problema" className="hover:text-white transition-colors">Problema</a>
-            <a href="#plataforma" className="hover:text-white transition-colors">Plataforma</a>
-            <a href="#fluxos" className="hover:text-white transition-colors">Workflows</a>
-            <a href="#ia" className="hover:text-white transition-colors">IA</a>
-            <a href="#seguranca" className="hover:text-white transition-colors">Segurança</a>
+          <div className={`hidden md:flex items-center gap-8 text-sm ${t.navLinks} transition-colors`}>
+            <a href="#problema" className="transition-colors">Problema</a>
+            <a href="#plataforma" className="transition-colors">Plataforma</a>
+            <a href="#fluxos" className="transition-colors">Workflows</a>
+            <a href="#ia" className="transition-colors">IA</a>
+            <a href="#seguranca" className="transition-colors">Segurança</a>
           </div>
 
           <div className="flex items-center gap-2">
             <Link
               href="/login"
-              className="hidden sm:block text-sm text-white/60 hover:text-white transition-colors px-4 py-2"
+              className={`hidden sm:block text-sm transition-colors px-4 py-2 ${t.navEnter}`}
             >
               Entrar
             </Link>
             <a
-              href="#cta"
-              className="hidden sm:block text-sm font-medium px-4 py-2 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors"
+              href={SCHEDULE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:block text-sm font-medium px-4 py-2 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors text-white"
             >
               Solicitar demo
             </a>
+            {/* Theme toggle */}
+            {mounted && (
+              <button
+                onClick={toggle}
+                className={`p-2 rounded-lg transition-colors ${
+                  isDark
+                    ? 'text-white/50 hover:text-white hover:bg-white/8'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                }`}
+                aria-label={isDark ? 'Modo claro' : 'Modo escuro'}
+              >
+                {isDark ? <Sun size={17} /> : <Moon size={17} />}
+              </button>
+            )}
             {/* Hamburger mobile */}
             <button
-              className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
+              className={`md:hidden p-2 transition-colors ${isDark ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={menuOpen}
@@ -178,47 +267,49 @@ export default function LandingPage() {
             </button>
           </div>
         </div>
-      </nav>
 
-      {/* Mobile menu dropdown */}
-      {menuOpen && (
-        <div className="md:hidden border-t border-white/[0.06] bg-[#0A0A0A]/98 backdrop-blur-xl">
-          <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
-            {[
-              { href: '#problema', label: 'Problema' },
-              { href: '#plataforma', label: 'Plataforma' },
-              { href: '#fluxos', label: 'Workflows' },
-              { href: '#ia', label: 'IA' },
-              { href: '#seguranca', label: 'Segurança' },
-            ].map(item => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="py-3 px-2 text-sm text-white/70 hover:text-white border-b border-white/[0.05] last:border-0 transition-colors"
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="pt-3 flex flex-col gap-2">
-              <Link
-                href="/login"
-                onClick={() => setMenuOpen(false)}
-                className="py-2.5 text-sm text-center text-white/60 border border-white/10 rounded-lg hover:border-white/20 hover:text-white transition-colors"
-              >
-                Entrar
-              </Link>
-              <a
-                href="#cta"
-                onClick={() => setMenuOpen(false)}
-                className="py-2.5 text-sm text-center font-medium rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors"
-              >
-                Solicitar demo
-              </a>
+        {/* Mobile menu dropdown */}
+        {menuOpen && (
+          <div className={`md:hidden border-t backdrop-blur-xl transition-colors ${t.mobileDivider} ${t.mobileBg}`}>
+            <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
+              {[
+                { href: '#problema', label: 'Problema' },
+                { href: '#plataforma', label: 'Plataforma' },
+                { href: '#fluxos', label: 'Workflows' },
+                { href: '#ia', label: 'IA' },
+                { href: '#seguranca', label: 'Segurança' },
+              ].map(item => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`py-3 px-2 text-sm border-b last:border-0 transition-colors ${t.mobileItem}`}
+                >
+                  {item.label}
+                </a>
+              ))}
+              <div className="pt-3 flex flex-col gap-2">
+                <Link
+                  href="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className={`py-2.5 text-sm text-center border rounded-lg transition-colors ${t.mobileLogin}`}
+                >
+                  Entrar
+                </Link>
+                <a
+                  href={SCHEDULE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="py-2.5 text-sm text-center font-medium rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-colors text-white"
+                >
+                  Solicitar demo
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </nav>
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <div className="relative pt-32 pb-24 px-6 overflow-hidden">
@@ -226,7 +317,7 @@ export default function LandingPage() {
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center, rgba(112,48,160,0.18) 0%, transparent 70%)',
+            background: `radial-gradient(ellipse at center, rgba(112,48,160,${isDark ? '0.18' : '0.10'}) 0%, transparent 70%)`,
           }}
         />
 
@@ -245,7 +336,7 @@ export default function LandingPage() {
             <span className="text-[#C084FC]">procuradorias</span>
           </h1>
 
-          <p className="text-lg text-white/70 max-w-2xl mx-auto leading-relaxed mb-10">
+          <p className={`text-lg max-w-2xl mx-auto leading-relaxed mb-10 ${t.muted}`}>
             Processos judiciais e administrativos, fluxos BPMN por papel,
             geração de peças com IA e peticionamento — em uma plataforma construída
             para a realidade do setor público.
@@ -253,16 +344,18 @@ export default function LandingPage() {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full sm:w-auto">
             <a
-              href="mailto:demo@bravonix.com.br"
-              className="group flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm"
-              style={{ boxShadow: '0 0 24px rgba(112,48,160,0.4)' }}
+              href={SCHEDULE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm text-white"
+              style={{ boxShadow: '0 0 24px rgba(112,48,160,0.35)' }}
             >
               Solicitar demonstração
               <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
             </a>
             <Link
               href="/login"
-              className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all font-medium text-sm text-white/70 hover:text-white"
+              className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg border transition-all font-medium text-sm ${t.secBtn}`}
             >
               Já tenho acesso
             </Link>
@@ -270,21 +363,21 @@ export default function LandingPage() {
 
           {/* Scroll indicator */}
           <div className="mt-16 flex justify-center scroll-nudge">
-            <ChevronDown size={20} className="text-white/20" />
+            <ChevronDown size={20} className={t.faint} />
           </div>
         </div>
       </div>
 
       {/* ── Problema ─────────────────────────────────────────── */}
-      <Section id="problema" className="py-24 px-6 border-t border-white/5">
+      <Section id="problema" className={`py-24 px-6 border-t ${t.divider}`}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-xs font-mono text-[#8B5CF6] uppercase tracking-widest mb-4">O problema</p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               Procuradorias operam com ferramentas{' '}
-              <span className="text-white/40">que não foram feitas para elas</span>
+              <span className={t.faint}>que não foram feitas para elas</span>
             </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
+            <p className={`max-w-xl mx-auto ${t.muted}`}>
               A gestão jurídica do setor público tem desafios únicos que escritórios privados
               não têm. As plataformas do mercado ignoram isso.
             </p>
@@ -294,15 +387,15 @@ export default function LandingPage() {
             {PROBLEMS.map((p, i) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-white/6 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all"
+                className={`p-6 rounded-xl border transition-all ${t.card} ${t.cardHover}`}
               >
                 <div className="flex items-start gap-4">
-                  <div className="shrink-0 w-9 h-9 rounded-lg bg-[#7030A0]/15 flex items-center justify-center">
+                  <div className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center ${t.iconBg}`}>
                     <p.icon size={17} className="text-[#8B5CF6]" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-sm mb-1.5">{p.title}</h3>
-                    <p className="text-white/45 text-sm leading-relaxed">{p.desc}</p>
+                    <p className={`text-sm leading-relaxed ${t.muted}`}>{p.desc}</p>
                   </div>
                 </div>
               </div>
@@ -327,7 +420,7 @@ export default function LandingPage() {
             {FEATURES.map((f, i) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-white/6 bg-white/[0.02] hover:border-white/12 hover:bg-white/[0.035] transition-all group"
+                className={`p-6 rounded-xl border transition-all group ${t.card} ${t.cardHover}`}
               >
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-all group-hover:scale-105"
@@ -336,7 +429,7 @@ export default function LandingPage() {
                   <f.icon size={18} style={{ color: f.color }} />
                 </div>
                 <h3 className="font-semibold text-sm mb-2">{f.title}</h3>
-                <p className="text-white/45 text-sm leading-relaxed">{f.desc}</p>
+                <p className={`text-sm leading-relaxed ${t.muted}`}>{f.desc}</p>
               </div>
             ))}
           </div>
@@ -344,7 +437,7 @@ export default function LandingPage() {
       </Section>
 
       {/* ── Workflows ────────────────────────────────────────── */}
-      <Section id="fluxos" className="py-24 px-6 border-t border-white/5">
+      <Section id="fluxos" className={`py-24 px-6 border-t ${t.divider}`}>
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -353,7 +446,7 @@ export default function LandingPage() {
                 O fluxo real da procuradoria,{' '}
                 <span className="text-[#8B5CF6]">modelado e executável</span>
               </h2>
-              <p className="text-white/50 leading-relaxed mb-8">
+              <p className={`leading-relaxed mb-8 ${t.muted}`}>
                 Mapeie os fluxos judiciais e administrativos com swim lanes por papel.
                 Cada tarefa é atribuída automaticamente ao papel correto.
                 Gateways controlam redistribuições, avocações e peticionamentos.
@@ -365,7 +458,7 @@ export default function LandingPage() {
                   'Versionamento de fluxos com publicação controlada',
                   'Histórico imutável de execução por processo',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-white/60">
+                  <li key={i} className={`flex items-start gap-3 text-sm ${t.muted}`}>
                     <CheckCircle2 size={15} className="text-[#8B5CF6] mt-0.5 shrink-0" />
                     {item}
                   </li>
@@ -374,14 +467,14 @@ export default function LandingPage() {
             </div>
 
             {/* Flow visualization */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6">
-              <p className="text-xs text-white/30 font-mono mb-5">
+            <div className={`rounded-2xl border p-6 ${t.flowBorder}`}>
+              <p className={`text-xs font-mono mb-5 ${t.flowCaption}`}>
                 Fluxograma Judicial — 1º Grau (exemplo)
               </p>
               <div className="relative pl-5">
                 {/* Linha vertical conectora */}
                 <div
-                  className="absolute left-[6px] top-[14px] w-px bg-white/[0.08]"
+                  className={`absolute left-[6px] top-[14px] w-px ${t.flowLine}`}
                   style={{ bottom: '28px' }}
                 />
                 <div className="space-y-2">
@@ -395,8 +488,8 @@ export default function LandingPage() {
                           flexShrink: 0,
                         }}
                       />
-                      <div className="flex-1 p-3 rounded-lg border border-white/6 bg-white/[0.03]">
-                        <p className="text-xs text-white/35 mb-0.5">{step.role}</p>
+                      <div className={`flex-1 p-3 rounded-lg border ${t.cardInner}`}>
+                        <p className={`text-xs mb-0.5 ${t.flowRole}`}>{step.role}</p>
                         <p className="text-sm font-medium">{step.action}</p>
                       </div>
                     </div>
@@ -406,7 +499,7 @@ export default function LandingPage() {
                       className="relative z-10 shrink-0 w-3 h-3 rounded-full"
                       style={{ background: '#34D399', boxShadow: '0 0 6px rgba(52,211,153,0.5)' }}
                     />
-                    <p className="text-xs text-white/30 font-mono">Processo arquivado</p>
+                    <p className={`text-xs font-mono ${t.flowCaption}`}>Processo arquivado</p>
                   </div>
                 </div>
               </div>
@@ -422,9 +515,9 @@ export default function LandingPage() {
             <p className="text-xs font-mono text-[#8B5CF6] uppercase tracking-widest mb-4">Inteligência artificial</p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               IA que entende o contexto jurídico{' '}
-              <span className="text-white/40">do setor público</span>
+              <span className={t.faint}>do setor público</span>
             </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
+            <p className={`max-w-xl mx-auto ${t.muted}`}>
               O assistente de IA conhece o fluxo, o papel do usuário e o histórico do processo.
               Não é um chatbot genérico — é um copilot jurídico especializado.
             </p>
@@ -450,13 +543,17 @@ export default function LandingPage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-[#7030A0]/20 bg-[#7030A0]/5 hover:bg-[#7030A0]/8 hover:border-[#7030A0]/35 transition-all"
+                className={`p-6 rounded-xl border transition-all ${t.iaCard}`}
               >
                 <h3 className="font-semibold text-sm mb-2">{item.title}</h3>
-                <p className="text-white/45 text-sm leading-relaxed mb-4">{item.desc}</p>
+                <p className={`text-sm leading-relaxed mb-4 ${t.iaBody}`}>{item.desc}</p>
                 <span
                   className="text-[10px] font-mono px-2 py-0.5 rounded border"
-                  style={{ color: '#C084FC', borderColor: '#7030A040', background: '#7030A015' }}
+                  style={{
+                    color: t.iaTagColor,
+                    borderColor: t.iaTagBorder,
+                    background: t.iaTagBg,
+                  }}
                 >
                   {item.tag}
                 </span>
@@ -464,14 +561,14 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-white/6 bg-white/[0.02] p-6">
+          <div className={`rounded-xl border p-6 ${t.iaPanel}`}>
             <div className="flex items-start gap-3">
               <div className="shrink-0 w-8 h-8 rounded-lg bg-[#5B2EE0]/20 flex items-center justify-center">
                 <Brain size={15} className="text-[#8B5CF6]" />
               </div>
               <div>
-                <p className="text-xs text-white/30 font-mono mb-1">Providers de IA</p>
-                <p className="text-sm text-white/60">
+                <p className={`text-xs font-mono mb-1 ${t.iaCaption}`}>Providers de IA</p>
+                <p className={`text-sm ${t.muted}`}>
                   Claude (Anthropic) como modelo primário + OpenAI como fallback.
                   Dados nunca são usados para treino. Conformidade LGPD garantida por design.
                 </p>
@@ -482,7 +579,7 @@ export default function LandingPage() {
       </Section>
 
       {/* ── Segurança ────────────────────────────────────────── */}
-      <Section id="seguranca" className="py-24 px-6 border-t border-white/5">
+      <Section id="seguranca" className={`py-24 px-6 border-t ${t.divider}`}>
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="order-2 md:order-1">
@@ -495,11 +592,11 @@ export default function LandingPage() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="p-4 rounded-xl border border-white/6 bg-white/[0.02]"
+                    className={`p-4 rounded-xl border ${t.card}`}
                   >
                     <item.icon size={18} className="text-[#8B5CF6] mb-3" />
                     <p className="text-sm font-medium mb-1">{item.label}</p>
-                    <p className="text-xs text-white/35">{item.sub}</p>
+                    <p className={`text-xs ${t.faint}`}>{item.sub}</p>
                   </div>
                 ))}
               </div>
@@ -511,7 +608,7 @@ export default function LandingPage() {
                 Construída para dados{' '}
                 <span className="text-[#8B5CF6]">jurídicos sensíveis</span>
               </h2>
-              <p className="text-white/50 leading-relaxed mb-6">
+              <p className={`leading-relaxed mb-6 ${t.muted}`}>
                 Dados de processos públicos exigem rigor. A plataforma implementa isolamento
                 por órgão em todos os querysets, controle de acesso por papel baseado nos
                 fluxos BPMN e auditoria de cada ação.
@@ -523,7 +620,7 @@ export default function LandingPage() {
                   'Revogação de tokens no logout',
                   'Rate limiting por usuário e por endpoint sensível',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-white/55">
+                  <li key={i} className={`flex items-start gap-3 text-sm ${t.muted}`}>
                     <CheckCircle2 size={14} className="text-[#8B5CF6] mt-0.5 shrink-0" />
                     {item}
                   </li>
@@ -538,34 +635,34 @@ export default function LandingPage() {
       <Section id="cta" className="py-24 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <div
-            className="rounded-2xl border border-[#7030A0]/25 p-12 relative overflow-hidden"
-            style={{ background: 'radial-gradient(ellipse at center top, rgba(112,48,160,0.12) 0%, rgba(10,10,10,0) 70%)' }}
+            className={`rounded-2xl border p-12 relative overflow-hidden ${t.ctaBorder}`}
+            style={{ background: t.ctaBg }}
           >
             <div
               className="absolute inset-0 pointer-events-none"
-              style={{
-                background: 'radial-gradient(ellipse at 50% 0%, rgba(91,46,224,0.08) 0%, transparent 70%)',
-              }}
+              style={{ background: t.ctaInner }}
             />
             <h2 className="text-3xl font-bold tracking-tight mb-4 relative">
               Leve sua procuradoria para o próximo nível
             </h2>
-            <p className="text-white/50 leading-relaxed mb-8 relative">
+            <p className={`leading-relaxed mb-8 relative ${t.ctaBody}`}>
               Agende uma demonstração personalizada. Mostraremos como a plataforma
               se adapta ao fluxo real da sua procuradoria.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center relative">
               <a
-                href="mailto:demo@bravonix.com.br"
-                className="group flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm"
+                href={SCHEDULE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#7030A0] hover:bg-[#5B2EE0] transition-all font-medium text-sm text-white"
                 style={{ boxShadow: '0 0 32px rgba(112,48,160,0.35)' }}
               >
-                Solicitar demonstração
+                Agendar demonstração
                 <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
               </a>
               <Link
                 href="/login"
-                className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all font-medium text-sm text-white/65 hover:text-white"
+                className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg border transition-all font-medium text-sm ${t.secBtn}`}
               >
                 Já tenho acesso
               </Link>
@@ -575,18 +672,18 @@ export default function LandingPage() {
       </Section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 py-12 px-6">
+      <footer className={`border-t py-12 px-6 ${t.divider}`}>
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-sm font-semibold">
             Verus<span className="text-[#8B5CF6]">.</span>AI
           </span>
-          <p className="text-xs text-white/25">
+          <p className={`text-xs ${t.footerCaption}`}>
             Plataforma operacional para procuradorias. Powered by Bravonix.
           </p>
-          <div className="flex items-center gap-6 text-xs text-white/30">
-            <Link href="/privacidade" className="hover:text-white/60 transition-colors">Privacidade</Link>
-            <Link href="/cookies" className="hover:text-white/60 transition-colors">Cookies</Link>
-            <Link href="/login" className="hover:text-white/60 transition-colors">Entrar</Link>
+          <div className={`flex items-center gap-6 text-xs ${t.footerLinks}`}>
+            <Link href="/privacidade" className="transition-colors">Privacidade</Link>
+            <Link href="/cookies" className="transition-colors">Cookies</Link>
+            <Link href="/login" className="transition-colors">Entrar</Link>
           </div>
         </div>
       </footer>

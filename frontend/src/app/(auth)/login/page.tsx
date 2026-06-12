@@ -182,7 +182,7 @@ export default function LoginPage() {
             />
             <div>
               <span className={`text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Bravo<span className="text-[#7030A0]">Jus</span>
+                Verus<span className="text-[#7030A0]">.AI</span>
               </span>
               <span className={`block text-[10px] font-medium tracking-widest uppercase ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
                 by Bravonix
@@ -193,28 +193,28 @@ export default function LoginPage() {
 
         {/* Tagline */}
         <p className={`text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
-          Plataforma Jurídica com Inteligência Artificial
+          Inteligência Artificial para Procuradorias Municipais
         </p>
 
         {/* Hero */}
         <h1 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-extrabold tracking-[-0.03em] leading-[1.05] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-          O futuro da advocacia{' '}
+          Sua procuradoria,{' '}
           <span className="text-[#7030A0]">
-            começa aqui.
+            mais eficaz.
           </span>
         </h1>
 
         <p className={`text-base sm:text-lg max-w-xl leading-relaxed mb-10 ${isDark ? 'text-white/55' : 'text-gray-500'}`}>
-          Automatize a produção de peças processuais, simule julgamentos em tribunais reais
-          e tenha controle absoluto sobre cada detalhe dos seus casos, tudo potencializado
-          por inteligência artificial de última geração.
+          Verus.AI centraliza o contencioso, automatiza minutas e pareceres, e coloca
+          a inteligência artificial a serviço de quem defende o interesse público municipal —
+          com rastreabilidade, segurança e conformidade LGPD.
         </p>
 
         {/* Feature Pills */}
         <div className="flex flex-wrap gap-3 mb-10">
           <FeaturePill icon={Brain} text="IA Generativa Jurídica" isDark={isDark} />
-          <FeaturePill icon={Gavel} text="Simulação de Tribunais" isDark={isDark} />
-          <FeaturePill icon={BarChart3} text="Gestão Inteligente" isDark={isDark} />
+          <FeaturePill icon={BarChart3} text="Gestão da Dívida Ativa" isDark={isDark} />
+          <FeaturePill icon={FileText} text="Automação de Minutas" isDark={isDark} />
           <FeaturePill icon={Shield} text="Conformidade LGPD" isDark={isDark} />
         </div>
 
@@ -223,18 +223,18 @@ export default function LoginPage() {
           {[
             {
               icon: Zap,
-              title: 'Velocidade',
-              desc: 'Peças processuais completas em minutos, não dias.',
+              title: 'Eficiência',
+              desc: 'Automatize minutas, pareceres e despachos — foque no que importa.',
             },
             {
               icon: Bot,
-              title: 'Precisão',
-              desc: 'IA treinada com jurisprudência brasileira atualizada.',
+              title: 'Confiabilidade',
+              desc: 'IA com rastreabilidade total, treinada no direito público brasileiro.',
             },
             {
               icon: Sparkles,
-              title: 'Inovação',
-              desc: 'Simulações de julgamento com perfis reais de magistrados.',
+              title: 'Controle',
+              desc: 'Contencioso, dívida ativa e consultivo reunidos em um só lugar.',
             },
           ].map(({ icon: Icon, title, desc }) => (
             <div
@@ -298,7 +298,7 @@ export default function LoginPage() {
               {brandSettings?.system_name || 'Verus.AI'}
             </h2>
             <p className={`mt-1 text-sm ${isDark ? 'text-white/50' : 'text-gray-500'}`}>
-              Acesse sua conta para continuar
+              Acesse o sistema da procuradoria
             </p>
           </div>
 
@@ -334,7 +334,7 @@ export default function LoginPage() {
                   `}
                 >
                   <Users className="w-3.5 h-3.5 mr-1.5" />
-                  Portal do Cliente
+                  Portal do Cidadão
                 </TabsTrigger>
               </TabsList>
 
@@ -424,7 +424,7 @@ export default function LoginPage() {
                 </form>
               </TabsContent>
 
-              {/* Portal do Cliente */}
+              {/* Portal do Cidadão */}
               <TabsContent value="cliente" className="mt-0">
                 <form onSubmit={handleClientSubmit} className="space-y-4">
                   <div className="space-y-1.5">
@@ -525,8 +525,8 @@ export default function LoginPage() {
 
           {/* Disclaimer */}
           <p className={`mt-4 text-center text-[10px] leading-relaxed px-2 ${isDark ? 'text-white/20' : 'text-gray-400'}`}>
-            Verus.AI é um assistente jurídico com IA.{' '}
-            <strong className={`font-medium ${isDark ? 'text-white/30' : 'text-gray-500'}`}>Não substitui advogado habilitado.</strong>
+            Verus.AI é uma plataforma de gestão jurídica com IA{' '}
+            <strong className={`font-medium ${isDark ? 'text-white/30' : 'text-gray-500'}`}>para procuradorias municipais.</strong>
           </p>
         </div>
       </div>
