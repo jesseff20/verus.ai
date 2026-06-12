@@ -326,7 +326,7 @@ function CopilotDialog({ result, open, onClose }: CopilotDialogProps) {
         'Com base nessas informações, por favor:',
         '1. Faça um resumo jurídico estruturado do processo',
         '2. Identifique os principais fundamentos e teses jurídicas',
-        '3. Aponte a relevância prática para advogados',
+        '3. Aponte a relevância prática para procuradores municipais',
         '4. Indique precedentes relacionados se souber',
       );
 

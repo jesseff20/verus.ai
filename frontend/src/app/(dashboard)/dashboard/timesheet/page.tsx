@@ -289,7 +289,7 @@ export default function TimesheetPage() {
                       setValue={(v) => setFormData(p => ({...p, description: v}))}
                       placeholder="Descreva a atividade realizada"
                       rows={3}
-                      aiContext="Descrição de atividade jurídica registrada no timesheet de um advogado ou procurador"
+                      aiContext="Descrição de atividade jurídica registrada no timesheet de um procurador municipal"
                       aiObjective="Melhorar, detalhar ou corrigir a descrição da atividade com linguagem jurídica profissional"
                     />
                   </div>

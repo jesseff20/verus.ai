@@ -17,22 +17,18 @@ import { useToast } from '@/hooks/use-toast';
 import api from '@/lib/api';
 
 const LAWYER_SPECIALTIES_OPTIONS = [
-  'Trabalhista',
-  'Civil',
-  'Criminal',
-  'Tributário',
-  'Empresarial',
   'Administrativo',
+  'Tributário Municipal',
+  'Dívida Ativa',
+  'Licitações e Contratos',
+  'Urbanismo e Uso do Solo',
   'Ambiental',
-  'Consumidor',
-  'Digital',
-  'Eleitoral',
-  'Família e Sucessões',
-  'Imobiliário',
-  'Internacional',
-  'Licitações',
   'Previdenciário',
-  'Propriedade Intelectual',
+  'Constitucional',
+  'Cível',
+  'Responsabilidade Civil do Estado',
+  'Controle Interno e Compliance',
+  'Improbidade Administrativa',
 ];
 
 const BRAZILIAN_STATES = [
@@ -294,9 +290,9 @@ export default function ProfileSettingsPage() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       queryClient.invalidateQueries({ queryKey: ['current-user'] });
-      toast({ title: 'Perfil de advogado atualizado com sucesso!' });
+      toast({ title: 'Perfil profissional atualizado com sucesso!' });
     } catch (err: any) {
-      const detail = err?.response?.data?.detail || 'Erro ao salvar perfil de advogado.';
+      const detail = err?.response?.data?.detail || 'Erro ao salvar perfil profissional.';
       toast({ title: detail, variant: 'destructive' });
     } finally {
       setSavingLawyer(false);
@@ -384,32 +380,32 @@ export default function ProfileSettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Lawyer Profile Card */}
+        {/* Professional Profile Card */}
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Scale className="h-5 w-5" />
-              Perfil de Advogado
+              Perfil Profissional
             </CardTitle>
-            <CardDescription>OAB, especialidades e assinatura digital para documentos</CardDescription>
+            <CardDescription>Registro profissional, especializações e assinatura digital para documentos</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-              {/* OAB Number */}
+              {/* Registration Number */}
               <div className="space-y-2">
-                <Label>Número OAB</Label>
+                <Label>Registro Profissional</Label>
                 <AIInput
-                  placeholder="123.456"
+                  placeholder="ex: OAB/SP 123.456 ou matrícula"
                   value={oabNumber}
                   onChange={(e) => setOabNumber(e.target.value)}
                   setValue={setOabNumber}
-                  aiContext="número de inscrição OAB do advogado"
-                  aiObjective="Formate o número OAB corretamente"
+                  aiContext="registro profissional do procurador ou servidor"
+                  aiObjective="Formate o número de registro profissional corretamente"
                 />
               </div>
-              {/* OAB State */}
+              {/* Registration State */}
               <div className="space-y-2">
-                <Label>Seccional (Estado)</Label>
+                <Label>UF do Registro</Label>
                 <select
                   className="w-full p-2.5 sm:p-2 rounded-md border bg-background text-foreground min-h-[44px] sm:min-h-0"
                   value={oabState}
@@ -425,7 +421,7 @@ export default function ProfileSettingsPage() {
 
             {/* Specialties */}
             <div className="space-y-2">
-              <Label>Especialidades</Label>
+              <Label>Áreas de Atuação</Label>
               <div className="flex flex-wrap gap-2">
                 {LAWYER_SPECIALTIES_OPTIONS.map((specialty) => {
                   const isSelected = lawyerSpecialties.includes(specialty);
@@ -453,12 +449,12 @@ export default function ProfileSettingsPage() {
             <div className="space-y-2">
               <Label>Nome na Assinatura</Label>
               <AIInput
-                placeholder="Dr. Fulano de Tal"
+                placeholder="ex: Dr. Fulano de Tal — Procurador Municipal"
                 value={signatureName}
                 onChange={(e) => setSignatureName(e.target.value)}
                 setValue={setSignatureName}
-                aiContext="nome na assinatura de documentos jurídicos"
-                aiObjective="Formate o nome completo com título profissional para assinatura"
+                aiContext="nome na assinatura de documentos da procuradoria"
+                aiObjective="Formate o nome completo com cargo e registro profissional para assinatura"
               />
               <p className="text-xs text-muted-foreground">
                 Nome como aparece abaixo da assinatura nos documentos gerados.
@@ -506,7 +502,7 @@ export default function ProfileSettingsPage() {
 
             <div className="sticky bottom-0 bg-card pt-4 pb-2 -mx-6 px-6 border-t sm:border-t-0 sm:relative sm:mx-0 sm:px-0 sm:pt-0 sm:pb-0">
               <Button className="w-full min-h-[44px]" onClick={handleSaveLawyerProfile} disabled={savingLawyer}>
-                {savingLawyer ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Salvando...</> : 'Salvar Perfil de Advogado'}
+                {savingLawyer ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Salvando...</> : 'Salvar Perfil Profissional'}
               </Button>
             </div>
           </CardContent>

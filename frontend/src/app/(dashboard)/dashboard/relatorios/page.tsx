@@ -526,7 +526,7 @@ function SampleDataBanner() {
       <AlertTriangle className="h-4 w-4 text-amber-600" />
       <AlertTitle className="text-amber-800">Dados de Exemplo</AlertTitle>
       <AlertDescription className="text-amber-700">
-        Os gráficos estão exibindo dados de demonstração. Execute os seeds de produção ou cadastre dados reais para visualizar métricas do seu escritório.
+        Os gráficos estão exibindo dados de demonstração. Execute os seeds de produção ou cadastre dados reais para visualizar as métricas da procuradoria.
       </AlertDescription>
     </Alert>
   );
@@ -1170,7 +1170,7 @@ export default function RelatoriosPage() {
               <div className="grid gap-6 lg:grid-cols-2">
                 {/* Bar: hours per lawyer */}
                 <ChartCard
-                  title="Horas por Advogado"
+                  title="Horas por Procurador"
                   description="Total de horas registradas no periodo"
                   icon={<Users className="h-5 w-5 text-blue-500" />}
                 >
@@ -1313,8 +1313,8 @@ export default function RelatoriosPage() {
 
               {/* Radar: lawyer performance */}
               <ChartCard
-                title="Performance dos Advogados"
-                description="Comparativo multidimensional: casos, prazos, horas, documentos e receita"
+                title="Performance da Equipe"
+                description="Comparativo multidimensional: processos, prazos, horas e documentos"
                 icon={<Target className="h-5 w-5 text-purple-500" />}
               >
                 <div className="h-[400px]">

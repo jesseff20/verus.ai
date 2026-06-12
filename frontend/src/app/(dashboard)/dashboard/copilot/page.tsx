@@ -1,8 +1,8 @@
 import { CopilotChat } from './components/CopilotChat';
 
 export const metadata = {
-  title: 'Copilot Jurídico | Verus.AI',
-  description: 'Assistente jurídico com IA - peças processuais, jurisprudência e orientação legal',
+  title: 'Copilot de Procuradoria | Verus.AI',
+  description: 'Assistente de procuradoria com IA — peças processuais, jurisprudência municipal e orientação técnica',
 };
 
 interface CopilotPageProps {

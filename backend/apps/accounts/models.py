@@ -135,18 +135,18 @@ class User(AbstractUser):
     avatar = models.ImageField(
         'Avatar', upload_to='avatars/', blank=True, null=True)
 
-    # OAB / Perfil de Advogado
+    # Perfil Profissional
     oab_number = models.CharField(
-        'Número OAB', max_length=20, blank=True,
-        help_text='Número de inscrição na OAB (ex: 123.456)'
+        'Registro Profissional', max_length=20, blank=True,
+        help_text='Número de registro profissional (OAB, inscrição municipal, etc.)'
     )
     oab_state = models.CharField(
-        'Seccional OAB', max_length=2, blank=True,
-        help_text='Estado da seccional (ex: SP, RJ)'
+        'UF do Registro', max_length=2, blank=True,
+        help_text='Estado do registro profissional (ex: SP, RJ)'
     )
     lawyer_specialties = models.JSONField(
-        'Especialidades', default=list, blank=True,
-        help_text='Lista de especialidades jurídicas (ex: ["Trabalhista", "Civil"])'
+        'Especializações', default=list, blank=True,
+        help_text='Áreas de atuação do servidor (ex: ["Administrativo", "Tributário Municipal"])'
     )
     signature_image = models.ImageField(
         'Imagem de Assinatura', upload_to='signatures/', blank=True, null=True,
@@ -953,19 +953,19 @@ class EmailTemplate(models.Model):
 
 
 class ClientMessage(models.Model):
-    """Mensagem entre cliente e advogado via portal do cliente."""
+    """Comunicação entre parte/interessado e servidor via portal."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     client = models.ForeignKey(
         'cases.Client', on_delete=models.CASCADE, related_name='messages',
-        verbose_name='Cliente',
+        verbose_name='Parte / Interessado',
     )
     case = models.ForeignKey(
         'cases.LegalCase', on_delete=models.SET_NULL, null=True, blank=True,
-        related_name='client_messages', verbose_name='Caso',
+        related_name='client_messages', verbose_name='Processo',
     )
     sender_type = models.CharField(
         'Tipo de Remetente', max_length=10,
-        choices=[('client', 'Cliente'), ('lawyer', 'Advogado')],
+        choices=[('client', 'Parte / Interessado'), ('lawyer', 'Servidor Público')],
     )
     sender_name = models.CharField('Nome do Remetente', max_length=200)
     content = models.TextField('Conteudo')
@@ -977,8 +977,8 @@ class ClientMessage(models.Model):
 
     class Meta:
         ordering = ['created_at']
-        verbose_name = 'Mensagem do Cliente'
-        verbose_name_plural = 'Mensagens do Cliente'
+        verbose_name = 'Comunicação da Parte'
+        verbose_name_plural = 'Comunicações das Partes'
 
     def __str__(self):
         return f'{self.sender_name} ({self.sender_type}) — {self.created_at}'

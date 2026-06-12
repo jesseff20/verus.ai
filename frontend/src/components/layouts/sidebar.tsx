@@ -125,7 +125,7 @@ const getNavItems = (isAnalyst: boolean): NavItem[] => {
       requiredPermissions: ['documents.view_own', 'documents.view_all'],
       children: [
         {
-          title: 'Meus Casos',
+          title: 'Meus Processos',
           href: '/dashboard/processos',
           icon: Briefcase,
           requiredPermissions: ['documents.view_own', 'documents.view_all'],
@@ -193,7 +193,7 @@ const getNavItems = (isAnalyst: boolean): NavItem[] => {
           requiredPermissions: ['documents.view_own', 'documents.view_all'],
         },
         {
-          title: 'Contratos',
+          title: 'Contratos Administrativos',
           href: '/dashboard/contratos',
           icon: ClipboardList,
           requiredPermissions: ['documents.view_own', 'documents.view_all'],
@@ -234,7 +234,7 @@ const getNavItems = (isAnalyst: boolean): NavItem[] => {
           requiredPermissions: ['assistant.use'],
         },
         {
-          title: 'Simulações',
+          title: 'Análise de Decisão Judicial',
           href: '/dashboard/simulations',
           icon: FlaskConical,
           badge: 'IA',
@@ -247,25 +247,13 @@ const getNavItems = (isAnalyst: boolean): NavItem[] => {
               requiredPermissions: ['assistant.use'],
             },
             {
-              title: 'Simulação de Júri',
-              href: '/dashboard/simulations/jury',
-              icon: Users,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'Simulação de Sentença',
+              title: 'Previsão de Sentença',
               href: '/dashboard/simulations/judge',
               icon: Scale,
               requiredPermissions: ['assistant.use'],
             },
             {
-              title: 'Simulação STF',
-              href: '/dashboard/simulations/stf',
-              icon: Landmark,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: '2a Instância',
+              title: '2ª Instância / Acórdão',
               href: '/dashboard/simulations/acordao',
               icon: Landmark,
               requiredPermissions: ['assistant.use'],
@@ -277,57 +265,15 @@ const getNavItems = (isAnalyst: boolean): NavItem[] => {
               requiredPermissions: ['assistant.use'],
             },
             {
-              title: 'Justiça Eleitoral',
-              href: '/dashboard/simulations/eleitoral',
-              icon: Vote,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'Turma Recursal',
-              href: '/dashboard/simulations/turma-recursal',
-              icon: Scale,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'Justiça Militar',
-              href: '/dashboard/simulations/militar',
-              icon: Swords,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'STM',
-              href: '/dashboard/simulations/stm',
-              icon: ShieldCheck,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'JEC',
-              href: '/dashboard/simulations/jec',
-              icon: Gavel,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'JECRIM',
-              href: '/dashboard/simulations/jecrim',
-              icon: Gavel,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'Vara do Trabalho',
-              href: '/dashboard/simulations/trabalho',
-              icon: Scale,
-              requiredPermissions: ['assistant.use'],
-            },
-            {
-              title: 'TRT',
-              href: '/dashboard/simulations/trt',
+              title: 'STF',
+              href: '/dashboard/simulations/stf',
               icon: Landmark,
               requiredPermissions: ['assistant.use'],
             },
             {
-              title: 'TST',
-              href: '/dashboard/simulations/tst-trabalho',
-              icon: Building,
+              title: 'Turma Recursal / JEC',
+              href: '/dashboard/simulations/jec',
+              icon: Gavel,
               requiredPermissions: ['assistant.use'],
             },
           ],
@@ -392,7 +338,7 @@ const getNavItems = (isAnalyst: boolean): NavItem[] => {
             ]
           : []),
         {
-          title: 'Petição por IA',
+          title: 'Minuta por IA',
           href: '/dashboard/peticao-ia',
           icon: FileEdit,
           badge: 'IA',
@@ -516,8 +462,7 @@ export function Sidebar({ onNavigate }: SidebarProps = {}) {
   const { user } = useAuth();
 
   const operatorRoles = [
-    'analyst', 'analista', 'advogado_senior', 'advogado_pleno', 'advogado_junior',
-    'assessor', 'defensor', 'promotor', 'paralegal',
+    'procurador', 'assessor_gerencial', 'assessor_gabinete', 'servidor', 'distribuidor',
   ];
   const isAnalyst = operatorRoles.includes(user?.role || '');
 

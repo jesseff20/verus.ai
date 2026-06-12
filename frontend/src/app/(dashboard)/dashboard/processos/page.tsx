@@ -67,28 +67,26 @@ interface PaginatedResponse {
 }
 
 const statusConfig: Record<string, { label: string; color: string }> = {
-  ativo: { label: 'Ativo', color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' },
+  ativo: { label: 'Em Curso', color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' },
   aguardando: { label: 'Aguardando', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' },
   suspenso: { label: 'Suspenso', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' },
   encerrado: { label: 'Encerrado', color: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200' },
   arquivado: { label: 'Arquivado', color: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' },
-  ganho: { label: 'Ganho', color: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200' },
-  perdido: { label: 'Perdido', color: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' },
-  acordo: { label: 'Acordo', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' },
+  ganho: { label: 'Procedente', color: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200' },
+  perdido: { label: 'Improcedente', color: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' },
+  acordo: { label: 'Acordo / Transação', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' },
 };
 
 const especialidadeConfig: Record<string, string> = {
-  civel: 'Cível',
-  criminal: 'Criminal',
-  trabalhista: 'Trabalhista',
-  tributario: 'Tributário',
   administrativo: 'Administrativo',
-  previdenciario: 'Previdenciário',
-  familia: 'Família',
-  empresarial: 'Empresarial',
+  tributario: 'Tributário Municipal',
+  divida_ativa: 'Dívida Ativa',
+  civel: 'Cível',
   ambiental: 'Ambiental',
-  consumidor: 'Consumidor',
-  imobiliario: 'Imobiliário',
+  urbanismo: 'Urbanismo e Uso do Solo',
+  licitacoes: 'Licitações e Contratos',
+  previdenciario: 'Previdenciário',
+  constitucional: 'Constitucional',
   outros: 'Outros',
 };
 
@@ -147,16 +145,16 @@ export default function ProcessosPage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
             <Scale className="h-7 w-7 sm:h-8 sm:w-8" />
-            Casos Jurídicos
+            Processos Jurídicos
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Gerencie seus casos e acompanhe o andamento processual
+            Gerencie os processos da procuradoria e acompanhe o andamento processual
           </p>
         </div>
         <Button asChild className="hidden sm:inline-flex">
           <Link href="/dashboard/processos/novo">
             <Plus className="h-4 w-4 mr-2" />
-            Novo Caso
+            Novo Processo
           </Link>
         </Button>
       </div>
@@ -166,12 +164,12 @@ export default function ProcessosPage() {
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Casos</CardTitle>
+              <CardTitle className="text-sm font-medium">Total de Processos</CardTitle>
               <FolderOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{statsData.total_casos}</div>
-              <p className="text-xs text-muted-foreground">{statsData.casos_ativos} ativos</p>
+              <p className="text-xs text-muted-foreground">{statsData.casos_ativos} em curso</p>
             </CardContent>
           </Card>
           <Card>
@@ -196,7 +194,7 @@ export default function ProcessosPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Casos Encerrados</CardTitle>
+              <CardTitle className="text-sm font-medium">Processos Encerrados</CardTitle>
               <CheckCircle2 className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
@@ -212,8 +210,8 @@ export default function ProcessosPage() {
       {/* Filtros */}
       <Card>
         <CardHeader>
-          <CardTitle>Meus Casos</CardTitle>
-          <CardDescription>{data?.count ?? 0} casos encontrados</CardDescription>
+          <CardTitle>Processos</CardTitle>
+          <CardDescription>{data?.count ?? 0} processos encontrados</CardDescription>
         </CardHeader>
         <CardContent>
           {/* Search bar - sticky on mobile */}
@@ -221,7 +219,7 @@ export default function ProcessosPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Buscar por número, cliente, título..."
+                placeholder="Buscar por número, parte, título..."
                 className="pl-9 text-[16px] sm:text-sm"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
@@ -233,13 +231,13 @@ export default function ProcessosPage() {
           <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
             {[
               { value: 'all', label: 'Todos' },
-              { value: 'ativo', label: 'Ativo' },
+              { value: 'ativo', label: 'Em Curso' },
               { value: 'aguardando', label: 'Aguardando' },
               { value: 'suspenso', label: 'Suspenso' },
               { value: 'encerrado', label: 'Encerrado' },
-              { value: 'ganho', label: 'Ganho' },
-              { value: 'perdido', label: 'Perdido' },
-              { value: 'acordo', label: 'Acordo' },
+              { value: 'ganho', label: 'Procedente' },
+              { value: 'perdido', label: 'Improcedente' },
+              { value: 'acordo', label: 'Acordo / Transação' },
               { value: 'arquivado', label: 'Arquivado' },
             ].map((item) => (
               <button
@@ -297,16 +295,16 @@ export default function ProcessosPage() {
           ) : error ? (
             <div className="flex items-center justify-center py-12 text-destructive gap-2">
               <AlertTriangle className="h-5 w-5" />
-              <span>Erro ao carregar casos</span>
+              <span>Erro ao carregar processos</span>
             </div>
           ) : casos.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-muted-foreground gap-3">
               <Scale className="h-12 w-12 opacity-30" />
-              <p className="text-sm">Nenhum caso encontrado</p>
+              <p className="text-sm">Nenhum processo encontrado</p>
               <Button asChild size="sm" variant="outline">
                 <Link href="/dashboard/processos/novo">
                   <Plus className="h-4 w-4 mr-2" />
-                  Criar primeiro caso
+                  Cadastrar primeiro processo
                 </Link>
               </Button>
             </div>
@@ -355,7 +353,7 @@ export default function ProcessosPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Caso</TableHead>
-                      <TableHead>Cliente</TableHead>
+                      <TableHead>Parte / Ente</TableHead>
                       <TableHead>Especialidade</TableHead>
                       <TableHead>Tribunal / Vara</TableHead>
                       <TableHead>Prazos</TableHead>

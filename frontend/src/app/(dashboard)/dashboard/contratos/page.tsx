@@ -133,23 +133,18 @@ function formatDate(iso: string) {
 // ── Contract Type Cards ──
 
 const CONTRACT_TYPES = [
-  { value: 'honorarios', title: 'Honorários', description: 'Contrato de prestação de serviços advocatícios com definição de honorários.', icon: Scale },
-  { value: 'procuracao', title: 'Procuração', description: 'Instrumento de mandato que confere poderes ao advogado.', icon: ScrollText },
-  { value: 'substabelecimento', title: 'Substabelecimento', description: 'Transferencia de poderes a outro advogado.', icon: Users },
-  { value: 'prestacao_servicos', title: 'Prestação de Serviços', description: 'Contrato de prestação de serviços jurídicos.', icon: Briefcase },
-  { value: 'consultoria', title: 'Consultoria', description: 'Contrato de consultoria jurídica.', icon: Briefcase },
-  { value: 'confidencialidade', title: 'NDA', description: 'Acordo de confidencialidade.', icon: ShieldCheck },
-  { value: 'parceria', title: 'Parceria', description: 'Contrato de parceria entre partes.', icon: Handshake },
-  { value: 'cessao_credito', title: 'Cessão de Crédito', description: 'Contrato de cessão de crédito.', icon: FileSignature },
-  { value: 'acordo_extrajudicial', title: 'Acordo Extrajudicial', description: 'Acordo firmado fora do âmbito judicial.', icon: Handshake },
-  { value: 'distrato', title: 'Distrato', description: 'Rescisão contratual entre as partes.', icon: FileText },
-  { value: 'compromisso_arbitragem', title: 'Arbitragem', description: 'Compromisso arbitral para solução de conflitos.', icon: Scale },
-  { value: 'acordo_acionistas', title: 'Acordo de Acionistas', description: 'Acordo entre acionistas de sociedade.', icon: Building2 },
-  { value: 'contrato_social', title: 'Contrato Social', description: 'Constituição ou alteração de sociedade.', icon: Building2 },
-  { value: 'termos_uso', title: 'Termos de Uso', description: 'Termos e condições de uso de serviços.', icon: FileText },
-  { value: 'contrato_locacao', title: 'Locação', description: 'Contrato de locação de imóvel.', icon: Home },
-  { value: 'compra_venda', title: 'Compra e Venda', description: 'Contrato de compra e venda.', icon: ShoppingCart },
-  { value: 'contrato_trabalho', title: 'Trabalho', description: 'Contrato de trabalho.', icon: UserCheck },
+  { value: 'contrato_administrativo', title: 'Contrato Administrativo', description: 'Contrato de obras, serviços ou fornecimento celebrado pela municipalidade.', icon: Briefcase },
+  { value: 'convenio', title: 'Convênio', description: 'Instrumento de cooperação entre entes públicos ou entidades sem fins lucrativos.', icon: Handshake },
+  { value: 'tac', title: 'TAC / Ajustamento de Conduta', description: 'Termo de Ajustamento de Conduta para adequação a obrigações legais.', icon: Scale },
+  { value: 'acordo_colaboracao', title: 'Acordo de Colaboração', description: 'Parceria com OSC conforme Lei 13.019/2014 (Marco Regulatório das OSCs).', icon: Users },
+  { value: 'procuracao', title: 'Procuração', description: 'Instrumento de mandato em representação do Município.', icon: ScrollText },
+  { value: 'concessao', title: 'Concessão / Permissão', description: 'Concessão ou permissão de serviço público ou uso de bem municipal.', icon: Building2 },
+  { value: 'acordo_extrajudicial', title: 'Acordo Extrajudicial', description: 'Acordo firmado extrajudicialmente pela Fazenda Pública.', icon: Handshake },
+  { value: 'contrato_gestao', title: 'Contrato de Gestão', description: 'Contrato com organização social para gestão de serviço público.', icon: FileSignature },
+  { value: 'cessao_uso', title: 'Cessão de Uso', description: 'Cessão de uso de bem público a terceiros.', icon: FileText },
+  { value: 'cooperacao_tecnica', title: 'Cooperação Técnica', description: 'Acordo de cooperação técnica entre entidades públicas.', icon: Briefcase },
+  { value: 'adesao_ata', title: 'Adesão a Ata de Registro', description: 'Adesão a ata de registro de preços de outro ente (carona).', icon: FileText },
+  { value: 'distrato', title: 'Distrato / Rescisão', description: 'Rescisão de contrato administrativo.', icon: FileText },
 ] as const;
 
 // ── New Contract Dialog ──
@@ -356,7 +351,7 @@ function NewContractDialog() {
         <DialogHeader>
           <DialogTitle>
             {step === 1 && 'Selecione o tipo de contrato'}
-            {step === 2 && 'Selecione o cliente e caso'}
+            {step === 2 && 'Selecione a parte / ente e caso'}
             {step === 3 && 'Preencha os detalhes'}
             {step === 4 && 'Gerando contrato com IA...'}
             {step === 5 && 'Pré-visualização do contrato'}
@@ -438,7 +433,7 @@ function NewContractDialog() {
             <div className="space-y-2">
               <Label>Cliente *</Label>
               <Select value={clientId} onValueChange={(v) => { setClientId(v); setCaseId(''); }}>
-                <SelectTrigger><SelectValue placeholder="Selecione o cliente" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="Selecione a parte / ente" /></SelectTrigger>
                 <SelectContent>
                   {clients.map((c: any) => (
                     <SelectItem key={c.id} value={String(c.id)}>
@@ -472,7 +467,7 @@ function NewContractDialog() {
                 aiContext="título de contrato jurídico"
                 aiObjective="Sugira um título claro e formal para o contrato, incluindo o tipo de contrato e as partes envolvidas"
               />
-              <p className="text-xs text-muted-foreground">Título gerado automaticamente com base no tipo, cliente e caso selecionados.</p>
+              <p className="text-xs text-muted-foreground">Título gerado automaticamente com base no tipo, parte e processo selecionados.</p>
             </div>
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(1)}>
@@ -581,7 +576,7 @@ function NewContractDialog() {
               <>
                 <div className="space-y-2">
                   <Label>Nome do Substabelecido</Label>
-                  <AIInput placeholder="Nome completo do advogado" value={substabelecidoName} onChange={(e) => setSubstabelecidoName(e.target.value)} setValue={setSubstabelecidoName} aiContext="nome do advogado substabelecido na procuração" aiObjective="Formate o nome completo do advogado em letras maiúsculas e com ordem direta, conforme padrão jurídico" />
+                  <AIInput placeholder="Nome completo do procurador" value={substabelecidoName} onChange={(e) => setSubstabelecidoName(e.target.value)} setValue={setSubstabelecidoName} aiContext="nome do procurador substabelecido na procuração municipal" aiObjective="Formate o nome completo do procurador em letras maiúsculas e com ordem direta, conforme padrão jurídico" />
                 </div>
                 <div className="space-y-2">
                   <Label>OAB do Substabelecido</Label>
@@ -745,9 +740,9 @@ export default function ContratosPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Contratos Jurídicos</h1>
+          <h1 className="text-3xl font-bold">Contratos Administrativos</h1>
           <p className="text-muted-foreground">
-            Gerencie todos os tipos de contratos jurídicos do escritório.
+            Gerencie contratos, convênios e instrumentos jurídicos da procuradoria.
           </p>
         </div>
         <NewContractDialog />

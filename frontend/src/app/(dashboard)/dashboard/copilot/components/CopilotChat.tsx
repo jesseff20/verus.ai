@@ -570,7 +570,7 @@ export function CopilotChat({ initialPrompt = '' }: CopilotChatProps) {
           <div className="min-w-0">
             <h1 className="text-sm font-semibold truncate">Copilot</h1>
             <p className="text-xs text-muted-foreground truncate hidden sm:block">
-              Copilot Jurídico · IBM WatsonX
+              Copilot de Procuradoria · IBM WatsonX
             </p>
           </div>
           <span className="ml-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary shrink-0">
@@ -622,7 +622,7 @@ export function CopilotChat({ initialPrompt = '' }: CopilotChatProps) {
         <div className="mx-4 mt-2 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-2.5">
           <Bot className="h-4 w-4 flex-shrink-0 text-primary" />
           <p className="text-sm text-primary">
-            O Copilot identificou algo que precisa da sua atenção
+            O Copilot de Procuradoria identificou algo que precisa da sua atenção
           </p>
         </div>
       )}
@@ -636,10 +636,10 @@ export function CopilotChat({ initialPrompt = '' }: CopilotChatProps) {
                 <Bot className="h-7 w-7 text-primary" />
               </div>
               <div>
-                <h2 className="text-base font-semibold">Copilot Jurídico Verus.AI</h2>
+                <h2 className="text-base font-semibold">Copilot de Procuradoria · Verus.AI</h2>
                 <p className="mt-1 text-sm text-muted-foreground max-w-sm">
-                  Especialista em direito e peças processuais. Pergunte sobre jurisprudência,
-                  legislação, prazos ou anexe um documento para análise.
+                  Especialista em direito público e processos municipais. Pergunte sobre
+                  jurisprudência, prazos, dívida ativa ou anexe um documento para análise.
                 </p>
               </div>
 
@@ -647,10 +647,10 @@ export function CopilotChat({ initialPrompt = '' }: CopilotChatProps) {
               <div className="mt-2 w-full max-w-full overflow-x-auto">
                 <div className="chips-scroll justify-center sm:flex-wrap sm:overflow-visible px-2 sm:px-0">
                   {[
-                    'Como redigir uma petição inicial?',
-                    'Qual o prazo para contestação?',
-                    'Como citar jurisprudência do STJ?',
-                    'Diferença entre recurso e apelação',
+                    'Como redigir uma contestação administrativa?',
+                    'Qual o prazo para Fazenda Pública recorrer?',
+                    'Como executar dívida ativa municipal?',
+                    'Diferença entre mandado de segurança e ação anulatória',
                   ].map((suggestion) => (
                     <button
                       key={suggestion}
