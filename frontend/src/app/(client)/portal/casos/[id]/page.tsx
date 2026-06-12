@@ -228,7 +228,7 @@ export default function ClientCaseDetailPage() {
                 <CardContent className="p-4 flex items-center gap-3">
                   <User className="h-5 w-5 text-muted-foreground shrink-0" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Advogado Responsável</p>
+                    <p className="text-xs text-muted-foreground">Procurador Responsável</p>
                     <p className="text-sm font-medium">{caso.advogado_responsavel}</p>
                   </div>
                 </CardContent>

@@ -249,7 +249,7 @@ class LegalCase(models.Model):
         null=True,
         blank=True,
         related_name='casos_responsavel',
-        verbose_name='Advogado Responsável',
+        verbose_name='Procurador Responsável',
     )
 
     # Datas
@@ -1613,9 +1613,9 @@ class TimeEntry(models.Model):
     """Registro de horas trabalhadas por advogado em um caso."""
 
     BILLING_TYPE_CHOICES = [
-        ('billable', 'Faturável'),
-        ('non_billable', 'Não Faturável'),
-        ('pro_bono', 'Pro Bono'),
+        ('billable', 'Atividade Produtiva'),
+        ('non_billable', 'Atividade Administrativa'),
+        ('pro_bono', 'Capacitação / Formação'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

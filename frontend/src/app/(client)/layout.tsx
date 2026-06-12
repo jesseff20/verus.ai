@@ -10,7 +10,6 @@ import {
   FileText,
   ClipboardList,
   MessageSquare,
-  DollarSign,
   Calendar,
   Bell,
   User,
@@ -25,12 +24,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 const SIDEBAR_ITEMS = [
-  { href: '/portal', label: 'Meus Casos', icon: Briefcase, exact: true },
+  { href: '/portal', label: 'Meus Processos', icon: Briefcase, exact: true },
   { href: '/portal/copilot', label: 'Assistente IA', icon: Bot, badge: 'IA' },
   { href: '/portal/documentos', label: 'Documentos', icon: FileText },
   { href: '/portal/contratos', label: 'Contratos', icon: ClipboardList },
   { href: '/portal/mensagens', label: 'Mensagens', icon: MessageSquare },
-  { href: '/portal/financeiro', label: 'Financeiro', icon: DollarSign },
   { href: '/portal/audiencias', label: 'Audiências', icon: Calendar },
   { href: '/portal/notificacoes', label: 'Notificações', icon: Bell },
   { href: '/portal/meus-dados', label: 'Meus Dados', icon: User },

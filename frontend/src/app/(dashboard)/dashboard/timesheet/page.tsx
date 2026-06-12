@@ -261,9 +261,9 @@ export default function TimesheetPage() {
                     <Select value={formData.billing_type} onValueChange={(v) => setFormData(p => ({...p, billing_type: v}))}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="billable">Faturável</SelectItem>
-                        <SelectItem value="non_billable">Não Faturável</SelectItem>
-                        <SelectItem value="pro_bono">Pro Bono</SelectItem>
+                        <SelectItem value="billable">Atividade Produtiva</SelectItem>
+                        <SelectItem value="non_billable">Atividade Administrativa</SelectItem>
+                        <SelectItem value="pro_bono">Capacitação / Formação</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -377,7 +377,7 @@ export default function TimesheetPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card><CardContent className="pt-6"><div className="flex items-center gap-3"><Timer className="h-8 w-8 text-blue-500" /><div><p className="text-sm text-muted-foreground">Total de Horas</p><p className="text-2xl font-bold">{totalHours.toFixed(1)}h</p></div></div></CardContent></Card>
-        <Card><CardContent className="pt-6"><div className="flex items-center gap-3"><Clock className="h-8 w-8 text-green-500" /><div><p className="text-sm text-muted-foreground">Horas Faturáveis</p><p className="text-2xl font-bold">{billableHours.toFixed(1)}h</p></div></div></CardContent></Card>
+        <Card><CardContent className="pt-6"><div className="flex items-center gap-3"><Clock className="h-8 w-8 text-green-500" /><div><p className="text-sm text-muted-foreground">Horas Produtivas</p><p className="text-2xl font-bold">{billableHours.toFixed(1)}h</p></div></div></CardContent></Card>
         <Card><CardContent className="pt-6"><div className="flex items-center gap-3"><DollarSign className="h-8 w-8 text-emerald-500" /><div><p className="text-sm text-muted-foreground">Valor Total</p><p className="text-2xl font-bold">R$ {totalValue.toLocaleString('pt-BR')}</p></div></div></CardContent></Card>
         <Card><CardContent className="pt-6"><div className="flex items-center gap-3"><TrendingUp className="h-8 w-8 text-[#8B5CF6]" /><div><p className="text-sm text-muted-foreground">Utilização</p><p className="text-2xl font-bold">{utilization}%</p></div></div></CardContent></Card>
       </div>
