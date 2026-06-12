@@ -6,8 +6,8 @@ import logging
 from rest_framework import viewsets, status, filters
 
 logger = logging.getLogger(__name__)
-from apps.accounts.permissions import resolve_role, is_admin_or_manager, TrialAccessPermission
-from apps.accounts.tasks import send_email_task
+from apps.accounts.permissions import resolve_role, is_admin_or_manager
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -19,7 +19,7 @@ from ..serializers import (
     DocumentUpdateSerializer, DocumentGeneratorSerializer,
 )
 from ..permissions import IsOwnerOrAdmin
-from apps.core.mixins import AuditModelMixin, AuditActionMixin, AuditDownloadMixin, OwnerRequiredMixin
+from apps.core.mixins import AuditModelMixin, AuditActionMixin, AuditDownloadMixin
 
 
 @extend_schema_view(
@@ -63,10 +63,10 @@ from apps.core.mixins import AuditModelMixin, AuditActionMixin, AuditDownloadMix
         responses={204: None}
     ),
 )
-class DocumentViewSet(OwnerRequiredMixin, AuditModelMixin, AuditActionMixin, AuditDownloadMixin, viewsets.ModelViewSet):
+class DocumentViewSet(AuditModelMixin, AuditActionMixin, AuditDownloadMixin, viewsets.ModelViewSet):
     """ViewSet para Documents com auditoria automatica."""
     queryset = Document.objects.all()
-    permission_classes = [TrialAccessPermission, IsOwnerOrAdmin]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
 
     # Mensagens customizadas para auditoria
     audit_create_message = 'Documento criado'
@@ -793,17 +793,7 @@ class DocumentViewSet(OwnerRequiredMixin, AuditModelMixin, AuditActionMixin, Aud
 
             logger.debug("Documento salvo com status 'completed'")
 
-            # Envia email de notificacao
-            try:
-                from django.conf import settings
-                send_email_task.delay('enviar_email_documento_processado', {
-                    'destinatario': request.user.email,
-                    'nome_usuario': request.user.get_full_name() or request.user.username,
-                    'titulo_documento': etp.title,
-                    'link_documento': f"{getattr(settings, 'APP_BASE_URL', 'http://localhost:3000')}/dashboard/documents/{etp.id}",
-                })
-            except Exception as e:
-                logger.warning("Falha ao enviar email de documento processado: %s", e)
+            logger.info("Documento processado com sucesso: %s (user=%s)", etp.title, request.user.username)
 
             return Response({
                 'detail': 'Documento gerado com sucesso',

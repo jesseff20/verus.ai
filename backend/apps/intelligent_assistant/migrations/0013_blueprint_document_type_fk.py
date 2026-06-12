@@ -81,11 +81,14 @@ class Migration(migrations.Migration):
             name='document_type_old',
         ),
 
-        # 5. Tornar o campo obrigatório
+        # 5. Campo permanece nullable (DocumentType pode não existir em banco limpo;
+        #    os seeds populam os tipos após o migrate).
         migrations.AlterField(
             model_name='documentblueprint',
             name='document_type',
             field=models.ForeignKey(
+                null=True,
+                blank=True,
                 on_delete=django.db.models.deletion.PROTECT,
                 related_name='blueprints',
                 to='core.documenttype',

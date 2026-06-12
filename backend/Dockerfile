@@ -35,9 +35,9 @@ COPY . .
 # Create directories for static, media and logs
 RUN mkdir -p /app/staticfiles /app/media /app/logs
 
-# Copy entrypoint script
+# Copy entrypoint script (strip Windows CRLF line endings)
 COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 

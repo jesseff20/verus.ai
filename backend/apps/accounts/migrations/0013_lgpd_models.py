@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('accounts', '0012_notificationchannel_notificationmessage'),
-        ('cases', '0001_initial'),
+        ('cases', '0005_add_client_model'),
     ]
 
     operations = [
