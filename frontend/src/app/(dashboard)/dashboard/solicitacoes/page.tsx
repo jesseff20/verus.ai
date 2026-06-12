@@ -50,18 +50,17 @@ function ResolveModal({
       onClick={onClose}
     >
       <div
-        className="rounded-xl border p-6 w-full max-w-md"
-        style={{ background: '#0F0F0F', borderColor: '#2A2A2A' }}
+        className="rounded-xl border border-border bg-card p-6 w-full max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-base font-semibold mb-1">
           {isApprove ? 'Aprovar solicitação' : 'Rejeitar solicitação'}
         </h2>
-        <p className="text-xs text-white/40 mb-4">
+        <p className="text-xs text-foreground/40 mb-4">
           {REQUEST_TYPE_LABELS[request.request_type]} — {request.requester_name}
         </p>
 
-        <label className="block text-xs text-white/50 mb-1">
+        <label className="block text-xs text-foreground/50 mb-1">
           Observação {isApprove ? '(opcional)' : '(obrigatória)'}
         </label>
         <AITextarea
@@ -73,7 +72,7 @@ function ResolveModal({
           rows={3}
           aiContext="nota de resolução de solicitação de tarefa"
           aiObjective="Ajude a redigir uma observação formal e clara para a decisão de aprovação ou rejeição"
-          className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-white/20"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-foreground/25"
         />
 
         <div className="flex gap-2">
@@ -94,7 +93,7 @@ function ResolveModal({
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/8 transition-all"
+            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
           >
             Cancelar
           </button>
@@ -115,17 +114,14 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
 
   return (
     <>
-      <div
-        className="rounded-xl border p-4 flex flex-col gap-3"
-        style={{ borderColor: '#1A1A1A', background: '#0D0D0D' }}
-      >
+      <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5">
-            <span className="text-sm font-semibold text-white/80">
+            <span className="text-sm font-semibold text-foreground/80">
               {REQUEST_TYPE_LABELS[req.request_type]}
             </span>
-            <div className="flex items-center gap-1.5 text-[11px] text-white/35">
+            <div className="flex items-center gap-1.5 text-[11px] text-foreground/40">
               <User size={10} />
               <span>Solicitante: {req.requester_name ?? 'Desconhecido'}</span>
             </div>
@@ -140,15 +136,15 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
 
         {/* Target user */}
         {req.target_user_name && (
-          <div className="flex items-center gap-1.5 text-[11px] text-white/40">
+          <div className="flex items-center gap-1.5 text-[11px] text-foreground/40">
             <User size={10} />
-            <span>Destino: <span className="text-white/60">{req.target_user_name}</span></span>
+            <span>Destino: <span className="text-foreground/60">{req.target_user_name}</span></span>
           </div>
         )}
 
         {/* Justification */}
         {req.justification && (
-          <div className="flex items-start gap-1.5 text-xs text-white/40">
+          <div className="flex items-start gap-1.5 text-xs text-foreground/40">
             <MessageSquare size={11} className="mt-0.5 shrink-0" />
             <p className="leading-relaxed line-clamp-2">{req.justification}</p>
           </div>
@@ -156,24 +152,21 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
 
         {/* Resolution note */}
         {req.resolution_note && (
-          <div
-            className="flex items-start gap-1.5 text-xs px-2 py-1.5 rounded-md"
-            style={{ background: '#ffffff08' }}
-          >
-            <MessageSquare size={11} className="mt-0.5 shrink-0 text-white/30" />
-            <p className="text-white/40 leading-relaxed">{req.resolution_note}</p>
+          <div className="flex items-start gap-1.5 text-xs px-2 py-1.5 rounded-md bg-foreground/5">
+            <MessageSquare size={11} className="mt-0.5 shrink-0 text-foreground/30" />
+            <p className="text-foreground/40 leading-relaxed">{req.resolution_note}</p>
           </div>
         )}
 
         {/* Date */}
-        <p className="text-[10px] text-white/20">
+        <p className="text-[10px] text-foreground/25">
           {new Date(req.created_at).toLocaleString('pt-BR')}
           {req.resolved_at && ` · Resolvido em ${new Date(req.resolved_at).toLocaleString('pt-BR')}`}
         </p>
 
         {/* Actions */}
         {isPending && (
-          <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+          <div className="flex items-center gap-2 pt-2 border-t border-foreground/8">
             <button
               onClick={() => setModal('approve')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
@@ -253,7 +246,7 @@ export default function SolicitacoesPage() {
           <ClipboardList size={22} className="text-[#8B5CF6]" />
           Solicitações de Tarefas
         </h1>
-        <p className="text-sm text-white/45 mt-1">
+        <p className="text-sm text-foreground/50 mt-1">
           Pedidos de redistribuição, avocação e assessoria do seu órgão
         </p>
       </div>
@@ -275,14 +268,14 @@ export default function SolicitacoesPage() {
           </button>
         ))}
         {requests && (
-          <span className="ml-2 text-xs text-white/25">{requests.length} solicitação(ões)</span>
+          <span className="ml-2 text-xs text-foreground/30">{requests.length} solicitação(ões)</span>
         )}
       </div>
 
       {/* Content */}
       {isLoading && (
         <div className="flex items-center justify-center py-24">
-          <Loader2 size={24} className="animate-spin text-white/20" />
+          <Loader2 size={24} className="animate-spin text-foreground/20" />
         </div>
       )}
 
@@ -295,8 +288,8 @@ export default function SolicitacoesPage() {
 
       {requests?.length === 0 && !isLoading && (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <ClipboardList size={40} className="text-white/10 mb-4" />
-          <p className="text-white/40 text-sm">Nenhuma solicitação encontrada.</p>
+          <ClipboardList size={40} className="text-foreground/15 mb-4" />
+          <p className="text-foreground/40 text-sm">Nenhuma solicitação encontrada.</p>
         </div>
       )}
 

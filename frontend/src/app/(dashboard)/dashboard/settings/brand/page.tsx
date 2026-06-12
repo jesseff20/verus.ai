@@ -257,7 +257,7 @@ export default function BrandSettingsPage() {
                   <img
                     src={logoDarkPreview}
                     alt="Logo dark preview"
-                    className="h-16 object-contain border rounded p-2 bg-slate-900"
+                    className="h-16 object-contain border rounded p-2 bg-slate-100 dark:bg-slate-900"
                   />
                   <Button
                     type="button"

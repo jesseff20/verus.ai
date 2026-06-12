@@ -31,8 +31,7 @@ function InstanceRow({
 
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 border-b hover:bg-white/3 transition-all cursor-pointer"
-      style={{ borderColor: '#141414' }}
+      className="flex items-center gap-3 px-4 py-3 border-b border-border hover:bg-foreground/[0.03] transition-all cursor-pointer"
       onClick={onView}
     >
       {/* Status */}
@@ -45,8 +44,8 @@ function InstanceRow({
 
       {/* Template + case */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-white/80 truncate">{instance.template_name_snapshot}</p>
-        <p className="text-[11px] text-white/35 truncate">
+        <p className="text-sm text-foreground/80 truncate">{instance.template_name_snapshot}</p>
+        <p className="text-[11px] text-foreground/40 truncate">
           {instance.case_title || instance.case_ref || 'Sem referência'}
         </p>
       </div>
@@ -62,7 +61,7 @@ function InstanceRow({
       )}
 
       {/* Date */}
-      <span className="text-[11px] text-white/25 shrink-0">
+      <span className="text-[11px] text-foreground/35 shrink-0">
         {new Date(instance.created_at).toLocaleDateString('pt-BR')}
       </span>
 
@@ -70,7 +69,7 @@ function InstanceRow({
       <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onView}
-          className="w-7 h-7 rounded flex items-center justify-center text-white/30 hover:text-white hover:bg-white/8 transition-all"
+          className="w-7 h-7 rounded flex items-center justify-center text-foreground/30 hover:text-foreground hover:bg-foreground/8 transition-all"
           title="Ver detalhes"
         >
           <ExternalLink size={13} />
@@ -78,7 +77,7 @@ function InstanceRow({
         {canCancel && !confirmCancel && (
           <button
             onClick={() => setConfirmCancel(true)}
-            className="w-7 h-7 rounded flex items-center justify-center text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-all"
+            className="w-7 h-7 rounded flex items-center justify-center text-foreground/30 hover:text-red-400 hover:bg-red-400/10 transition-all"
             title="Cancelar fluxo"
           >
             <XCircle size={13} />
@@ -95,7 +94,7 @@ function InstanceRow({
             </button>
             <button
               onClick={() => setConfirmCancel(false)}
-              className="px-2 py-0.5 rounded text-[10px] font-medium text-white/40 hover:text-white transition-all"
+              className="px-2 py-0.5 rounded text-[10px] font-medium text-foreground/40 hover:text-foreground transition-all"
             >
               Não
             </button>
@@ -129,7 +128,7 @@ export default function ExecucoesPage() {
             <Play size={22} className="text-[#8B5CF6]" />
             Execuções de Fluxos
           </h1>
-          <p className="text-sm text-white/45 mt-1">
+          <p className="text-sm text-foreground/50 mt-1">
             Instâncias de fluxos de trabalho em andamento e histórico
           </p>
         </div>
@@ -160,29 +159,23 @@ export default function ExecucoesPage() {
           </button>
         ))}
         {instances && (
-          <span className="ml-2 text-xs text-white/25">{instances.length} instância(s)</span>
+          <span className="ml-2 text-xs text-foreground/30">{instances.length} instância(s)</span>
         )}
       </div>
 
       {/* Table */}
-      <div
-        className="rounded-xl border overflow-hidden"
-        style={{ borderColor: '#1A1A1A', background: '#0D0D0D' }}
-      >
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
         {/* Header row */}
-        <div
-          className="flex items-center gap-3 px-4 py-2 border-b"
-          style={{ borderColor: '#1A1A1A', background: '#0A0A0A' }}
-        >
-          <span className="text-[10px] text-white/20 font-mono uppercase tracking-widest w-32 shrink-0">Status</span>
-          <span className="text-[10px] text-white/20 font-mono uppercase tracking-widest flex-1">Fluxo / Processo</span>
-          <span className="text-[10px] text-white/20 font-mono uppercase tracking-widest shrink-0">Data</span>
+        <div className="flex items-center gap-3 px-4 py-2 border-b border-border bg-muted/50">
+          <span className="text-[10px] text-foreground/30 font-mono uppercase tracking-widest w-32 shrink-0">Status</span>
+          <span className="text-[10px] text-foreground/30 font-mono uppercase tracking-widest flex-1">Fluxo / Processo</span>
+          <span className="text-[10px] text-foreground/30 font-mono uppercase tracking-widest shrink-0">Data</span>
           <span className="w-16 shrink-0" />
         </div>
 
         {isLoading && (
           <div className="flex items-center justify-center py-16">
-            <Loader2 size={24} className="animate-spin text-white/20" />
+            <Loader2 size={24} className="animate-spin text-foreground/20" />
           </div>
         )}
 
@@ -195,8 +188,8 @@ export default function ExecucoesPage() {
 
         {instances?.length === 0 && !isLoading && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Activity size={32} className="text-white/10 mb-3" />
-            <p className="text-white/40 text-sm">Nenhuma execução encontrada.</p>
+            <Activity size={32} className="text-foreground/15 mb-3" />
+            <p className="text-foreground/40 text-sm">Nenhuma execução encontrada.</p>
           </div>
         )}
 

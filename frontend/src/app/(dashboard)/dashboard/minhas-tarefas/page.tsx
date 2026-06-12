@@ -111,17 +111,16 @@ function CompleteModal({
         onClick={onClose}
       >
         <div
-          className="rounded-xl border p-6 w-full max-w-md"
-          style={{ background: '#0F0F0F', borderColor: '#2A2A2A' }}
+          className="rounded-xl border border-border bg-card p-6 w-full max-w-md"
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="text-base font-semibold mb-1">Concluir tarefa</h2>
-          <p className="text-xs text-white/40 mb-4">{task.label}</p>
+          <p className="text-xs text-foreground/40 mb-4">{task.label}</p>
 
           {/* Gateway choice */}
           {isGateway && (
             <div className="mb-4">
-              <label className="block text-xs text-white/50 mb-1">
+              <label className="block text-xs text-foreground/50 mb-1">
                 Branch de saída <span className="text-red-400">*</span>
               </label>
               {hasChoices ? (
@@ -132,13 +131,13 @@ function CompleteModal({
                       onClick={() => setGatewayChoice(choice.value)}
                       className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all border ${
                         gatewayChoice === choice.value
-                          ? 'border-[#7030A0] bg-[#7030A015] text-white'
-                          : 'border-white/10 text-white/60 hover:border-white/20 hover:bg-white/5'
+                          ? 'border-[#7030A0] bg-[#7030A015] text-foreground'
+                          : 'border-foreground/10 text-foreground/60 hover:border-foreground/20 hover:bg-foreground/5'
                       }`}
                     >
                       <span className="font-medium">{choice.label}</span>
                       {choice.condition && (
-                        <span className="ml-2 text-[10px] text-white/30 font-mono">
+                        <span className="ml-2 text-[10px] text-foreground/30 font-mono">
                           {choice.condition}
                         </span>
                       )}
@@ -155,13 +154,13 @@ function CompleteModal({
                   placeholder="ex: yes / no / edge_id"
                   aiContext="branch de saída do gateway de decisão"
                   aiObjective="Sugira o identificador correto do branch de saída para este gateway"
-                  className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none placeholder:text-white/20"
+                  className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none placeholder:text-foreground/25"
                 />
               )}
             </div>
           )}
 
-          <label className="block text-xs text-white/50 mb-1">
+          <label className="block text-xs text-foreground/50 mb-1">
             Observações (opcional)
           </label>
           <AITextarea
@@ -173,7 +172,7 @@ function CompleteModal({
             rows={3}
             aiContext="observações de conclusão de tarefa"
             aiObjective="Ajude a redigir uma observação clara sobre o resultado da tarefa"
-            className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-white/20"
+            className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-foreground/25"
           />
 
           {/* Optional signature */}
@@ -183,7 +182,7 @@ function CompleteModal({
             className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all mb-4 ${
               signed
                 ? 'bg-green-500/10 text-green-400 border border-green-500/25'
-                : 'bg-white/4 text-white/40 hover:bg-white/8 hover:text-white/70 border border-white/8'
+                : 'bg-foreground/4 text-foreground/40 hover:bg-foreground/8 hover:text-foreground/70 border border-foreground/8'
             }`}
           >
             <Shield size={12} />
@@ -206,7 +205,7 @@ function CompleteModal({
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/8 transition-all"
+              className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
             >
               Cancelar
             </button>
@@ -251,18 +250,17 @@ function RequestModal({
       onClick={onClose}
     >
       <div
-        className="rounded-xl border p-6 w-full max-w-md"
-        style={{ background: '#0F0F0F', borderColor: '#2A2A2A' }}
+        className="rounded-xl border border-border bg-card p-6 w-full max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-base font-semibold mb-1">Criar solicitação</h2>
-        <p className="text-xs text-white/40 mb-4">{task.label}</p>
+        <p className="text-xs text-foreground/40 mb-4">{task.label}</p>
 
-        <label className="block text-xs text-white/50 mb-1">Tipo</label>
+        <label className="block text-xs text-foreground/50 mb-1">Tipo</label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value as RequestType)}
-          className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none mb-4"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4"
         >
           <option value="redistribuicao">Redistribuição</option>
           <option value="avocacao">Avocação</option>
@@ -271,7 +269,7 @@ function RequestModal({
 
         {(type === 'redistribuicao' || type === 'avocacao') && (
           <>
-            <label className="block text-xs text-white/50 mb-1">
+            <label className="block text-xs text-foreground/50 mb-1">
               ID do usuário destino (UUID)
             </label>
             <AIInput
@@ -283,12 +281,12 @@ function RequestModal({
               placeholder="UUID do usuário..."
               aiContext="UUID do usuário destino para redistribuição"
               aiObjective="Informe o identificador único do usuário de destino"
-              className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-white/20"
+              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
             />
           </>
         )}
 
-        <label className="block text-xs text-white/50 mb-1">Justificativa</label>
+        <label className="block text-xs text-foreground/50 mb-1">Justificativa</label>
         <AITextarea
           variant="dark"
           value={justification}
@@ -298,7 +296,7 @@ function RequestModal({
           rows={3}
           aiContext="justificativa de redistribuição ou solicitação de tarefa"
           aiObjective="Ajude a redigir uma justificativa clara e formal para a solicitação"
-          className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-white/20"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-foreground/25"
         />
 
         <div className="flex gap-2">
@@ -317,7 +315,7 @@ function RequestModal({
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/8 transition-all"
+            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
           >
             Cancelar
           </button>
@@ -342,17 +340,14 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
 
   return (
     <>
-      <div
-        className="rounded-xl border p-4 flex flex-col gap-3"
-        style={{ borderColor: '#1A1A1A', background: '#0D0D0D' }}
-      >
+      <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-            <span className="text-sm font-semibold text-white truncate">
+            <span className="text-sm font-semibold truncate">
               {task.label}
             </span>
-            <span className="text-[11px] text-white/35">
+            <span className="text-[11px] text-foreground/40">
               {NODE_TYPE_LABELS[task.node_type] ?? task.node_type}
             </span>
           </div>
@@ -370,7 +365,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-2">
           {task.role_required !== 'any' && (
-            <span className="flex items-center gap-1 text-[11px] text-white/30">
+            <span className="flex items-center gap-1 text-[11px] text-foreground/35">
               <User size={10} />
               {ROLE_LABELS[task.role_required] ?? task.role_required}
             </span>
@@ -395,7 +390,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
 
         {/* Instructions */}
         {task.instructions && (
-          <p className="text-xs text-white/40 leading-relaxed line-clamp-2">
+          <p className="text-xs text-foreground/40 leading-relaxed line-clamp-2">
             {task.instructions}
           </p>
         )}
@@ -410,7 +405,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
 
         {/* Actions */}
         {canAct && (
-          <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+          <div className="flex items-center gap-2 pt-2 border-t border-foreground/8">
             <button
               onClick={() => setShowComplete(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
@@ -425,7 +420,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
             </button>
             <button
               onClick={() => setShowRequest(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-white/8 text-white/50 hover:text-white"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-foreground/8 text-foreground/50 hover:text-foreground"
             >
               <ChevronRight size={12} />
               Solicitar
@@ -492,12 +487,12 @@ export default function MinhasTarefasPage() {
             <Briefcase size={22} className="text-[#8B5CF6]" />
             Minhas Tarefas
           </h1>
-          <p className="text-sm text-white/45 mt-1">
+          <p className="text-sm text-foreground/50 mt-1">
             Tarefas atribuídas a você nos fluxos de trabalho ativos
           </p>
         </div>
         {isRefetching && (
-          <div className="flex items-center gap-1.5 text-[11px] text-white/25 mt-1">
+          <div className="flex items-center gap-1.5 text-[11px] text-foreground/30 mt-1">
             <Loader2 size={10} className="animate-spin" />
             Atualizando...
           </div>
@@ -538,14 +533,14 @@ export default function MinhasTarefasPage() {
           </button>
         ))}
         {tasks && (
-          <span className="ml-2 text-xs text-white/25">{tasks.length} tarefa(s)</span>
+          <span className="ml-2 text-xs text-foreground/30">{tasks.length} tarefa(s)</span>
         )}
       </div>
 
       {/* Content */}
       {isLoading && (
         <div className="flex items-center justify-center py-24">
-          <Loader2 size={24} className="animate-spin text-white/20" />
+          <Loader2 size={24} className="animate-spin text-foreground/20" />
         </div>
       )}
 
@@ -558,8 +553,8 @@ export default function MinhasTarefasPage() {
 
       {tasks?.length === 0 && !isLoading && (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <CheckCircle2 size={40} className="text-white/10 mb-4" />
-          <p className="text-white/40 text-sm">Nenhuma tarefa encontrada.</p>
+          <CheckCircle2 size={40} className="text-foreground/15 mb-4" />
+          <p className="text-foreground/40 text-sm">Nenhuma tarefa encontrada.</p>
         </div>
       )}
 

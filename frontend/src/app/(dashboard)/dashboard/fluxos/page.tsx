@@ -62,15 +62,14 @@ function StartFlowModal({
       onClick={onClose}
     >
       <div
-        className="rounded-xl border p-6 w-full max-w-md"
-        style={{ background: '#0F0F0F', borderColor: '#2A2A2A' }}
+        className="rounded-xl border border-border bg-card p-6 w-full max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-base font-semibold mb-1">Iniciar fluxo</h2>
-        <p className="text-xs text-white/40 mb-4">{template.name}</p>
+        <p className="text-xs text-foreground/40 mb-4">{template.name}</p>
 
-        <label className="block text-xs text-white/50 mb-1">
-          Número/referência do processo <span className="text-white/25">(opcional)</span>
+        <label className="block text-xs text-foreground/50 mb-1">
+          Número/referência do processo <span className="text-foreground/30">(opcional)</span>
         </label>
         <AIInput
           type="text"
@@ -82,11 +81,11 @@ function StartFlowModal({
           placeholder="ex: 0001234-12.2024.8.00.0000"
           aiContext="número do processo judicial"
           aiObjective="Formate ou sugira o número do processo no padrão CNJ"
-          className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none mb-3 placeholder:text-white/20"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-3 placeholder:text-foreground/25"
         />
 
-        <label className="block text-xs text-white/50 mb-1">
-          Título/ementa <span className="text-white/25">(opcional)</span>
+        <label className="block text-xs text-foreground/50 mb-1">
+          Título/ementa <span className="text-foreground/30">(opcional)</span>
         </label>
         <AIInput
           type="text"
@@ -98,7 +97,7 @@ function StartFlowModal({
           placeholder="Breve descrição do processo..."
           aiContext="ementa ou título do processo"
           aiObjective="Sugira uma ementa clara e concisa para o processo judicial"
-          className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-white/20"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
         />
 
         <div className="flex gap-2">
@@ -113,7 +112,7 @@ function StartFlowModal({
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/8 transition-all"
+            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
           >
             Cancelar
           </button>
@@ -144,8 +143,7 @@ function TemplateCard({
 
   return (
     <div
-      className="group rounded-xl border p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer"
-      style={{ borderColor: '#1A1A1A', background: '#0D0D0D' }}
+      className="group rounded-xl border border-border bg-card p-5 flex flex-col gap-3 hover:border-foreground/15 transition-all cursor-pointer"
       onClick={onOpen}
     >
       {/* Header */}
@@ -158,8 +156,8 @@ function TemplateCard({
             <Workflow size={17} className="text-[#8B5CF6]" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white leading-tight">{template.name}</h3>
-            <p className="text-[11px] text-white/35 mt-0.5">
+            <h3 className="text-sm font-semibold leading-tight">{template.name}</h3>
+            <p className="text-[11px] text-foreground/40 mt-0.5">
               {CATEGORY_LABELS[template.category] ?? template.category}
             </p>
           </div>
@@ -178,11 +176,11 @@ function TemplateCard({
 
       {/* Description */}
       {template.description && (
-        <p className="text-xs text-white/40 leading-relaxed line-clamp-2">{template.description}</p>
+        <p className="text-xs text-foreground/40 leading-relaxed line-clamp-2">{template.description}</p>
       )}
 
       {/* Stats */}
-      <div className="flex items-center gap-3 text-[11px] text-white/30">
+      <div className="flex items-center gap-3 text-[11px] text-foreground/35">
         <span>{template.node_count} nós</span>
         <span>·</span>
         <span>{template.swimlane_count} swim lanes</span>
@@ -202,10 +200,10 @@ function TemplateCard({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 pt-1 border-t border-white/5">
+      <div className="flex items-center gap-2 pt-1 border-t border-foreground/8">
         <button
           onClick={(e) => { e.stopPropagation(); onOpen(); }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-white/8 text-white/60 hover:text-white"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-foreground/8 text-foreground/60 hover:text-foreground"
         >
           <ExternalLink size={12} />
           Abrir editor
@@ -223,7 +221,7 @@ function TemplateCard({
         <div className="flex-1" />
         <button
           onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
-          className="w-7 h-7 rounded flex items-center justify-center text-white/30 hover:text-white hover:bg-white/8 transition-all"
+          className="w-7 h-7 rounded flex items-center justify-center text-foreground/30 hover:text-foreground hover:bg-foreground/8 transition-all"
           title="Duplicar"
         >
           <Copy size={13} />
@@ -240,7 +238,7 @@ function TemplateCard({
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="px-2 py-0.5 rounded text-[10px] font-medium text-white/40 hover:text-white transition-all"
+                className="px-2 py-0.5 rounded text-[10px] font-medium text-foreground/40 hover:text-foreground transition-all"
               >
                 Não
               </button>
@@ -248,7 +246,7 @@ function TemplateCard({
           ) : (
             <button
               onClick={(e) => { e.stopPropagation(); setConfirmDelete(true); }}
-              className="w-7 h-7 rounded flex items-center justify-center text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-all"
+              className="w-7 h-7 rounded flex items-center justify-center text-foreground/30 hover:text-red-400 hover:bg-red-400/10 transition-all"
               title="Deletar"
             >
               <Trash2 size={13} />
@@ -294,7 +292,7 @@ export default function FluxosPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Fluxos de Trabalho</h1>
-          <p className="text-sm text-white/45 mt-1">
+          <p className="text-sm text-foreground/50 mt-1">
             Templates BPMN de processos judiciais e administrativos
           </p>
         </div>
@@ -324,8 +322,7 @@ export default function FluxosPage() {
           onClick={() => setCreating(false)}
         >
           <div
-            className="rounded-xl border p-6 w-full max-w-sm"
-            style={{ background: '#0F0F0F', borderColor: '#2A2A2A' }}
+            className="rounded-xl border border-border bg-card p-6 w-full max-w-sm"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-base font-semibold mb-4">Novo fluxo</h2>
@@ -340,7 +337,7 @@ export default function FluxosPage() {
               placeholder="Nome do fluxo..."
               aiContext="nome do fluxo de trabalho judicial"
               aiObjective="Sugira um nome claro e descritivo para o fluxo de trabalho"
-              className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-white/20"
+              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
             />
             <div className="flex gap-2">
               <button
@@ -354,7 +351,7 @@ export default function FluxosPage() {
               </button>
               <button
                 onClick={() => setCreating(false)}
-                className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/8 transition-all"
+                className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
               >
                 Cancelar
               </button>
@@ -380,14 +377,14 @@ export default function FluxosPage() {
           </button>
         ))}
         {templates && (
-          <span className="ml-2 text-xs text-white/25">{filtered?.length ?? 0} templates</span>
+          <span className="ml-2 text-xs text-foreground/30">{filtered?.length ?? 0} templates</span>
         )}
       </div>
 
       {/* Content */}
       {isLoading && (
         <div className="flex items-center justify-center py-24">
-          <Loader2 size={24} className="animate-spin text-white/20" />
+          <Loader2 size={24} className="animate-spin text-foreground/20" />
         </div>
       )}
 
@@ -400,8 +397,8 @@ export default function FluxosPage() {
 
       {filtered && filtered.length === 0 && !isLoading && (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <Workflow size={40} className="text-white/10 mb-4" />
-          <p className="text-white/40 text-sm">Nenhum template encontrado.</p>
+          <Workflow size={40} className="text-foreground/15 mb-4" />
+          <p className="text-foreground/40 text-sm">Nenhum template encontrado.</p>
           <button
             onClick={() => setCreating(true)}
             className="mt-4 text-sm text-[#8B5CF6] hover:underline"

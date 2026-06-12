@@ -82,7 +82,7 @@ function ExportButton({
     <Button
       variant={primary ? 'default' : 'outline'}
       onClick={onGenerate}
-      className={cn('w-full rounded-xl justify-between', primary ? 'bg-slate-900 hover:bg-black' : '')}
+      className={cn('w-full rounded-xl justify-between', primary ? 'dark:bg-slate-900 dark:hover:bg-black' : '')}
     >
       Gerar {label}
       <Download size={16} />
