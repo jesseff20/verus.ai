@@ -232,8 +232,9 @@ class AgentPromptViewSet(viewsets.ModelViewSet):
                 }, status=status.HTTP_200_OK)
 
             except Exception as e:
+                logger.exception('Erro ao executar agente %s', prompt.name)
                 return Response({
-                    'error': str(e),
+                    'error': 'Erro interno do servidor.',
                     'agent_name': prompt.name
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -762,12 +763,10 @@ class AgentPromptViewSet(viewsets.ModelViewSet):
                 'error': 'Mensagem não encontrada'
             }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            import traceback
-            logger.error(f"Erro ao salvar feedback: {str(e)}")
-            logger.error(traceback.format_exc())
+            logger.exception('Erro ao salvar feedback')
 
             return Response({
-                'error': str(e)
+                'error': 'Erro interno do servidor.'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
