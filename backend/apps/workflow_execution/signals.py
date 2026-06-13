@@ -42,7 +42,7 @@ def notify_task_assigned(sender, instance: TaskInstance, created: bool, **kwargs
         return
 
     try:
-        from apps.core.models import Notification  # type: ignore
+        from apps.accounts.models import Notification
         Notification.objects.create(
             user=instance.assigned_to,
             title='Nova tarefa atribuída',
@@ -50,8 +50,9 @@ def notify_task_assigned(sender, instance: TaskInstance, created: bool, **kwargs
                 f'Você recebeu a tarefa "{instance.label}" no fluxo '
                 f'"{instance.instance.template_name_snapshot}".'
             ),
-            notification_type='task_assigned',
-            related_object_id=str(instance.id),
+            type='task',
+            link=f'/dashboard/execucoes/{instance.instance_id}',
+            metadata={'task_id': str(instance.id)},
         )
     except Exception:
         # Notification model pode não existir ou ter schema diferente

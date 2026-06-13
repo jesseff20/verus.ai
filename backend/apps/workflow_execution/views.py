@@ -72,7 +72,21 @@ class FlowInstanceViewSet(viewsets.ReadOnlyModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         user = request.user
-        if not (hasattr(user, 'organ') and user.organ):
+        organ = getattr(user, 'organ', None)
+
+        # Admin/superadmin sem órgão: resolve automaticamente
+        if not organ and getattr(user, 'is_admin', False):
+            from apps.workflow_definition.models import FlowTemplate
+            try:
+                tpl = FlowTemplate.objects.get(pk=serializer.validated_data['template_id'])
+                organ = tpl.organ
+            except FlowTemplate.DoesNotExist:
+                pass
+            if not organ:
+                from apps.organization.models import Organ
+                organ = Organ.objects.filter(is_active=True).first()
+
+        if not organ:
             return Response(
                 {'detail': 'Usuário não está vinculado a um órgão.'},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -81,7 +95,7 @@ class FlowInstanceViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             instance = service.start_flow(
                 template_id=serializer.validated_data['template_id'],
-                organ=user.organ,
+                organ=organ,
                 started_by=user,
                 case_ref=serializer.validated_data.get('case_ref', ''),
                 case_title=serializer.validated_data.get('case_title', ''),

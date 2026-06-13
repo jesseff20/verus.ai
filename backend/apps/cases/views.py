@@ -5671,13 +5671,27 @@ def case_start_flow(request, case_id):
         return Response({'detail': 'Campo "template_id" obrigatório.'}, status=status.HTTP_400_BAD_REQUEST)
 
     user = request.user
-    if not (hasattr(user, 'organ') and user.organ):
+    organ = getattr(user, 'organ', None)
+
+    # Admin/superadmin sem órgão: resolve automaticamente
+    if not organ and getattr(user, 'is_admin', False):
+        from apps.workflow_definition.models import FlowTemplate
+        try:
+            tpl = FlowTemplate.objects.get(pk=template_id)
+            organ = tpl.organ
+        except FlowTemplate.DoesNotExist:
+            pass
+        if not organ:
+            from apps.organization.models import Organ
+            organ = Organ.objects.filter(is_active=True).first()
+
+    if not organ:
         return Response({'detail': 'Usuário não vinculado a um órgão.'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         instance = flow_service.start_flow(
             template_id=template_id,
-            organ=user.organ,
+            organ=organ,
             started_by=user,
             case_id=str(case_id),
         )
