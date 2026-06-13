@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 export interface LoadingStateConfig {
   /** Tempo mínimo de exibição do loading (ms) - evita flicker */
@@ -66,6 +66,16 @@ export function useLoadingState(config: LoadingStateConfig = {}): LoadingStateRe
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [isSlow, setIsSlow] = useState(false);
   const [shouldWait, setShouldWait] = useState(false);
+  const minDisplayTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const stopDelayTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (minDisplayTimerRef.current) clearTimeout(minDisplayTimerRef.current);
+      if (stopDelayTimerRef.current) clearTimeout(stopDelayTimerRef.current);
+    };
+  }, []);
 
   // Timer para tempo decorrido
   useEffect(() => {
@@ -106,7 +116,8 @@ export function useLoadingState(config: LoadingStateConfig = {}): LoadingStateRe
     setShouldWait(true);
 
     // Delay mínimo de exibição
-    setTimeout(() => {
+    if (minDisplayTimerRef.current) clearTimeout(minDisplayTimerRef.current);
+    minDisplayTimerRef.current = setTimeout(() => {
       setShouldWait(false);
     }, minDisplayTime);
   }, [minDisplayTime]);
@@ -115,7 +126,8 @@ export function useLoadingState(config: LoadingStateConfig = {}): LoadingStateRe
   const stopLoading = useCallback(() => {
     if (shouldWait) {
       // Esperar tempo mínimo passar
-      setTimeout(() => {
+      if (stopDelayTimerRef.current) clearTimeout(stopDelayTimerRef.current);
+      stopDelayTimerRef.current = setTimeout(() => {
         setIsLoading(false);
         setProgress(null);
         setEstimatedTime(null);
@@ -188,9 +200,19 @@ export function useOperationLoading(operations: Record<string, { message: string
     }
   }, [operations, startTime]);
 
+  const completeTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  // Cleanup completeOperation timer on unmount
+  useEffect(() => {
+    return () => {
+      if (completeTimerRef.current) clearTimeout(completeTimerRef.current);
+    };
+  }, []);
+
   const completeOperation = useCallback(() => {
     setProgress(100);
-    setTimeout(() => {
+    if (completeTimerRef.current) clearTimeout(completeTimerRef.current);
+    completeTimerRef.current = setTimeout(() => {
       setCurrentOperation(null);
       setProgress(0);
     }, 300);

@@ -11,6 +11,8 @@ import re
 import json
 from typing import Optional, Dict, Any, List
 
+from django.conf import settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -97,8 +99,8 @@ Gere uma {template_name} completa baseada nas informações abaixo.
                 system_prompt=system_prompt,
                 temperature=0.5,
                 max_tokens=8192,
-                provider='anthropic',
-                model='claude-haiku-4-5',
+                provider=getattr(settings, 'DEFAULT_LLM_PROVIDER', 'watsonx'),
+                model=getattr(settings, 'DEFAULT_LLM_MODEL', 'mistralai/mistral-medium-2505'),
                 usage_type='document_generation',
                 description=f'Geração de {template_name}',
             )
@@ -207,8 +209,8 @@ Analise este(a) {template_name} e identifique problemas e oportunidades de melho
                 system_prompt=system_prompt,
                 temperature=0.3,
                 max_tokens=4096,
-                provider='anthropic',
-                model='claude-haiku-4-5',
+                provider=getattr(settings, 'DEFAULT_LLM_PROVIDER', 'watsonx'),
+                model=getattr(settings, 'DEFAULT_LLM_MODEL', 'mistralai/mistral-medium-2505'),
                 usage_type='document_review',
                 description=f'Revisão de {template_name}',
             )
@@ -302,8 +304,8 @@ Sugira o(s) template(s) de documento mais adequado(s) para este caso.
                 system_prompt=system_prompt,
                 temperature=0.3,
                 max_tokens=1024,
-                provider='anthropic',
-                model='claude-haiku-4-5',
+                provider=getattr(settings, 'DEFAULT_LLM_PROVIDER', 'watsonx'),
+                model=getattr(settings, 'DEFAULT_LLM_MODEL', 'mistralai/mistral-medium-2505'),
                 usage_type='template_suggestion',
                 description='Sugestão de template de documento',
             )
@@ -454,8 +456,8 @@ Preencha este template jurídico com os dados disponíveis.
                 system_prompt=system_prompt,
                 temperature=0.2,
                 max_tokens=8192,
-                provider='anthropic',
-                model='claude-haiku-4-5',
+                provider=getattr(settings, 'DEFAULT_LLM_PROVIDER', 'watsonx'),
+                model=getattr(settings, 'DEFAULT_LLM_MODEL', 'mistralai/mistral-medium-2505'),
                 usage_type='template_filling',
                 description='Preenchimento automático de template',
             )

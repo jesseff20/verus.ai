@@ -44,7 +44,11 @@ def enviar_email_html(destinatario, assunto, template_name, contexto):
     if settings.DEBUG:
         _enviar_console(destinatario, assunto, text_content, html_content)
     else:
-        _enviar_api(destinatario, assunto, text_content, html_content)
+        success = _enviar_api(destinatario, assunto, text_content, html_content)
+        if not success:
+            raise RuntimeError(
+                f'Falha ao enviar e-mail para {destinatario} — assunto: {assunto}'
+            )
 
     logger.info('E-mail enviado para %s — assunto: %s', destinatario, assunto)
 
@@ -73,7 +77,7 @@ def _enviar_api(destinatario, assunto, text_content, html_content):
     api_key = _get_env('EMAIL_PROVIDER_API_KEY', '')
     if not api_key:
         logger.error('EMAIL_PROVIDER_API_KEY não configurada')
-        return
+        return False
 
     url = 'https://api.resend.com/emails'
     headers = {
@@ -92,8 +96,10 @@ def _enviar_api(destinatario, assunto, text_content, html_content):
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
         resp.raise_for_status()
         logger.info('API Resend: e-mail enviado — id=%s', resp.json().get('id'))
+        return True
     except requests.RequestException as e:
         logger.error('Falha ao enviar e-mail via API: %s', str(e))
+        raise
 
 
 def enviar_email_confirmacao(destinatario, nome_usuario, token):

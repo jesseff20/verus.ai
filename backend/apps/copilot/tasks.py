@@ -51,7 +51,12 @@ def _send_notification_channels(user, notification):
 # Task 1: Check upcoming deadlines (hourly)
 # ─────────────────────────────────────────────────────────────────────────────
 
-@shared_task(name='apps.copilot.tasks.check_upcoming_deadlines')
+@shared_task(
+    name='apps.copilot.tasks.check_upcoming_deadlines',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def check_upcoming_deadlines():
     """
     Scan all active cases for deadlines approaching in 1, 3, or 5 days.
@@ -137,7 +142,12 @@ def check_upcoming_deadlines():
 # Task 2: Analyze idle cases (daily)
 # ─────────────────────────────────────────────────────────────────────────────
 
-@shared_task(name='apps.copilot.tasks.analyze_idle_cases')
+@shared_task(
+    name='apps.copilot.tasks.analyze_idle_cases',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def analyze_idle_cases():
     """
     Find active cases with no activity (updated_at) in 7+ days
@@ -152,6 +162,7 @@ def analyze_idle_cases():
     idle_cases = LegalCase.objects.filter(
         status__in=['ativo', 'aguardando'],
         updated_at__lt=threshold,
+        deleted_at__isnull=True,
     ).select_related('advogado_responsavel', 'created_by')
 
     created_count = 0
@@ -212,7 +223,12 @@ def analyze_idle_cases():
 # Task 3: Check pending document sessions (daily)
 # ─────────────────────────────────────────────────────────────────────────────
 
-@shared_task(name='apps.copilot.tasks.check_pending_documents')
+@shared_task(
+    name='apps.copilot.tasks.check_pending_documents',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def check_pending_documents():
     """
     Find IntelligentSession objects stuck in generation-related phases
@@ -282,7 +298,12 @@ def check_pending_documents():
 # Task 4: Welcome / onboarding (on user creation)
 # ─────────────────────────────────────────────────────────────────────────────
 
-@shared_task(name='apps.copilot.tasks.send_welcome_notification')
+@shared_task(
+    name='apps.copilot.tasks.send_welcome_notification',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def send_welcome_notification(user_id: int):
     """
     Send a welcome notification introducing the Copilot to a new user.
@@ -327,7 +348,12 @@ def send_welcome_notification(user_id: int):
 # Task 5: Nightly user knowledge base sync
 # ─────────────────────────────────────────────────────────────────────────────
 
-@shared_task(name='apps.copilot.tasks.sync_user_knowledge_bases')
+@shared_task(
+    name='apps.copilot.tasks.sync_user_knowledge_bases',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def sync_user_knowledge_bases():
     """
     Runs nightly at 2am. Collects ALL user data and syncs to vector KB.
@@ -346,7 +372,12 @@ def sync_user_knowledge_bases():
     return {'dispatched': dispatched}
 
 
-@shared_task(name='apps.copilot.tasks.sync_single_user_knowledge')
+@shared_task(
+    name='apps.copilot.tasks.sync_single_user_knowledge',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def sync_single_user_knowledge(user_id):
     """
     Sync one user's knowledge base.
@@ -608,7 +639,12 @@ def calculate_next_occurrence(current_date, frequency, custom_interval_days=None
         return current_date + timedelta(days=1)
 
 
-@shared_task(name='apps.copilot.tasks.process_user_reminders')
+@shared_task(
+    name='apps.copilot.tasks.process_user_reminders',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def process_user_reminders():
     """
     Runs every 5 minutes. Checks for user-created reminders that need
@@ -691,7 +727,12 @@ def process_user_reminders():
 # Task 6: Nightly deep analysis of all active cases (daily at midnight)
 # ─────────────────────────────────────────────────────────────────────────────
 
-@shared_task(name='apps.copilot.tasks.nightly_case_analysis')
+@shared_task(
+    name='apps.copilot.tasks.nightly_case_analysis',
+    autoretry_for=(Exception,),
+    retry_backoff=30,
+    retry_kwargs={'max_retries': 3},
+)
 def nightly_case_analysis():
     """
     Runs daily at midnight. Deep analysis of all active cases per user.

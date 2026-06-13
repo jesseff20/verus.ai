@@ -50,7 +50,10 @@ if ENVIRONMENT == 'local':
     SECRET_KEY = env('SECRET_KEY', default='django-insecure-local-dev-key-12345')
 else:
     SECRET_KEY = env('SECRET_KEY')  # ValueError se não definida em produção
-DEBUG = get_env_var('DEBUG', default=True, cast=bool)
+if ENVIRONMENT == 'local':
+    DEBUG = get_env_var('DEBUG', default=True, cast=bool)
+else:
+    DEBUG = get_env_var('DEBUG', default=False, cast=bool)
 # Em produção, inclui o domínio público E o hostname interno do container.
 # O hostname interno (verus-backend) é necessário para aceitar requests
 # vindas do proxy do Next.js na rede Docker.
@@ -85,6 +88,7 @@ INSTALLED_APPS = [
     # Third party
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'django_filters',
     'drf_spectacular',
@@ -299,6 +303,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 # Spectacular (Swagger)

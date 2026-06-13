@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { validateLegalValue, type LegalValidationResult } from '@/lib/legal-validations';
 
 type LegalType = 'processo' | 'cpf' | 'cnpj' | 'oab';
@@ -41,6 +41,14 @@ export function useLegalValidation({
   });
   const [isValidating, setIsValidating] = useState(false);
   const [touched, setTouched] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   // Função de validação
   const validate = useCallback(() => {
@@ -51,8 +59,11 @@ export function useLegalValidation({
 
     setIsValidating(true);
 
+    // Limpar timeout anterior para debounce correto
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
     // Simular pequeno delay para UX (evita flicker)
-    setTimeout(() => {
+    debounceRef.current = setTimeout(() => {
       const validation = validateLegalValue(value, type, uf);
       setResult(validation);
       setIsValidating(false);

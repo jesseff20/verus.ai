@@ -656,12 +656,10 @@ class AgentPromptViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_200_OK)
 
         except Exception as e:
-            import traceback
-            logger.error(f"Erro no chat: {str(e)}")
-            logger.error(traceback.format_exc())
+            logger.exception('Erro no chat do agente')
 
             return Response({
-                'error': str(e),
+                'error': 'Erro interno do servidor.',
                 'message': 'Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

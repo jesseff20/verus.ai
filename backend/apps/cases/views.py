@@ -4,6 +4,7 @@ Views do app Cases — Gestão de Casos Jurídicos.
 import os
 import logging
 from datetime import timedelta
+from django.db import transaction
 from django.db.models import Q, Count
 from django.utils import timezone
 from rest_framework import status
@@ -2385,7 +2386,7 @@ def contract_generate(request):
             return Response({'error': 'Tipo de contrato inválido'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         logger.exception('Erro ao gerar contrato')
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'error': 'Erro interno do servidor.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(LegalContractSerializer(contract).data, status=status.HTTP_201_CREATED)
 
@@ -2423,7 +2424,7 @@ def contract_upload_analyze(request):
         }, status=status.HTTP_201_CREATED)
     except Exception as e:
         logger.exception('Erro ao analisar contrato com IA')
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'error': 'Erro interno do servidor.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])
@@ -2624,7 +2625,8 @@ def signatures_list_create(request):
             sig.contract_id = contract_id
             sig.save(update_fields=['contract_id'])
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.exception('Erro ao assinar documento')
+        return Response({'error': 'Erro interno do servidor.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(DigitalSignatureSerializer(sig).data, status=status.HTTP_201_CREATED)
 
@@ -2716,7 +2718,8 @@ def report_case_progress(request, case_id):
     try:
         report = svc.generate_case_progress_report(case_id, request.user)
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.exception('Erro ao gerar relatório de progresso do caso')
+        return Response({'error': 'Erro interno do servidor.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return Response(report)
 
 
@@ -3221,25 +3224,26 @@ def import_cases_csv(request):
 
         created = 0
         errors_list = []
-        for i, row in enumerate(reader, start=2):
-            try:
-                titulo = row.get('titulo', '').strip()
-                if not titulo:
-                    errors_list.append({'linha': i, 'erro': 'Título é obrigatório.'})
-                    continue
+        with transaction.atomic():
+            for i, row in enumerate(reader, start=2):
+                try:
+                    titulo = row.get('titulo', '').strip()
+                    if not titulo:
+                        errors_list.append({'linha': i, 'erro': 'Título é obrigatório.'})
+                        continue
 
-                LegalCase.objects.create(
-                    titulo=titulo,
-                    numero_processo=row.get('numero_processo', '').strip(),
-                    especialidade=row.get('especialidade', 'civel').strip() or 'civel',
-                    status=row.get('status', 'ativo').strip() or 'ativo',
-                    cliente_nome=row.get('cliente_nome', '').strip(),
-                    cliente_cpf_cnpj=row.get('cliente_cpf_cnpj', '').strip(),
-                    created_by=request.user,
-                )
-                created += 1
-            except Exception as e:
-                errors_list.append({'linha': i, 'erro': str(e)})
+                    LegalCase.objects.create(
+                        titulo=titulo,
+                        numero_processo=row.get('numero_processo', '').strip(),
+                        especialidade=row.get('especialidade', 'civel').strip() or 'civel',
+                        status=row.get('status', 'ativo').strip() or 'ativo',
+                        cliente_nome=row.get('cliente_nome', '').strip(),
+                        cliente_cpf_cnpj=row.get('cliente_cpf_cnpj', '').strip(),
+                        created_by=request.user,
+                    )
+                    created += 1
+                except Exception as e:
+                    errors_list.append({'linha': i, 'erro': str(e)})
 
         return Response({
             'importados': created,
@@ -3247,8 +3251,8 @@ def import_cases_csv(request):
             'erros': errors_list[:50],
         })
     except Exception as e:
-        logger.error(f"[import_cases_csv] Erro: {e}", exc_info=True)
-        return Response({'error': f'Erro ao processar CSV: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        logger.exception('[import_cases_csv] Erro ao processar CSV')
+        return Response({'error': 'Erro ao processar CSV.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -3275,28 +3279,29 @@ def import_clients_csv(request):
 
         created = 0
         errors_list = []
-        for i, row in enumerate(reader, start=2):
-            try:
-                nome = row.get('nome', '').strip()
-                if not nome:
-                    errors_list.append({'linha': i, 'erro': 'Nome é obrigatório.'})
-                    continue
+        with transaction.atomic():
+            for i, row in enumerate(reader, start=2):
+                try:
+                    nome = row.get('nome', '').strip()
+                    if not nome:
+                        errors_list.append({'linha': i, 'erro': 'Nome é obrigatório.'})
+                        continue
 
-                tipo_raw = row.get('tipo', 'PF').strip().upper()
-                client_type = 'pessoa_juridica' if tipo_raw == 'PJ' else 'pessoa_fisica'
+                    tipo_raw = row.get('tipo', 'PF').strip().upper()
+                    client_type = 'pessoa_juridica' if tipo_raw == 'PJ' else 'pessoa_fisica'
 
-                Client.objects.create(
-                    name=nome,
-                    cpf_cnpj=row.get('cpf_cnpj', '').strip(),
-                    email=row.get('email', '').strip(),
-                    phone=row.get('telefone', '').strip(),
-                    address=row.get('endereco', '').strip(),
-                    client_type=client_type,
-                    created_by=request.user,
-                )
-                created += 1
-            except Exception as e:
-                errors_list.append({'linha': i, 'erro': str(e)})
+                    Client.objects.create(
+                        name=nome,
+                        cpf_cnpj=row.get('cpf_cnpj', '').strip(),
+                        email=row.get('email', '').strip(),
+                        phone=row.get('telefone', '').strip(),
+                        address=row.get('endereco', '').strip(),
+                        client_type=client_type,
+                        created_by=request.user,
+                    )
+                    created += 1
+                except Exception as e:
+                    errors_list.append({'linha': i, 'erro': str(e)})
 
         return Response({
             'importados': created,
@@ -3304,8 +3309,8 @@ def import_clients_csv(request):
             'erros': errors_list[:50],
         })
     except Exception as e:
-        logger.error(f"[import_clients_csv] Erro: {e}", exc_info=True)
-        return Response({'error': f'Erro ao processar CSV: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        logger.exception('[import_clients_csv] Erro ao processar CSV')
+        return Response({'error': 'Erro ao processar CSV.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -5016,8 +5021,8 @@ Descrição: {case.descricao or 'Não informada'}"""
 
         return Response(RiskAssessmentSerializer(assessment).data, status=status.HTTP_201_CREATED)
     except Exception as e:
-        logger.error(f"Risk assessment AI error: {e}", exc_info=True)
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.exception('Erro na avaliação de risco com IA')
+        return Response({'error': 'Erro interno do servidor.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -5061,7 +5066,8 @@ def copilot_analyze_context(request):
             'context_type': context_type,
         })
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.exception('Erro no copilot_analyze_context')
+        return Response({'error': 'Erro interno do servidor.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

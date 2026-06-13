@@ -76,6 +76,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'password', 'password_confirm', 'first_name', 'last_name']
 
+    def validate_email(self, value):
+        from apps.accounts.models import User
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError('Este email já está cadastrado.')
+        return value
+
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError({"password": "As senhas não coincidem."})

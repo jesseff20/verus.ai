@@ -391,6 +391,7 @@ export function useIntelligentAssistant() {
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const currentGsIdRef = useRef<string | null>(null);
+  const edgeTraverseTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   // ── Batching refs for fast streaming ─────────────────────────────────────
   // Instead of calling setGenerationProgress on every SSE section_chunk (which
@@ -399,10 +400,11 @@ export function useIntelligentAssistant() {
   const pendingChunksRef = useRef<Record<number, string>>({});
   const chunkFlushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Clean up flush timer on unmount
+  // Clean up flush timer and edge traverse timer on unmount
   useEffect(() => {
     return () => {
       if (chunkFlushTimerRef.current) clearTimeout(chunkFlushTimerRef.current);
+      if (edgeTraverseTimerRef.current) clearTimeout(edgeTraverseTimerRef.current);
     };
   }, []);
 
@@ -848,7 +850,8 @@ export function useIntelligentAssistant() {
           ),
         }));
         // Desanimar após 1.5s
-        setTimeout(() => {
+        if (edgeTraverseTimerRef.current) clearTimeout(edgeTraverseTimerRef.current);
+        edgeTraverseTimerRef.current = setTimeout(() => {
           setGraphVisualization(prev => ({
             ...prev,
             edges: prev.edges.map(e =>

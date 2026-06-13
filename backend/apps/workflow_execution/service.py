@@ -418,6 +418,13 @@ def _resolve_exclusive_gateway(
             if edge.edge_id == gateway_choice:
                 return edge
 
+        # gateway_choice fornecido mas nenhuma aresta correspondente encontrada
+        logger.warning(
+            'Gateway exclusivo "%s" (node %s): escolha "%s" nao corresponde a nenhuma aresta. '
+            'Usando fallback para a primeira aresta disponivel.',
+            gateway_node.label, gateway_node.node_id, gateway_choice,
+        )
+
     # Fallback: primeira aresta
     return outgoing[0] if outgoing else None
 

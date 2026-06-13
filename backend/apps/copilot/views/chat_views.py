@@ -167,8 +167,9 @@ def chat_stream(request):
             })
 
         except Exception as e:
-            logger.exception(f'[copilot] Erro no stream: {e}')
-            yield _format_sse_event('error', {'message': f'Erro interno: {str(e)}'})
+            logger.exception('[copilot] Erro no stream')
+            yield _format_sse_event('error', {'message': 'Erro interno. Tente novamente.'})
+            yield _format_sse_event('completed', {})
 
     response = StreamingHttpResponse(
         event_stream(),

@@ -267,14 +267,12 @@ class PDFService:
             return pdf_bytes
 
         except ImportError:
-            logger.error(
+            raise RuntimeError(
                 "WeasyPrint não instalado. "
                 "Instale com: pip install weasyprint"
             )
-            return None
         except Exception as e:
-            logger.error(f"Erro ao gerar PDF: {str(e)}")
-            return None
+            raise RuntimeError(f"Erro ao gerar PDF: {str(e)}") from e
 
     def _markdown_to_html(
         self,
