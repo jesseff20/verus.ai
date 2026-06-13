@@ -140,12 +140,10 @@ class CopilotConfigAdmin(admin.ModelAdmin):
     def provider_badge(self, obj):
         colors = {
             'watsonx': '#0f62fe',
-            'anthropic': '#c96442',
             'openai': '#10a37f',
         }
         labels = {
-            'watsonx': 'IBM watsonx',
-            'anthropic': 'Anthropic',
+            'watsonx': 'IBM WatsonX',
             'openai': 'OpenAI',
         }
         color = colors.get(obj.provider, '#6c757d')

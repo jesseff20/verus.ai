@@ -1141,7 +1141,7 @@ class DocumentGeneratorViewSet(viewsets.ModelViewSet):
         by_provider_qs = qs.values('llm_provider').annotate(count=Count('id'))
         by_provider = {
             'openai': {'name': 'OpenAI', 'count': 0},
-            'anthropic': {'name': 'Anthropic', 'count': 0},
+            'watsonx': {'name': 'IBM WatsonX', 'count': 0},
         }
         for row in by_provider_qs:
             p = row['llm_provider']

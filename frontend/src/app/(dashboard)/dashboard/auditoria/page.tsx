@@ -674,7 +674,7 @@ function TokenUsageTab() {
                 <SelectContent>
                   <SelectItem value="all">Todos modelos</SelectItem>
                   <SelectItem value="openai">OpenAI</SelectItem>
-                  <SelectItem value="anthropic">Anthropic</SelectItem>
+                  <SelectItem value="watsonx">IBM WatsonX</SelectItem>
                   <SelectItem value="watsonx">WatsonX</SelectItem>
                 </SelectContent>
               </Select>

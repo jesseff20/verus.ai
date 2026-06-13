@@ -141,9 +141,8 @@ function extractVariables(template: string): string[] {
 }
 
 const PROVIDER_OPTIONS = [
-  { value: 'anthropic', label: 'Anthropic (Claude)' },
+  { value: 'watsonx', label: 'IBM WatsonX' },
   { value: 'openai', label: 'OpenAI (GPT)' },
-  { value: 'watsonx', label: 'IBM watsonx' },
 ];
 
 const AGENT_TYPE_OPTIONS = [
@@ -166,8 +165,8 @@ const DEFAULT_NEW_AGENT: Record<string, unknown> = {
   agent_type: 'generator',
   system_prompt: '',
   user_prompt_template: '',
-  llm_provider: 'anthropic',
-  model_name: 'claude-sonnet-4-5-20250929',
+  llm_provider: 'watsonx',
+  model_name: 'mistralai/mistral-medium-2505',
   temperature: 0.7,
   max_tokens: 4000,
   use_rag: true,
@@ -277,7 +276,7 @@ function AgentFormFields({
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Provider</Label>
             <Select
-              value={(form.llm_provider as string) || 'anthropic'}
+              value={(form.llm_provider as string) || 'watsonx'}
               onValueChange={(val) => updateField('llm_provider', val)}
             >
               <SelectTrigger className="text-sm">
@@ -296,7 +295,7 @@ function AgentFormFields({
               value={(form.model_name as string) || ''}
               onChange={(e) => updateField('model_name', e.target.value)}
               className="text-sm font-mono"
-              placeholder="claude-sonnet-4-5-20250929"
+              placeholder="mistralai/mistral-medium-2505"
             />
           </div>
           <div className="space-y-1.5">

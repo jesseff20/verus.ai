@@ -16,8 +16,7 @@ class CopilotConfig(models.Model):
     """
 
     PROVIDER_CHOICES = [
-        ('watsonx', 'IBM watsonx (Llama)'),
-        ('anthropic', 'Anthropic (Claude)'),
+        ('watsonx', 'IBM WatsonX (Llama)'),
         ('openai', 'OpenAI (GPT)'),
     ]
 
@@ -54,7 +53,7 @@ class CopilotConfig(models.Model):
         verbose_name='ID do modelo',
         help_text=(
             'Exemplos: meta-llama/llama-3-3-70b-instruct, '
-            'claude-sonnet-4-6, gpt-4o.'
+            'ibm/granite-3-3-8b-instruct, gpt-4o.'
         ),
     )
 

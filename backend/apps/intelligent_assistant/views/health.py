@@ -19,7 +19,7 @@ def health_check(request):
         'status': 'healthy',
         'message': 'Assistente Inteligente operacional',
         'services': {
-            'claude': 'ok',
+            'watsonx': 'ok',
             'knowledge_base': 'ok',
             'langgraph': 'ok'
         }

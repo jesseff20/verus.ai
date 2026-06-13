@@ -113,7 +113,7 @@ class FormAssistantAdmin(admin.ModelAdmin):
         """Badge colorido para provider"""
         colors = {
             'openai': '#10a37f',
-            'anthropic': '#D4AA7D'
+            'watsonx': '#0f62fe'
         }
         return format_html(
             '<span style="background-color: {}; color: white; padding: 3px 8px; border-radius: 3px; font-weight: bold;">{}</span>',

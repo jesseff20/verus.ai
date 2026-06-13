@@ -211,7 +211,7 @@ class FormAssistant(models.Model):
     """
     LLM_PROVIDER_CHOICES = [
         ('openai', 'OpenAI'),
-        ('anthropic', 'Anthropic'),
+        ('watsonx', 'IBM WatsonX'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -248,7 +248,7 @@ class FormAssistant(models.Model):
         'Nome do Modelo',
         max_length=100,
         default='gpt-4o-mini',
-        help_text='Ex: gpt-4o-mini, claude-3-5-sonnet-20241022'
+        help_text='Ex: gpt-4o-mini, mistralai/mistral-medium-2505'
     )
     temperature = models.FloatField(
         'Temperature',

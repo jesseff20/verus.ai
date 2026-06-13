@@ -32,9 +32,8 @@ class SectionAgentConfig(models.Model):
     ]
 
     LLM_PROVIDER_CHOICES = [
-        ('anthropic', 'Anthropic (Claude)'),
         ('openai', 'OpenAI (GPT)'),
-        ('watsonx', 'IBM watsonx.ai'),
+        ('watsonx', 'IBM WatsonX'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -75,14 +74,14 @@ class SectionAgentConfig(models.Model):
     llm_provider = models.CharField(
         max_length=20,
         choices=LLM_PROVIDER_CHOICES,
-        default='anthropic',
+        default='watsonx',
         verbose_name='Provedor LLM'
     )
     model_name = models.CharField(
         max_length=100,
-        default='claude-3-5-sonnet-20241022',
+        default='mistralai/mistral-medium-2505',
         verbose_name='Modelo',
-        help_text='Nome do modelo (ex: claude-3-5-sonnet-20241022, gpt-4o)'
+        help_text='Nome do modelo (ex: mistralai/mistral-medium-2505, gpt-4o)'
     )
     temperature = models.FloatField(
         default=0.7,

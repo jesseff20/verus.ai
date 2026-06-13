@@ -47,11 +47,11 @@ const openaiModels = [
   { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' },
 ];
 
-const anthropicModels = [
-  { value: 'claude-3-5-sonnet-20241022', label: 'Claude 3.5 Sonnet' },
-  { value: 'claude-3-opus-20240229', label: 'Claude 3 Opus' },
-  { value: 'claude-3-sonnet-20240229', label: 'Claude 3 Sonnet' },
-  { value: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku' },
+const watsonxModels = [
+  { value: 'mistralai/mistral-medium-2505', label: 'Mistral Medium 2505' },
+  { value: 'meta-llama/llama-3-3-70b-instruct', label: 'Llama 3.3 70B' },
+  { value: 'ibm/granite-3-3-8b-instruct', label: 'Granite 3.3 8B' },
+  { value: 'ibm/granite-3-2-2b-instruct', label: 'Granite 3.3 2B' },
 ];
 
 export default function EditDocumentGeneratorDialog({
@@ -77,7 +77,7 @@ export default function EditDocumentGeneratorDialog({
   const [displayOrder, setDisplayOrder] = useState(generator.display_order || 0);
   const [systemPrompt, setSystemPrompt] = useState(generator.system_prompt);
   const [userPromptTemplate, setUserPromptTemplate] = useState(generator.user_prompt_template);
-  const [llmProvider, setLlmProvider] = useState<'openai' | 'anthropic'>(generator.llm_provider);
+  const [llmProvider, setLlmProvider] = useState<'openai' | 'watsonx'>(generator.llm_provider);
   const [modelName, setModelName] = useState(generator.model_name);
   const [temperature, setTemperature] = useState([generator.temperature ?? 0.7]);
   const [maxTokens, setMaxTokens] = useState(generator.max_tokens ?? 1000);
@@ -224,7 +224,7 @@ export default function EditDocumentGeneratorDialog({
     }
   };
 
-  const availableModels = llmProvider === 'openai' ? openaiModels : anthropicModels;
+  const availableModels = llmProvider === 'openai' ? openaiModels : watsonxModels;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -469,9 +469,9 @@ export default function EditDocumentGeneratorDialog({
               <RadioGroup
                 value={llmProvider}
                 onValueChange={(value) => {
-                  setLlmProvider(value as 'openai' | 'anthropic');
+                  setLlmProvider(value as 'openai' | 'watsonx');
                   // Keep model if still valid for new provider
-                  const newModels = value === 'openai' ? openaiModels : anthropicModels;
+                  const newModels = value === 'openai' ? openaiModels : watsonxModels;
                   if (!newModels.find((m) => m.value === modelName)) {
                     setModelName('');
                   }
@@ -485,9 +485,9 @@ export default function EditDocumentGeneratorDialog({
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="anthropic" id="anthropic" />
-                  <Label htmlFor="anthropic" className="cursor-pointer">
-                    Anthropic
+                  <RadioGroupItem value="watsonx" id="watsonx" />
+                  <Label htmlFor="watsonx" className="cursor-pointer">
+                    IBM WatsonX
                   </Label>
                 </div>
               </RadioGroup>

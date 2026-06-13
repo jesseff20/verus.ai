@@ -13,7 +13,7 @@ class DocumentGenerator(models.Model):
     """
     LLM_CHOICES = [
         ('openai', 'OpenAI'),
-        ('anthropic', 'Anthropic'),
+        ('watsonx', 'IBM WatsonX'),
     ]
 
     SPECIALTY_CHOICES = [
@@ -51,7 +51,7 @@ class DocumentGenerator(models.Model):
                                             help_text='Template com {{placeholders}} para dados do formulário')
     llm_provider = models.CharField('Provedor LLM', max_length=20, choices=LLM_CHOICES, default='openai')
     model_name = models.CharField('Nome do Modelo', max_length=100, default='gpt-4o',
-                                  help_text='Ex: gpt-4o, claude-3-5-sonnet-20241022')
+                                  help_text='Ex: gpt-4o, mistralai/mistral-medium-2505')
     temperature = models.FloatField('Temperature', default=0.7,
                                     help_text='0.0 = mais determinístico, 2.0 = mais criativo')
     max_tokens = models.IntegerField('Max Tokens', default=4000)

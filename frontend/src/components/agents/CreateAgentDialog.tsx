@@ -56,7 +56,7 @@ export default function CreateAgentDialog({
   const [displayOrder, setDisplayOrder] = useState(0);
   const [systemPrompt, setSystemPrompt] = useState('');
   const [userPromptTemplate, setUserPromptTemplate] = useState('');
-  const [llmProvider, setLlmProvider] = useState<string>('anthropic');
+  const [llmProvider, setLlmProvider] = useState<string>('watsonx');
   const [modelName, setModelName] = useState('');
   const [temperature, setTemperature] = useState([0.7]);
   const [maxTokens, setMaxTokens] = useState(1000);
@@ -94,7 +94,7 @@ export default function CreateAgentDialog({
     setDisplayOrder(0);
     setSystemPrompt('');
     setUserPromptTemplate('');
-    setLlmProvider('anthropic');
+    setLlmProvider('watsonx');
     setModelName('');
     setTemperature([0.7]);
     setMaxTokens(1000);

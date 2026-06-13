@@ -28,7 +28,7 @@ import EditAgentDialog from '@/components/agents/EditAgentDialog';
 
 const providerLabels: Record<string, string> = {
   openai: 'OpenAI',
-  anthropic: 'Anthropic',
+  watsonx: 'IBM WatsonX',
 };
 
 export default function AgentsPage() {

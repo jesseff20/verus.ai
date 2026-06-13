@@ -78,7 +78,7 @@ const agentTypeLabels: Record<string, { label: string; icon: string; color: stri
 
 const providerLabels: Record<string, string> = {
   openai: 'OpenAI',
-  anthropic: 'Anthropic',
+  watsonx: 'IBM WatsonX',
 };
 
 export default function AgentDetailsPage() {

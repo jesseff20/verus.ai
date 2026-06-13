@@ -163,7 +163,7 @@ class User(AbstractUser):
         max_length=20,
         choices=[
             ('openai', 'OpenAI'),
-            ('anthropic', 'Anthropic'),
+            ('watsonx', 'IBM WatsonX'),
         ],
         blank=True,
         null=True

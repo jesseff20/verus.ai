@@ -79,7 +79,7 @@ class RAGQueryExecuteSerializer(serializers.Serializer):
         help_text='ID do contexto RAG a usar (opcional)'
     )
     llm_provider = serializers.ChoiceField(
-        choices=[('openai', 'OpenAI'), ('anthropic', 'Anthropic')],
+        choices=[('openai', 'OpenAI'), ('watsonx', 'IBM WatsonX')],
         default='openai',
         help_text='Provedor LLM para gerar resposta'
     )

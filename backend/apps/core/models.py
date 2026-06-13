@@ -691,12 +691,12 @@ class LLMProvider(models.Model):
         max_length=30,
         unique=True,
         verbose_name='Código',
-        help_text='Identificador único (ex: anthropic, openai, watsonx)'
+        help_text='Identificador único (ex: watsonx, openai)'
     )
     name = models.CharField(
         max_length=100,
         verbose_name='Nome',
-        help_text='Nome de exibição (ex: Anthropic (Claude))'
+        help_text='Nome de exibição (ex: IBM WatsonX)'
     )
     description = models.TextField(
         blank=True,
@@ -811,12 +811,12 @@ class LLMModel(models.Model):
     model_id = models.CharField(
         max_length=100,
         verbose_name='ID do Modelo',
-        help_text='Identificador da API (ex: claude-sonnet-4-5-20250514, gpt-4o)'
+        help_text='Identificador da API (ex: mistralai/mistral-medium-2505, gpt-4o)'
     )
     display_name = models.CharField(
         max_length=100,
         verbose_name='Nome de Exibição',
-        help_text='Nome amigável (ex: Claude Sonnet 4.5, GPT-4o)'
+        help_text='Nome amigável (ex: Mistral Medium, GPT-4o)'
     )
     description = models.TextField(
         blank=True,
@@ -875,8 +875,7 @@ class TokenUsageLog(models.Model):
 
     PROVIDER_CHOICES = [
         ('openai', 'OpenAI'),
-        ('anthropic', 'Anthropic'),
-        ('watsonx', 'WatsonX'),
+        ('watsonx', 'IBM WatsonX'),
         ('other', 'Outro'),
     ]
 
@@ -910,7 +909,7 @@ class TokenUsageLog(models.Model):
         max_length=100,
         blank=True,
         verbose_name='Modelo',
-        help_text='Nome do modelo utilizado (ex: claude-sonnet-4-5-20250514)'
+        help_text='Nome do modelo utilizado (ex: mistralai/mistral-medium-2505)'
     )
 
     usage_type = models.CharField(
@@ -1021,7 +1020,7 @@ class AIAnalysisConfig(models.Model):
         max_length=30,
         default='watsonx',
         verbose_name='Provider LLM',
-        help_text='anthropic, openai, watsonx',
+        help_text='watsonx, openai',
     )
     model_name = models.CharField(
         max_length=100,

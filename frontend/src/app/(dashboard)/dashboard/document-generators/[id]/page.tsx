@@ -117,7 +117,7 @@ const documentTypeLabels: Record<string, { label: string; icon: string; color: s
 
 const providerLabels: Record<string, string> = {
   openai: 'OpenAI',
-  anthropic: 'Anthropic',
+  watsonx: 'IBM WatsonX',
 };
 
 export default function DocumentGeneratorDetailsPage() {

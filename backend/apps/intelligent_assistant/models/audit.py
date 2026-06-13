@@ -80,12 +80,12 @@ class LLMAuditLog(models.Model):
     provider = models.CharField(
         max_length=50,
         verbose_name='Provider',
-        help_text='anthropic, openai, watsonx'
+        help_text='watsonx, openai'
     )
     model = models.CharField(
         max_length=100,
         verbose_name='Modelo',
-        help_text='Ex: claude-haiku-4-5, gpt-4o-mini'
+        help_text='Ex: ibm/granite-3-3-8b-instruct, gpt-4o-mini'
     )
 
     # Tokens

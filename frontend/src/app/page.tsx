@@ -569,7 +569,7 @@ export default function LandingPage() {
               <div>
                 <p className={`text-xs font-mono mb-1 ${t.iaCaption}`}>Providers de IA</p>
                 <p className={`text-sm ${t.muted}`}>
-                  Claude (Anthropic) como modelo primário + OpenAI como fallback.
+                  IBM WatsonX como modelo primário de IA.
                   Dados nunca são usados para treino. Conformidade LGPD garantida por design.
                 </p>
               </div>
