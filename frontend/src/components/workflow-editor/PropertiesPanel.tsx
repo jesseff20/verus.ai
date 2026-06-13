@@ -2,6 +2,7 @@
 
 import { Node } from '@xyflow/react';
 import { X } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 const ROLE_OPTIONS = [
   { value: 'any', label: 'Qualquer papel' },
@@ -34,6 +35,9 @@ type Props = {
 };
 
 export default function PropertiesPanel({ node, onUpdate, onClose }: Props) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   if (!node) return null;
 
   const data = node.data as Record<string, unknown>;
@@ -42,24 +46,29 @@ export default function PropertiesPanel({ node, onUpdate, onClose }: Props) {
   const description = (data.description as string) ?? '';
   const nodeType = (data.node_type as string) ?? node.type ?? '';
 
+  const labelCls = `block text-[11px] mb-1.5 font-medium uppercase tracking-wide ${isDark ? 'text-white/50' : 'text-gray-500'}`;
+  const inputCls = `w-full px-3 py-2 rounded-lg text-sm border focus:border-[#7030A0] focus:outline-none resize-none transition-colors ${
+    isDark
+      ? 'text-white bg-white/5 border-white/10 placeholder:text-white/20'
+      : 'text-gray-900 bg-gray-50 border-gray-200 placeholder:text-gray-400'
+  }`;
+
   return (
     <div
-      className="absolute right-0 top-0 bottom-0 z-10 flex flex-col border-l"
-      style={{
-        width: 280,
-        background: '#0F0F0F',
-        borderColor: '#1F1F1F',
-      }}
+      className={`absolute right-0 top-0 bottom-0 z-10 flex flex-col border-l ${
+        isDark ? 'bg-[#0F0F0F] border-[#1F1F1F]' : 'bg-white border-gray-200'
+      }`}
+      style={{ width: 280 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#1F1F1F' }}>
+      <div className={`flex items-center justify-between px-4 py-3 border-b ${isDark ? 'border-[#1F1F1F]' : 'border-gray-200'}`}>
         <div>
-          <p className="text-[11px] text-white/40 font-mono uppercase tracking-widest mb-0.5">Propriedades</p>
-          <p className="text-xs font-medium text-white/80">{NODE_TYPE_LABELS[nodeType] ?? nodeType}</p>
+          <p className={`text-[11px] font-mono uppercase tracking-widest mb-0.5 ${isDark ? 'text-white/40' : 'text-gray-400'}`}>Propriedades</p>
+          <p className={`text-xs font-medium ${isDark ? 'text-white/80' : 'text-gray-700'}`}>{NODE_TYPE_LABELS[nodeType] ?? nodeType}</p>
         </div>
         <button
           onClick={onClose}
-          className="w-6 h-6 rounded flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+          className={`w-6 h-6 rounded flex items-center justify-center transition-all ${isDark ? 'text-white/40 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}
         >
           <X size={13} />
         </button>
@@ -69,14 +78,12 @@ export default function PropertiesPanel({ node, onUpdate, onClose }: Props) {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {/* Rótulo */}
         <div>
-          <label className="block text-[11px] text-white/50 mb-1.5 font-medium uppercase tracking-wide">
-            Rótulo
-          </label>
+          <label className={labelCls}>Rótulo</label>
           <textarea
             value={label}
             onChange={(e) => onUpdate(node.id, { label: e.target.value })}
             rows={2}
-            className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none resize-none transition-colors placeholder:text-white/20"
+            className={inputCls}
             placeholder="Nome do nó"
           />
         </div>
@@ -84,14 +91,12 @@ export default function PropertiesPanel({ node, onUpdate, onClose }: Props) {
         {/* Papel */}
         {nodeType !== 'swimlane' && (
           <div>
-            <label className="block text-[11px] text-white/50 mb-1.5 font-medium uppercase tracking-wide">
-              Papel responsável
-            </label>
+            <label className={labelCls}>Papel responsável</label>
             <select
               value={role}
               onChange={(e) => onUpdate(node.id, { role: e.target.value })}
-              className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none transition-colors"
-              style={{ background: '#181818' }}
+              className={inputCls}
+              style={{ background: isDark ? '#181818' : '#f9fafb' }}
             >
               {ROLE_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -103,14 +108,12 @@ export default function PropertiesPanel({ node, onUpdate, onClose }: Props) {
         {/* Descrição / Instruções */}
         {!['start_event', 'end_event', 'exclusive_gateway', 'parallel_gateway', 'inclusive_gateway', 'swimlane'].includes(nodeType) && (
           <div>
-            <label className="block text-[11px] text-white/50 mb-1.5 font-medium uppercase tracking-wide">
-              Instruções
-            </label>
+            <label className={labelCls}>Instruções</label>
             <textarea
               value={description}
               onChange={(e) => onUpdate(node.id, { description: e.target.value })}
               rows={4}
-              className="w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none resize-none transition-colors placeholder:text-white/20"
+              className={inputCls}
               placeholder="Descreva o que deve ser feito nesta tarefa..."
             />
           </div>
@@ -118,10 +121,10 @@ export default function PropertiesPanel({ node, onUpdate, onClose }: Props) {
 
         {/* ID info (readonly) */}
         <div>
-          <label className="block text-[11px] text-white/30 mb-1 font-mono uppercase tracking-wide">
+          <label className={`block text-[11px] mb-1 font-mono uppercase tracking-wide ${isDark ? 'text-white/30' : 'text-gray-400'}`}>
             ID interno
           </label>
-          <p className="text-[11px] text-white/20 font-mono break-all">{node.id}</p>
+          <p className={`text-[11px] font-mono break-all ${isDark ? 'text-white/20' : 'text-gray-400'}`}>{node.id}</p>
         </div>
       </div>
     </div>

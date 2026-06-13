@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useMemo } from 'react';
+import { useTheme } from 'next-themes';
 import {
   ReactFlow,
   Background,
@@ -79,7 +80,7 @@ function templateToFlow(template: FlowTemplateDetail): { nodes: Node[]; edges: E
     markerEnd: { type: MarkerType.ArrowClosed, color: '#6D28D9', width: 16, height: 16 },
     style: { stroke: '#6D28D940', strokeWidth: 1.5 },
     labelStyle: { fill: '#9CA3AF', fontSize: 10 },
-    labelBgStyle: { fill: '#0A0A0A', fillOpacity: 0.85 },
+    labelBgStyle: { fill: 'var(--rf-label-bg, #0A0A0A)', fillOpacity: 0.85 },
   }));
 
   return { nodes, edges };
@@ -125,6 +126,9 @@ type EditorProps = {
 };
 
 function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
@@ -247,13 +251,14 @@ function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
 
   /* ── UI ── */
   return (
-    <div className="flex flex-col" style={{ height: '100%' }}>
+    <div className="flex flex-col" style={{ height: '100%', ['--rf-label-bg' as string]: isDark ? '#0A0A0A' : '#ffffff' }}>
       {/* Toolbar */}
       <div
-        className="flex items-center gap-2 px-4 h-12 border-b shrink-0"
-        style={{ background: '#0A0A0A', borderColor: '#1A1A1A' }}
+        className={`flex items-center gap-2 px-4 h-12 border-b shrink-0 ${
+          isDark ? 'bg-[#0A0A0A] border-[#1A1A1A]' : 'bg-white border-gray-200'
+        }`}
       >
-        <span className="text-sm font-medium text-white/70 mr-2 truncate max-w-[200px]">
+        <span className={`text-sm font-medium mr-2 truncate max-w-[200px] ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
           {template.name}
         </span>
         <span
@@ -272,27 +277,27 @@ function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
         {/* Zoom controls */}
         <button
           onClick={() => reactFlow.zoomIn()}
-          className="w-7 h-7 rounded flex items-center justify-center text-white/40 hover:text-white hover:bg-white/8 transition-all"
+          className={`w-7 h-7 rounded flex items-center justify-center transition-all ${isDark ? 'text-white/40 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}
           title="Zoom in"
         >
           <ZoomIn size={14} />
         </button>
         <button
           onClick={() => reactFlow.zoomOut()}
-          className="w-7 h-7 rounded flex items-center justify-center text-white/40 hover:text-white hover:bg-white/8 transition-all"
+          className={`w-7 h-7 rounded flex items-center justify-center transition-all ${isDark ? 'text-white/40 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}
           title="Zoom out"
         >
           <ZoomOut size={14} />
         </button>
         <button
           onClick={() => reactFlow.fitView({ padding: 0.1 })}
-          className="w-7 h-7 rounded flex items-center justify-center text-white/40 hover:text-white hover:bg-white/8 transition-all"
+          className={`w-7 h-7 rounded flex items-center justify-center transition-all ${isDark ? 'text-white/40 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}
           title="Ajustar à tela"
         >
           <Maximize2 size={14} />
         </button>
 
-        <div className="w-px h-5 bg-white/10 mx-1" />
+        <div className={`w-px h-5 mx-1 ${isDark ? 'bg-white/10' : 'bg-gray-200'}`} />
 
         {/* Save */}
         {!isSystemTemplate && (
@@ -344,15 +349,14 @@ function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
         )}
 
         {isSystemTemplate && (
-          <span className="text-[11px] text-white/25 italic">Template de sistema (somente leitura)</span>
+          <span className={`text-[11px] italic ${isDark ? 'text-white/25' : 'text-gray-400'}`}>Template de sistema (somente leitura)</span>
         )}
       </div>
 
       {/* Publish errors */}
       {publishErrors.length > 0 && (
         <div
-          className="px-4 py-2 text-xs border-b space-y-0.5"
-          style={{ background: '#EF444410', borderColor: '#EF444430', color: '#FCA5A5' }}
+          className="px-4 py-2 text-xs border-b space-y-0.5 bg-red-500/5 border-red-500/20 text-red-400"
         >
           {publishErrors.map((e, i) => (
             <p key={i}>• {e}</p>
@@ -389,22 +393,28 @@ function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
             nodesDraggable={!isSystemTemplate}
             nodesConnectable={!isSystemTemplate}
             elementsSelectable={true}
-            style={{ background: '#080808' }}
+            style={{ background: isDark ? '#080808' : '#f8fafc' }}
           >
             <Background
               variant={BackgroundVariant.Dots}
               gap={20}
               size={1}
-              color="#1F1F1F"
+              color={isDark ? '#1F1F1F' : '#cbd5e1'}
             />
             <Controls
-              style={{ background: '#0F0F0F', border: '1px solid #1F1F1F' }}
+              style={{
+                background: isDark ? '#0F0F0F' : '#ffffff',
+                border: isDark ? '1px solid #1F1F1F' : '1px solid #e2e8f0',
+              }}
               showInteractive={false}
             />
             <MiniMap
-              style={{ background: '#0A0A0A', border: '1px solid #1F1F1F' }}
-              nodeColor="#7030A040"
-              maskColor="rgba(0,0,0,0.7)"
+              style={{
+                background: isDark ? '#0A0A0A' : '#f1f5f9',
+                border: isDark ? '1px solid #1F1F1F' : '1px solid #e2e8f0',
+              }}
+              nodeColor={isDark ? '#7030A040' : '#7030A060'}
+              maskColor={isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)'}
             />
           </ReactFlow>
         </div>

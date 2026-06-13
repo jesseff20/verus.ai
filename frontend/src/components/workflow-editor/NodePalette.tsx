@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import { Play, Square, Circle, User, Cog, FileText, Diamond, AlignLeft } from 'lucide-react';
 
 type PaletteItem = {
@@ -23,6 +24,9 @@ const PALETTE_ITEMS: PaletteItem[] = [
 ];
 
 export default function NodePalette() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   const onDragStart = (event: React.DragEvent, item: PaletteItem) => {
     event.dataTransfer.setData(
       'application/verus-node',
@@ -33,11 +37,13 @@ export default function NodePalette() {
 
   return (
     <div
-      className="absolute left-0 top-0 bottom-0 z-10 flex flex-col border-r overflow-y-auto"
-      style={{ width: 180, background: '#0F0F0F', borderColor: '#1F1F1F' }}
+      className={`absolute left-0 top-0 bottom-0 z-10 flex flex-col border-r overflow-y-auto ${
+        isDark ? 'bg-[#0F0F0F] border-[#1F1F1F]' : 'bg-white border-gray-200'
+      }`}
+      style={{ width: 180 }}
     >
       <div className="px-3 pt-3 pb-2">
-        <p className="text-[10px] text-white/30 font-mono uppercase tracking-widest">Elementos</p>
+        <p className={`text-[10px] font-mono uppercase tracking-widest ${isDark ? 'text-white/30' : 'text-gray-400'}`}>Elementos</p>
       </div>
 
       {/* Groups */}
@@ -48,7 +54,7 @@ export default function NodePalette() {
         { group: 'Estrutura', types: ['swimlane'] },
       ].map(({ group, types }) => (
         <div key={group} className="mb-1">
-          <p className="px-3 py-1.5 text-[10px] text-white/20 font-medium uppercase tracking-widest">
+          <p className={`px-3 py-1.5 text-[10px] font-medium uppercase tracking-widest ${isDark ? 'text-white/20' : 'text-gray-400'}`}>
             {group}
           </p>
           {PALETTE_ITEMS.filter((i) => types.includes(i.type)).map((item) => (
@@ -56,11 +62,11 @@ export default function NodePalette() {
               key={item.nodeType}
               draggable
               onDragStart={(e) => onDragStart(e, item)}
-              className="mx-2 mb-1 px-2.5 py-2 rounded-lg border flex items-center gap-2 cursor-grab active:cursor-grabbing select-none hover:bg-white/5 transition-all"
+              className={`mx-2 mb-1 px-2.5 py-2 rounded-lg border flex items-center gap-2 cursor-grab active:cursor-grabbing select-none transition-all ${isDark ? 'hover:bg-white/5' : 'hover:bg-gray-50'}`}
               style={{ borderColor: `${item.color}30`, background: `${item.color}08` }}
             >
               <item.icon size={13} style={{ color: item.color, flexShrink: 0 }} />
-              <span className="text-[11px] text-white/65 font-medium">{item.label}</span>
+              <span className={`text-[11px] font-medium ${isDark ? 'text-white/65' : 'text-gray-600'}`}>{item.label}</span>
             </div>
           ))}
         </div>
