@@ -84,9 +84,9 @@ export default function DashboardLayout({
           {/* ── Aviso Legal ───────────────────────── */}
           <footer className="border-t bg-background px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 shrink-0">
             <p className="text-center text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-              <span className="hidden sm:inline">Verus.AI é um assistente jurídico com inteligência artificial.{' '}</span>
+              <span className="hidden sm:inline">Verus.AI é um assistente de procuradoria com inteligência artificial.{' '}</span>
               <strong className="font-medium text-foreground/60">
-                Não substitui a orientação de um advogado habilitado.
+                Não substitui a orientação de um procurador habilitado.
               </strong>{' '}
               <span className="hidden sm:inline">Verifique sempre as informações com um profissional do Direito antes de tomar decisões jurídicas.</span>
             </p>

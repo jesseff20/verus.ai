@@ -89,7 +89,7 @@ const NAV_ITEMS: SearchItem[] = [
   {
     title: 'Copilot',
     href: '/dashboard/copilot',
-    description: 'Assistente jurídico conversacional',
+    description: 'Assistente de procuradoria conversacional',
     icon: Bot,
     keywords: ['copilot', 'chat', 'ia', 'conversa', 'assistente'],
   },

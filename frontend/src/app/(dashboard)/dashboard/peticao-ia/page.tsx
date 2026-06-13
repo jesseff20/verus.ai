@@ -129,7 +129,7 @@ export default function PeticaoIAPage() {
             </div>
             <div>
               <Label>Instruções Adicionais</Label>
-              <Textarea value={extraInstructions} onChange={e => setExtraInstructions(e.target.value)} placeholder="Instruções específicas para o advogado IA..." rows={4} />
+              <Textarea value={extraInstructions} onChange={e => setExtraInstructions(e.target.value)} placeholder="Instruções específicas para o assistente de procuradoria..." rows={4} />
             </div>
             <Button className="w-full" onClick={() => generate.mutate()} disabled={!caseId || !petitionType || generate.isPending}>
               {generate.isPending ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Gerando...</> : <><Bot className="h-4 w-4 mr-2" /> Gerar Petição</>}

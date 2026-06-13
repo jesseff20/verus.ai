@@ -50,7 +50,7 @@ export default function NFSePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><FileText className="h-6 w-6" /> Notas Fiscais de Serviço</h1>
-          <p className="text-muted-foreground">Emissão de NFS-e para honorários advocatícios</p>
+          <p className="text-muted-foreground">Emissão de NFS-e para serviços prestados</p>
         </div>
       </div>
 

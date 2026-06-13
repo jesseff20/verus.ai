@@ -35,9 +35,9 @@ const roleLabels: Record<string, string> = {
   admin: 'Administrador',
   // Advocacia Privada
   socio: 'Sócio / Partner',
-  advogado_senior: 'Advogado Sênior',
-  advogado_pleno: 'Advogado Pleno',
-  advogado_junior: 'Advogado Júnior',
+  advogado_senior: 'Procurador Sênior',
+  advogado_pleno: 'Procurador Pleno',
+  advogado_junior: 'Procurador Júnior',
   estagiario: 'Estagiário de Direito',
   // Gestão
   gestor: 'Gestor / Manager',
@@ -45,7 +45,7 @@ const roleLabels: Record<string, string> = {
   supervisor: 'Supervisor',
   // Operacional
   analista: 'Analista Jurídico',
-  assistente: 'Assistente Jurídico',
+  assistente: 'Assistente de Procuradoria',
   paralegal: 'Paralegal / Técnico Jurídico',
   secretaria: 'Secretária Jurídica',
   // Setor Público
@@ -58,7 +58,7 @@ const roleLabels: Record<string, string> = {
   revisor: 'Revisor',
   auditor: 'Auditor Jurídico',
   // Acesso Limitado
-  cliente: 'Cliente',
+  cliente: 'Parte',
   visualizador: 'Visualizador',
   // Legacy aliases
   manager: 'Gestor',
@@ -464,9 +464,9 @@ export default function UsersPage() {
                   <SelectItem value="admin">Administrador</SelectItem>
                   <SelectItem disabled value="_sep1" className="text-xs text-muted-foreground">--- Advocacia Privada ---</SelectItem>
                   <SelectItem value="socio">Sócio / Partner</SelectItem>
-                  <SelectItem value="advogado_senior">Advogado Sênior</SelectItem>
-                  <SelectItem value="advogado_pleno">Advogado Pleno</SelectItem>
-                  <SelectItem value="advogado_junior">Advogado Júnior</SelectItem>
+                  <SelectItem value="advogado_senior">Procurador Sênior</SelectItem>
+                  <SelectItem value="advogado_pleno">Procurador Pleno</SelectItem>
+                  <SelectItem value="advogado_junior">Procurador Júnior</SelectItem>
                   <SelectItem value="estagiario">Estagiário de Direito</SelectItem>
                   <SelectItem disabled value="_sep2" className="text-xs text-muted-foreground">--- Gestão ---</SelectItem>
                   <SelectItem value="gestor">Gestor / Manager</SelectItem>
@@ -474,7 +474,7 @@ export default function UsersPage() {
                   <SelectItem value="supervisor">Supervisor</SelectItem>
                   <SelectItem disabled value="_sep3" className="text-xs text-muted-foreground">--- Operacional ---</SelectItem>
                   <SelectItem value="analista">Analista Jurídico</SelectItem>
-                  <SelectItem value="assistente">Assistente Jurídico</SelectItem>
+                  <SelectItem value="assistente">Assistente de Procuradoria</SelectItem>
                   <SelectItem value="paralegal">Paralegal / Técnico Jurídico</SelectItem>
                   <SelectItem value="secretaria">Secretária Jurídica</SelectItem>
                   <SelectItem disabled value="_sep4" className="text-xs text-muted-foreground">--- Setor Público ---</SelectItem>
@@ -487,7 +487,7 @@ export default function UsersPage() {
                   <SelectItem value="revisor">Revisor</SelectItem>
                   <SelectItem value="auditor">Auditor Jurídico</SelectItem>
                   <SelectItem disabled value="_sep6" className="text-xs text-muted-foreground">--- Acesso Limitado ---</SelectItem>
-                  <SelectItem value="cliente">Cliente</SelectItem>
+                  <SelectItem value="cliente">Parte</SelectItem>
                   <SelectItem value="visualizador">Visualizador</SelectItem>
                 </SelectContent>
               </Select>
@@ -638,9 +638,9 @@ export default function UsersPage() {
                   <SelectItem value="admin">Administrador</SelectItem>
                   <SelectItem disabled value="_sep1" className="text-xs text-muted-foreground">--- Advocacia Privada ---</SelectItem>
                   <SelectItem value="socio">Sócio / Partner</SelectItem>
-                  <SelectItem value="advogado_senior">Advogado Sênior</SelectItem>
-                  <SelectItem value="advogado_pleno">Advogado Pleno</SelectItem>
-                  <SelectItem value="advogado_junior">Advogado Júnior</SelectItem>
+                  <SelectItem value="advogado_senior">Procurador Sênior</SelectItem>
+                  <SelectItem value="advogado_pleno">Procurador Pleno</SelectItem>
+                  <SelectItem value="advogado_junior">Procurador Júnior</SelectItem>
                   <SelectItem value="estagiario">Estagiário de Direito</SelectItem>
                   <SelectItem disabled value="_sep2" className="text-xs text-muted-foreground">--- Gestão ---</SelectItem>
                   <SelectItem value="gestor">Gestor / Manager</SelectItem>
@@ -648,7 +648,7 @@ export default function UsersPage() {
                   <SelectItem value="supervisor">Supervisor</SelectItem>
                   <SelectItem disabled value="_sep3" className="text-xs text-muted-foreground">--- Operacional ---</SelectItem>
                   <SelectItem value="analista">Analista Jurídico</SelectItem>
-                  <SelectItem value="assistente">Assistente Jurídico</SelectItem>
+                  <SelectItem value="assistente">Assistente de Procuradoria</SelectItem>
                   <SelectItem value="paralegal">Paralegal / Técnico Jurídico</SelectItem>
                   <SelectItem value="secretaria">Secretária Jurídica</SelectItem>
                   <SelectItem disabled value="_sep4" className="text-xs text-muted-foreground">--- Setor Público ---</SelectItem>
@@ -661,7 +661,7 @@ export default function UsersPage() {
                   <SelectItem value="revisor">Revisor</SelectItem>
                   <SelectItem value="auditor">Auditor Jurídico</SelectItem>
                   <SelectItem disabled value="_sep6" className="text-xs text-muted-foreground">--- Acesso Limitado ---</SelectItem>
-                  <SelectItem value="cliente">Cliente</SelectItem>
+                  <SelectItem value="cliente">Parte</SelectItem>
                   <SelectItem value="visualizador">Visualizador</SelectItem>
                 </SelectContent>
               </Select>

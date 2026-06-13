@@ -40,7 +40,10 @@ class FlowInstanceViewSet(viewsets.ReadOnlyModelViewSet):
                 filter=Q(tasks__status__in=('pending', 'in_progress')),
             )
         )
-        if hasattr(user, 'organ') and user.organ:
+        # Superadmin/admin veem todas as instâncias (cross-organ)
+        if getattr(user, 'is_admin', False):
+            pass  # sem filtro de órgão
+        elif hasattr(user, 'organ') and user.organ:
             qs = qs.filter(organ=user.organ)
         else:
             qs = qs.none()
@@ -118,10 +121,12 @@ class TaskInstanceViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         instance_pk = self.kwargs.get('instance_pk')
         user = self.request.user
-        organ = getattr(user, 'organ', None)
         qs = TaskInstance.objects.filter(instance_id=instance_pk)
-        if organ:
-            qs = qs.filter(instance__organ=organ)
+        # Superadmin/admin veem tasks de qualquer órgão
+        if not getattr(user, 'is_admin', False):
+            organ = getattr(user, 'organ', None)
+            if organ:
+                qs = qs.filter(instance__organ=organ)
         return qs.select_related(
             'assigned_to', 'completed_by',
             'instance', 'instance__template',
@@ -202,16 +207,25 @@ class MyTasksViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        organ = getattr(user, 'organ', None)
-        if not organ:
-            return TaskInstance.objects.none()
-        qs = TaskInstance.objects.filter(
-            assigned_to=user,
-            instance__organ=organ,
-        ).select_related(
-            'instance', 'instance__template',
-            'assigned_to', 'completed_by',
-        ).prefetch_related('requests')
+        # Superadmin/admin veem suas tasks sem filtro de órgão
+        if getattr(user, 'is_admin', False):
+            qs = TaskInstance.objects.filter(
+                assigned_to=user,
+            ).select_related(
+                'instance', 'instance__template',
+                'assigned_to', 'completed_by',
+            ).prefetch_related('requests')
+        else:
+            organ = getattr(user, 'organ', None)
+            if not organ:
+                return TaskInstance.objects.none()
+            qs = TaskInstance.objects.filter(
+                assigned_to=user,
+                instance__organ=organ,
+            ).select_related(
+                'instance', 'instance__template',
+                'assigned_to', 'completed_by',
+            ).prefetch_related('requests')
 
         status_filter = self.request.query_params.get('status', 'pending')
         if status_filter != 'all':
@@ -233,12 +247,15 @@ class TaskRequestAdminViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        organ = getattr(user, 'organ', None)
-        if not organ:
-            return TaskRequest.objects.none()
-        qs = TaskRequest.objects.filter(
-            task__instance__organ=organ,
-        ).select_related('task', 'requester', 'target_user', 'resolved_by')
+        qs = TaskRequest.objects.select_related(
+            'task', 'requester', 'target_user', 'resolved_by',
+        )
+        # Superadmin/admin veem solicitações de todos os órgãos
+        if not getattr(user, 'is_admin', False):
+            organ = getattr(user, 'organ', None)
+            if not organ:
+                return TaskRequest.objects.none()
+            qs = qs.filter(task__instance__organ=organ)
 
         status_filter = self.request.query_params.get('status', 'pending')
         if status_filter != 'all':
@@ -296,12 +313,13 @@ def flow_analytics(request):
       days (int, default 30): janela de tempo para métricas temporais
     """
     user = request.user
-    if not (hasattr(user, 'organ') and user.organ):
-        return Response({'detail': 'Usuário não vinculado a um órgão.'}, status=status.HTTP_400_BAD_REQUEST)
-
     from . import analytics as a
     days = int(request.query_params.get('days', 30))
-    organ = user.organ
+    organ = getattr(user, 'organ', None)
+
+    # Superadmin/admin sem órgão: analytics globais (organ=None)
+    if not organ and not getattr(user, 'is_admin', False):
+        return Response({'detail': 'Usuário não vinculado a um órgão.'}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({
         'summary': a.flow_summary(organ),
@@ -326,7 +344,8 @@ def suggest_flow(request):
     bloquear o MVP; pode ser substituído por LLM na iteração seguinte.
     """
     user = request.user
-    if not (hasattr(user, 'organ') and user.organ):
+    organ = getattr(user, 'organ', None)
+    if not organ and not getattr(user, 'is_admin', False):
         return Response({'detail': 'Usuário não vinculado a um órgão.'}, status=status.HTTP_400_BAD_REQUEST)
 
     from apps.workflow_definition.models import FlowTemplate, FLOW_CATEGORY_CHOICES
@@ -375,13 +394,15 @@ def suggest_flow(request):
 
     from apps.workflow_definition.models import FlowTemplate as FT
     from django.db.models import Q, Count
+    organ_filter = Q(organ__isnull=True)
+    if organ:
+        organ_filter = Q(organ=organ) | Q(organ__isnull=True)
     suggestions = list(
         FT.objects.filter(
             status='published',
             category=best_category,
-        ).filter(
-            Q(organ=user.organ) | Q(organ__isnull=True)
-        ).values('id', 'name', 'category', 'version')
+        ).filter(organ_filter)
+        .values('id', 'name', 'category', 'version')
         .annotate(node_count=Count('nodes'))[:5]
     )
 

@@ -132,7 +132,7 @@ export default function ClientLayout({
               <div>
                 <span className="text-sm font-semibold">Verus.AI</span>
                 <span className="hidden sm:inline text-xs text-muted-foreground ml-2">
-                  Portal do Cliente
+                  Portal de Acompanhamento
                 </span>
               </div>
             </Link>
@@ -229,7 +229,7 @@ export default function ClientLayout({
       {/* ── Footer ────────────────────────────────────── */}
       <footer className="border-t bg-background px-4 py-2 shrink-0">
         <p className="text-center text-[10px] sm:text-[11px] text-muted-foreground">
-          Verus.AI - Portal do Cliente.{' '}
+          Verus.AI - Portal de Acompanhamento.{' '}
           <strong className="font-medium text-foreground/60">
             As informações exibidas são apenas para acompanhamento e não constituem aconselhamento jurídico.
           </strong>

@@ -211,7 +211,7 @@ export function TemplatePreviewDialog({ template, open, onClose }: TemplatePrevi
                     {template.template_type === 'html' || template.template_type === 'tinymce' ? (
                       <div
                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(renderedContent) }}
-                        className="prose prose-sm max-w-none"
+                        className="prose prose-sm dark:prose-invert max-w-none"
                       />
                     ) : (
                       <pre className="whitespace-pre-wrap text-sm font-mono">

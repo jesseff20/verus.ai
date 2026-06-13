@@ -36,7 +36,7 @@ const statusConfig: Record<string, { label: string; className: string }> = {
 };
 
 const typeConfig: Record<string, { label: string; icon: typeof Scale }> = {
-  honorarios: { label: 'Contrato de Honorários', icon: Scale },
+  honorarios: { label: 'Termo de Referência', icon: Scale },
   procuracao: { label: 'Procuração', icon: ScrollText },
   substabelecimento: { label: 'Substabelecimento', icon: Users },
 };

@@ -48,7 +48,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'bot',
   content:
-    'Olá! Sou o assistente virtual do Verus.AI. Posso ajudar com informações sobre seus processos, prazos e documentos. Para orientação jurídica, sempre consulte seu advogado. Como posso ajudá-lo?',
+    'Olá! Sou o assistente virtual do Verus.AI. Posso ajudar com informações sobre seus processos, prazos e documentos. Para orientação jurídica, sempre consulte o procurador responsável. Como posso ajudá-lo?',
 };
 
 // ─── Component ──────────────────────────────────────────────────────────────
@@ -156,7 +156,7 @@ export default function ClientCopilotPage() {
           <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
           <p className="text-xs text-amber-700 dark:text-amber-300">
             Este assistente fornece informações gerais. Para orientação jurídica,
-            consulte seu advogado.
+            consulte o procurador responsável.
           </p>
         </div>
 

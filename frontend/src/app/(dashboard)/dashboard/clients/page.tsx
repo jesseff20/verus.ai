@@ -448,12 +448,12 @@ export default function ClientsPage() {
             Clientes
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Gerencie os clientes do escritório
+            Gerencie as partes e órgãos assistidos
           </p>
         </div>
         <Button onClick={openCreateDialog} className="hidden sm:inline-flex self-auto">
           <Plus className="h-4 w-4 mr-2" />
-          Novo Cliente
+          Nova Parte
         </Button>
       </div>
 
@@ -559,10 +559,10 @@ export default function ClientsPage() {
           ) : clients.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-muted-foreground gap-3">
               <Users className="h-12 w-12 opacity-30" />
-              <p className="text-sm">Nenhum cliente encontrado</p>
+              <p className="text-sm">Nenhuma parte encontrada</p>
               <Button onClick={openCreateDialog} size="sm" variant="outline">
                 <Plus className="h-4 w-4 mr-2" />
-                Cadastrar primeiro cliente
+                Cadastrar primeira parte
               </Button>
             </div>
           ) : (
@@ -824,12 +824,12 @@ export default function ClientsPage() {
         <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingClient ? 'Editar Cliente' : 'Novo Cliente'}
+              {editingClient ? 'Editar Parte' : 'Nova Parte'}
             </DialogTitle>
             <DialogDescription>
               {editingClient
-                ? 'Atualize os dados do cliente.'
-                : 'Preencha os dados para cadastrar um novo cliente.'}
+                ? 'Atualize os dados da parte.'
+                : 'Preencha os dados para cadastrar uma nova parte.'}
             </DialogDescription>
           </DialogHeader>
 
@@ -1093,7 +1093,7 @@ export default function ClientsPage() {
                 value={formData.notes}
                 onChange={(e) => updateField('notes', e.target.value)}
                 rows={3}
-                placeholder="Anotações sobre o cliente..."
+                placeholder="Anotações sobre a parte..."
               />
             </div>
 
@@ -1119,7 +1119,7 @@ export default function ClientsPage() {
           <DialogHeader>
             <DialogTitle>Confirmar Exclusão</DialogTitle>
             <DialogDescription>
-              Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir esta parte? Esta ação não pode ser desfeita.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -1147,12 +1147,12 @@ export default function ClientsPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" />
-              Portal do Cliente
+              Portal de Acompanhamento
             </DialogTitle>
             <DialogDescription>
               {portalClient?.portal_active
-                ? `O portal esta ativo para ${portalClient?.name}. Voce pode atualizar a senha ou desativar.`
-                : `Ative o acesso ao portal para ${portalClient?.name}. O cliente podera acompanhar seus processos.`}
+                ? `O portal está ativo para ${portalClient?.name}. Você pode atualizar a senha ou desativar.`
+                : `Ative o acesso ao portal para ${portalClient?.name}. A parte poderá acompanhar seus processos.`}
             </DialogDescription>
           </DialogHeader>
 
@@ -1173,7 +1173,7 @@ export default function ClientsPage() {
                     type={showPortalPassword ? 'text' : 'password'}
                     value={portalPassword}
                     onChange={(e) => setPortalPassword(e.target.value)}
-                    placeholder="Senha para o cliente"
+                    placeholder="Senha para a parte"
                     className="pr-10"
                   />
                   <button
@@ -1218,14 +1218,14 @@ export default function ClientsPage() {
           ) : (
             <div className="text-center py-4">
               <p className="text-sm text-muted-foreground">
-                Este cliente nao possui e-mail cadastrado. Cadastre um e-mail antes de ativar o portal.
+                Esta parte não possui e-mail cadastrado. Cadastre um e-mail antes de ativar o portal.
               </p>
               <DialogFooter className="mt-4">
                 <Button variant="outline" onClick={() => setPortalClient(null)}>
                   Fechar
                 </Button>
                 <Button onClick={() => { setPortalClient(null); openEditDialog(portalClient!); }}>
-                  Editar Cliente
+                  Editar Parte
                 </Button>
               </DialogFooter>
             </div>
@@ -1282,7 +1282,7 @@ function ClientExpandedDetail({ clientId, client }: { clientId: string; client: 
           </p>
           {client.responsible_lawyer_name && (
             <p className="mt-2">
-              <span className="text-muted-foreground">Advogado resp.:</span>{' '}
+              <span className="text-muted-foreground">Procurador resp.:</span>{' '}
               {client.responsible_lawyer_name}
             </p>
           )}
@@ -1314,7 +1314,7 @@ function ClientExpandedDetail({ clientId, client }: { clientId: string; client: 
         ) : cases.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground border border-dashed rounded-lg">
             <Scale className="h-8 w-8 mx-auto mb-2 opacity-30" />
-            <p className="text-sm">Nenhum processo vinculado a este cliente</p>
+            <p className="text-sm">Nenhum processo vinculado a esta parte</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-2">

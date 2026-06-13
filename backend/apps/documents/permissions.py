@@ -25,6 +25,7 @@ class IsOwnerOrAdmin(permissions.BasePermission):
         resolved = resolve_role(request.user.role)
         return resolved in [
             'superadmin', 'admin', 'gestor', 'socio', 'procurador',
+            'procurador_geral', 'subprocurador_geral', 'gerente',
             'coordenador', 'revisor', 'auditor', 'advogado_senior',
-            'defensor', 'promotor',
+            'defensor', 'promotor', 'assessor_gerencial',
         ]

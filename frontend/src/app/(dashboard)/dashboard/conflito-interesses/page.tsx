@@ -43,10 +43,10 @@ export default function ConflictCheckPage() {
       </div>
 
       <Card>
-        <CardHeader><CardTitle>Dados para Verificação</CardTitle><CardDescription>Informe os dados do potencial cliente para cruzar com partes adversas</CardDescription></CardHeader>
+        <CardHeader><CardTitle>Dados para Verificação</CardTitle><CardDescription>Informe os dados da potencial parte para cruzar com partes adversas</CardDescription></CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><Label>Nome Completo *</Label><Input value={name} onChange={e => setName(e.target.value)} placeholder="Nome do potencial cliente" /></div>
+            <div><Label>Nome Completo *</Label><Input value={name} onChange={e => setName(e.target.value)} placeholder="Nome da potencial parte" /></div>
             <div><Label>CPF/CNPJ</Label><Input value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} placeholder="000.000.000-00" /></div>
           </div>
           <Button onClick={() => check.mutate()} disabled={!name || check.isPending} className="w-full">
@@ -60,7 +60,7 @@ export default function ConflictCheckPage() {
           <Alert variant={result.severity === 'critical' ? 'destructive' : 'default'}>
             {result.severity === 'none' ? <CheckCircle className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
             <AlertTitle>{result.has_conflicts ? `${result.total_conflicts} conflito(s) encontrado(s)` : 'Verificação concluída com sucesso'}</AlertTitle>
-            <AlertDescription>{result.has_conflicts ? result.oab_reference : 'Nenhum conflito de interesses identificado. O potencial cliente pode ser cadastrado.'}</AlertDescription>
+            <AlertDescription>{result.has_conflicts ? result.oab_reference : 'Nenhum conflito de interesses identificado. A potencial parte pode ser registrada.'}</AlertDescription>
           </Alert>
 
           {/* Análise Realizada */}
@@ -125,7 +125,7 @@ export default function ConflictCheckPage() {
                   {[
                     { step: 1, label: 'Correspondência exata de CPF/CNPJ', desc: 'Busca por documento idêntico nas partes contrárias de todos os casos' },
                     { step: 2, label: 'Similaridade de nome', desc: 'Comparação de tokens do nome com threshold de 60% (Jaccard)' },
-                    { step: 3, label: 'Verificação reversa', desc: 'Confere se o nome já é cliente existente representado em caso oposto' },
+                    { step: 3, label: 'Verificação reversa', desc: 'Confere se o nome já está cadastrada como parte representada em caso oposto' },
                   ].map((item, i) => (
                     <div key={i} className="flex gap-3">
                       <div className="flex flex-col items-center">
@@ -166,7 +166,7 @@ export default function ConflictCheckPage() {
                       <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
                         {conflict.case_titulo && <div><Scale className="h-3 w-3 inline mr-1" />Caso: {conflict.case_titulo}</div>}
                         {conflict.numero_processo && <div>Processo: {conflict.numero_processo}</div>}
-                        {conflict.advogado && <div>Advogado: {conflict.advogado}</div>}
+                        {conflict.advogado && <div>Procurador: {conflict.advogado}</div>}
                         {conflict.parte_contraria && <div>Parte Contrária: {conflict.parte_contraria}</div>}
                       </div>
                     </div>

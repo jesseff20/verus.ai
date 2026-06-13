@@ -39,7 +39,10 @@ export function ViewTemplateDialog({ children, template }: ViewTemplateDialogPro
     return (
       <div className="border rounded-lg p-4 bg-white dark:bg-slate-900 overflow-auto max-h-[500px]">
         <style>{fullTemplate.custom_css}</style>
-        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(fullTemplate.rendered_content) }} />
+        <div
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(fullTemplate.rendered_content) }}
+          className="prose prose-sm dark:prose-invert max-w-none"
+        />
       </div>
     );
   };

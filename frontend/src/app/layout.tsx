@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Verus.AI - Agente de Justiça",
   description:
-    "Assistente jurídico com IA para geração de peças processuais e pesquisa jurisprudencial.",
+    "Assistente de procuradoria com IA para geração de peças processuais e pesquisa jurisprudencial.",
   // O BrandProvider sobrescreve o favicon dinamicamente quando carrega brand settings.
   // Este fallback garante que /favicon.ico não retorne 404 antes do JS carregar.
   icons: {

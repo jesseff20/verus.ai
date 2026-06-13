@@ -319,6 +319,15 @@ ROLE_PERMISSIONS = {
         **_FULL_ACCESS,
         # Procurador tem acesso total no contexto público
     },
+    'procurador_geral': {
+        **_FULL_ACCESS,
+        # Procurador-Geral: chefia da procuradoria, acesso total
+    },
+    'subprocurador_geral': {
+        **_FULL_ACCESS,
+        # Subprocurador-Geral: vice-chefia, acesso total
+    },
+    'gerente': _MANAGEMENT_ACCESS,
     'defensor': {
         **_OPERATOR_ACCESS,
         'documents.view_all': True,
@@ -332,6 +341,19 @@ ROLE_PERMISSIONS = {
         'analytics.view': True,
     },
     'assessor': _OPERATOR_ACCESS,
+    'assessor_gerencial': {
+        **_OPERATOR_ACCESS,
+        'documents.view_all': True,
+        'documents.approve': True,
+        'analytics.view': True,
+    },
+    'assessor_gabinete': _OPERATOR_ACCESS,
+    'distribuidor': {
+        **_VIEWER_ACCESS,
+        'documents.create': True,
+        'documents.edit_own': True,
+        'documents.export': True,
+    },
     'servidor': {
         **_VIEWER_ACCESS,
         'documents.create': True,
@@ -440,11 +462,26 @@ ROLE_DESCRIPTIONS = {
         'color': '#86efac',
     },
 
-    # Setor Público
+    # Setor Público — Procuradoria
     'procurador': {
-        'name': 'Procurador',
-        'description': 'Procurador público com acesso total ao sistema.',
+        'name': 'Procurador(a)',
+        'description': 'Procurador(a) público(a) com acesso total ao sistema.',
         'color': '#9333ea',
+    },
+    'procurador_geral': {
+        'name': 'Procurador(a)-Geral',
+        'description': 'Chefia da Procuradoria. Acesso total ao sistema.',
+        'color': '#7c3aed',
+    },
+    'subprocurador_geral': {
+        'name': 'Subprocurador(a)-Geral',
+        'description': 'Vice-chefia da Procuradoria. Acesso total ao sistema.',
+        'color': '#8b5cf6',
+    },
+    'gerente': {
+        'name': 'Gerente',
+        'description': 'Gerência de unidade. Gestão de usuários, configurações e analytics.',
+        'color': '#0891b2',
     },
     'defensor': {
         'name': 'Defensor Público',
@@ -461,9 +498,24 @@ ROLE_DESCRIPTIONS = {
         'description': 'Assessor jurídico. Cria e edita documentos, usa assistentes IA.',
         'color': '#d8b4fe',
     },
+    'assessor_gerencial': {
+        'name': 'Assessor(a) Gerencial',
+        'description': 'Assessor(a) gerencial. Cria documentos, aprova peças e visualiza analytics.',
+        'color': '#c084fc',
+    },
+    'assessor_gabinete': {
+        'name': 'Assessor(a) de Gabinete',
+        'description': 'Assessor(a) de gabinete. Cria e edita documentos, usa assistentes IA.',
+        'color': '#d8b4fe',
+    },
+    'distribuidor': {
+        'name': 'Distribuidor(a)',
+        'description': 'Distribuição e protocolo de processos. Cria e exporta documentos.',
+        'color': '#86efac',
+    },
     'servidor': {
-        'name': 'Servidor Público',
-        'description': 'Servidor público. Cria e edita documentos próprios.',
+        'name': 'Servidor(a) Público(a)',
+        'description': 'Servidor(a) público(a). Cria e edita documentos próprios.',
         'color': '#e9d5ff',
     },
 
@@ -570,7 +622,10 @@ def is_admin_or_manager(user):
     if user.is_superuser:
         return True
     resolved = resolve_role(user.role)
-    return resolved in ['superadmin', 'admin', 'gestor', 'socio', 'procurador', 'coordenador']
+    return resolved in [
+        'superadmin', 'admin', 'gestor', 'socio', 'procurador',
+        'coordenador', 'procurador_geral', 'subprocurador_geral', 'gerente',
+    ]
 
 
 def get_user_permissions(user):

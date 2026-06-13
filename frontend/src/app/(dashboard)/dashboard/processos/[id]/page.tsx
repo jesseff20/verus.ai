@@ -686,7 +686,7 @@ export default function CaseDetailPage() {
                   <p className="font-medium">{formatCurrency(caso.valor_causa)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Honorários Combinados</p>
+                  <p className="text-xs text-muted-foreground">Recursos Orçamentários</p>
                   <p className="font-medium">{formatCurrency(caso.honorarios_combinados)}</p>
                 </div>
               </CardContent>

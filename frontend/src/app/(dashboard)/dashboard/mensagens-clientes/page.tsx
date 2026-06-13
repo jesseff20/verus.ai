@@ -676,7 +676,7 @@ export default function MensagensClientesPage() {
             )}
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Visualize e responda mensagens recebidas pelo portal do cliente
+            Visualize e responda mensagens recebidas pelo portal
           </p>
         </div>
       </div>
@@ -722,7 +722,7 @@ export default function MensagensClientesPage() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Buscar cliente..."
+                    placeholder="Buscar parte..."
                     className="pl-9 text-sm h-9"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}

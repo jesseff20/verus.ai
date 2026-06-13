@@ -538,7 +538,7 @@ export default function NewDocumentPage() {
                     <SelectItem value="recurso_apelacao">Recurso de Apelação</SelectItem>
                     <SelectItem value="mandado_seguranca">Mandado de Segurança</SelectItem>
                     <SelectItem value="procuracao">Procuração</SelectItem>
-                    <SelectItem value="contrato_honorarios">Contrato de Honorários</SelectItem>
+                    <SelectItem value="contrato_honorarios">Termo de Referência</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

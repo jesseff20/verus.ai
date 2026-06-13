@@ -253,7 +253,7 @@ export function LegalValidationPanel({
             Revisão Humana Obrigatória
           </CardTitle>
           <CardDescription>
-            Um advogado OAB deve revisar o documento antes da exportação
+            Um procurador competente deve revisar o documento antes da exportação
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

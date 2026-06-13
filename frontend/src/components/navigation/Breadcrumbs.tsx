@@ -23,7 +23,7 @@ interface BreadcrumbsProps {
  */
 const ROUTE_LABELS: Record<string, string> = {
   'dashboard': 'Painel',
-  'intelligent-assistant': 'Assistente Jurídico',
+  'intelligent-assistant': 'Assistente de Procuradoria',
   'jurisprudencia': 'Jurisprudência',
   'casos': 'Casos',
   'clientes': 'Clientes',

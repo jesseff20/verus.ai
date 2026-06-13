@@ -68,7 +68,7 @@ const statusConfig: Record<string, { label: string; className: string }> = {
 };
 
 const typeConfig: Record<string, { label: string; className: string }> = {
-  honorarios: { label: 'Honorários', className: 'bg-blue-100 text-blue-800 border-blue-200' },
+  honorarios: { label: 'Termo de Referência', className: 'bg-blue-100 text-blue-800 border-blue-200' },
   procuracao: { label: 'Procuração', className: 'bg-purple-100 text-purple-800 border-purple-200' },
   substabelecimento: { label: 'Substabelecimento', className: 'bg-amber-100 text-amber-800 border-amber-200' },
   prestacao_servicos: { label: 'Prestação de Serviços', className: 'bg-teal-100 text-teal-800 border-teal-200' },
@@ -88,7 +88,7 @@ const typeConfig: Record<string, { label: string; className: string }> = {
 };
 
 const TYPE_LABELS: Record<string, string> = {
-  honorarios: 'Contrato de Honorários',
+  honorarios: 'Termo de Referência',
   procuracao: 'Procuração',
   substabelecimento: 'Substabelecimento',
   prestacao_servicos: 'Contrato de Prestação de Serviços Juridicos',
@@ -431,7 +431,7 @@ function NewContractDialog() {
         {step === 2 && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Cliente *</Label>
+              <Label>Parte *</Label>
               <Select value={clientId} onValueChange={(v) => { setClientId(v); setCaseId(''); }}>
                 <SelectTrigger><SelectValue placeholder="Selecione a parte / ente" /></SelectTrigger>
                 <SelectContent>
@@ -675,7 +675,7 @@ function ContractsTable({ contracts, isLoading }: { contracts: LegalContract[]; 
           <TableRow>
             <TableHead>Titulo</TableHead>
             <TableHead>Tipo</TableHead>
-            <TableHead>Cliente</TableHead>
+            <TableHead>Parte</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Data</TableHead>
             <TableHead className="text-right">Ações</TableHead>
@@ -792,7 +792,7 @@ export default function ContratosPage() {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="flex-wrap h-auto gap-1">
           <TabsTrigger value="all">Todos</TabsTrigger>
-          <TabsTrigger value="honorarios">Honorários</TabsTrigger>
+          <TabsTrigger value="honorarios">Termos</TabsTrigger>
           <TabsTrigger value="procuracao">Procurações</TabsTrigger>
           <TabsTrigger value="substabelecimento">Substabelecimentos</TabsTrigger>
           <TabsTrigger value="prestacao_servicos">Serviços</TabsTrigger>

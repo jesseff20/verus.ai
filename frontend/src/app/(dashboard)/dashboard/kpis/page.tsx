@@ -117,7 +117,7 @@ export default function KPIsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-12">#</TableHead><TableHead>Advogado</TableHead><TableHead className="text-center">Pontos</TableHead>
+                  <TableHead className="w-12">#</TableHead><TableHead>Procurador</TableHead><TableHead className="text-center">Pontos</TableHead>
                   <TableHead className="text-center"><Target className="h-4 w-4 inline" /> Casos</TableHead>
                   <TableHead className="text-center"><Zap className="h-4 w-4 inline" /> Prazos</TableHead>
                   <TableHead className="text-center"><Clock className="h-4 w-4 inline" /> Horas</TableHead>

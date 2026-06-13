@@ -42,7 +42,7 @@ export default function ClientLoginPage() {
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              Portal do Cliente
+              Portal de Acompanhamento
             </h1>
             <p className="mt-1 text-sm text-muted-foreground font-mono tracking-wide">
               Verus.AI
@@ -123,7 +123,7 @@ export default function ClientLoginPage() {
         </div>
 
         <p className="mt-6 text-center text-[11px] text-muted-foreground leading-relaxed px-2">
-          Acesso exclusivo para clientes com portal ativado pelo escritorio.
+          Acesso exclusivo para clientes com portal ativado pela procuradoria.
         </p>
       </div>
     </div>

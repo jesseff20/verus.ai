@@ -1,6 +1,6 @@
 /**
  * Plugin de destaque de placeholders jurídicos para TinyMCE
- * Destaca visualmente marcadores que precisam de ação do advogado
+ * Destaca visualmente marcadores que precisam de ação do procurador
  */
 
 export interface PlaceholderMatch {

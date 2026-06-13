@@ -516,7 +516,7 @@ export function Sidebar({ onNavigate }: SidebarProps = {}) {
               {brandSettings?.system_name || 'Verus.AI'}
             </span>
             <span className="text-[10px] text-muted-foreground font-mono leading-tight">
-              {brandSettings?.system_tagline || 'Assistente Jurídico'}
+              {brandSettings?.system_tagline || 'Assistente de Procuradoria'}
             </span>
           </div>
         </Link>
@@ -699,7 +699,7 @@ export function Sidebar({ onNavigate }: SidebarProps = {}) {
           <p className="font-semibold truncate">
             {process.env.NEXT_PUBLIC_APP_NAME || 'Verus.AI'} v{process.env.NEXT_PUBLIC_APP_VERSION || '0.0.0'}
           </p>
-          <p className="truncate">Assistente Jurídico com IA</p>
+          <p className="truncate">Assistente de Procuradoria com IA</p>
         </div>
       </div>
     </div>

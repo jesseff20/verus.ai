@@ -87,7 +87,7 @@ export default function MensagensPage() {
           Mensagens
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Comunique-se com seu advogado
+          Comunique-se com o procurador responsável
         </p>
       </div>
 

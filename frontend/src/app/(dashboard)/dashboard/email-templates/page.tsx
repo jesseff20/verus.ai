@@ -65,7 +65,7 @@ const categoryConfig: Record<string, { label: string; className: string; icon: R
   follow_up: { label: 'Follow-up', className: 'bg-cyan-100 text-cyan-800 border-cyan-200', icon: <Mail className="h-3.5 w-3.5" /> },
   notification: { label: 'Notificação', className: 'bg-blue-100 text-blue-800 border-blue-200', icon: <Mail className="h-3.5 w-3.5" /> },
   deadline: { label: 'Prazo', className: 'bg-red-100 text-red-700 border-red-200', icon: <Clock className="h-3.5 w-3.5" /> },
-  client: { label: 'Cliente', className: 'bg-green-100 text-green-800 border-green-200', icon: <UserPlus className="h-3.5 w-3.5" /> },
+  client: { label: 'Parte', className: 'bg-green-100 text-green-800 border-green-200', icon: <UserPlus className="h-3.5 w-3.5" /> },
   billing: { label: 'Cobrança', className: 'bg-yellow-100 text-yellow-800 border-yellow-200', icon: <Receipt className="h-3.5 w-3.5" /> },
   general: { label: 'Geral', className: 'bg-gray-100 text-gray-700 border-gray-200', icon: <FileText className="h-3.5 w-3.5" /> },
 };
@@ -73,10 +73,10 @@ const categoryConfig: Record<string, { label: string; className: string; icon: R
 // ── Available Variables ──
 
 const availableVariables = [
-  { name: 'client_name', description: 'Nome completo do cliente' },
+  { name: 'client_name', description: 'Nome da parte' },
   { name: 'case_number', description: 'Número do processo' },
-  { name: 'lawyer_name', description: 'Nome do advogado responsável' },
-  { name: 'office_name', description: 'Nome do escritório' },
+  { name: 'lawyer_name', description: 'Nome do procurador responsável' },
+  { name: 'office_name', description: 'Nome da procuradoria' },
   { name: 'deadline_date', description: 'Data do prazo' },
   { name: 'hearing_date', description: 'Data da audiência' },
   { name: 'hearing_location', description: 'Local da audiência' },
@@ -84,9 +84,9 @@ const availableVariables = [
   { name: 'invoice_number', description: 'Número da fatura' },
   { name: 'invoice_amount', description: 'Valor da fatura' },
   { name: 'due_date', description: 'Data de vencimento' },
-  { name: 'office_phone', description: 'Telefone do escritório' },
-  { name: 'office_email', description: 'E-mail do escritório' },
-  { name: 'office_address', description: 'Endereço do escritório' },
+  { name: 'office_phone', description: 'Telefone da procuradoria' },
+  { name: 'office_email', description: 'E-mail da procuradoria' },
+  { name: 'office_address', description: 'Endereço da procuradoria' },
 ];
 
 // ── Sample Data for Preview ──
@@ -120,16 +120,16 @@ interface PrebuiltTemplate {
 
 const prebuiltTemplates: PrebuiltTemplate[] = [
   {
-    name: 'Boas-vindas ao Cliente',
+    name: 'Notificação Inicial',
     subject: 'Bem-vindo(a) ao {{office_name}}, {{client_name}}!',
     category: 'welcome',
     variables: [
-      { name: 'client_name', description: 'Nome do cliente' },
-      { name: 'lawyer_name', description: 'Nome do advogado' },
-      { name: 'office_name', description: 'Nome do escritório' },
+      { name: 'client_name', description: 'Nome da parte' },
+      { name: 'lawyer_name', description: 'Nome do procurador' },
+      { name: 'office_name', description: 'Nome da procuradoria' },
       { name: 'case_number', description: 'Número do processo' },
-      { name: 'office_phone', description: 'Telefone do escritório' },
-      { name: 'office_email', description: 'E-mail do escritório' },
+      { name: 'office_phone', description: 'Telefone da procuradoria' },
+      { name: 'office_email', description: 'E-mail da procuradoria' },
     ],
     body_html: `<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
   <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); padding: 32px 24px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -138,23 +138,23 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
   </div>
   <div style="background: #ffffff; padding: 32px 24px; border: 1px solid #e5e7eb; border-top: none;">
     <h2 style="color: #1e3a5f; margin: 0 0 16px; font-size: 20px;">Bem-vindo(a), {{client_name}}!</h2>
-    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">E com grande satisfação que damos as boas-vindas ao nosso escritório. Agradecemos a confiança depositada em nossa equipe.</p>
+    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">E com grande satisfação que damos as boas-vindas ao a procuradoria. Agradecemos a confiança depositada em nossa equipe.</p>
     <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">Seu caso foi registrado com sucesso em nosso sistema:</p>
     <div style="background: #f3f4f6; border-left: 4px solid #2d5a8e; padding: 16px; margin: 16px 0; border-radius: 0 4px 4px 0;">
       <p style="margin: 0 0 8px; color: #6b7280; font-size: 13px;">NÚMERO DO PROCESSO</p>
       <p style="margin: 0; color: #1e3a5f; font-size: 16px; font-weight: 600;">{{case_number}}</p>
     </div>
-    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">O advogado responsável pelo seu caso e <strong>{{lawyer_name}}</strong>, que estara a disposição para esclarecer quaisquer dúvidas.</p>
+    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">O procurador responsável pelo seu caso e <strong>{{lawyer_name}}</strong>, que estara a disposição para esclarecer quaisquer dúvidas.</p>
     <div style="background: #eff6ff; border-radius: 8px; padding: 20px; margin: 24px 0;">
       <h3 style="color: #1e3a5f; margin: 0 0 12px; font-size: 15px;">Próximos passos:</h3>
       <ul style="color: #374151; line-height: 1.8; margin: 0; padding-left: 20px;">
         <li>Enviar os documentos solicitados</li>
-        <li>Agendar reunião inicial com seu advogado</li>
-        <li>Acessar o portal do cliente para acompanhar o andamento</li>
+        <li>Agendar reunião inicial com o procurador responsável</li>
+        <li>Acessar o portal de acompanhamento para acompanhar o andamento</li>
       </ul>
     </div>
     <div style="text-align: center; margin: 24px 0;">
-      <a href="#" style="background: #2d5a8e; color: #ffffff; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 500; display: inline-block;">Acessar Portal do Cliente</a>
+      <a href="#" style="background: #2d5a8e; color: #ffffff; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 500; display: inline-block;">Acessar Portal de Acompanhamento</a>
     </div>
   </div>
   <div style="background: #f9fafb; padding: 24px; text-align: center; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
@@ -169,13 +169,13 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
     subject: 'URGENTE: Prazo em {{deadline_date}} - Processo {{case_number}}',
     category: 'deadline_reminder',
     variables: [
-      { name: 'client_name', description: 'Nome do cliente' },
+      { name: 'client_name', description: 'Nome da parte' },
       { name: 'case_number', description: 'Número do processo' },
       { name: 'deadline_date', description: 'Data do prazo' },
-      { name: 'lawyer_name', description: 'Nome do advogado' },
-      { name: 'office_name', description: 'Nome do escritório' },
-      { name: 'office_phone', description: 'Telefone do escritório' },
-      { name: 'office_email', description: 'E-mail do escritório' },
+      { name: 'lawyer_name', description: 'Nome do procurador' },
+      { name: 'office_name', description: 'Nome da procuradoria' },
+      { name: 'office_phone', description: 'Telefone da procuradoria' },
+      { name: 'office_email', description: 'E-mail da procuradoria' },
     ],
     body_html: `<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
   <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); padding: 32px 24px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -212,14 +212,14 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
     subject: 'Audiência Agendada - {{hearing_date}} - Processo {{case_number}}',
     category: 'hearing_notice',
     variables: [
-      { name: 'client_name', description: 'Nome do cliente' },
+      { name: 'client_name', description: 'Nome da parte' },
       { name: 'case_number', description: 'Número do processo' },
       { name: 'hearing_date', description: 'Data e hora da audiência' },
       { name: 'hearing_location', description: 'Local da audiência' },
-      { name: 'lawyer_name', description: 'Nome do advogado' },
-      { name: 'office_name', description: 'Nome do escritório' },
-      { name: 'office_phone', description: 'Telefone do escritório' },
-      { name: 'office_email', description: 'E-mail do escritório' },
+      { name: 'lawyer_name', description: 'Nome do procurador' },
+      { name: 'office_name', description: 'Nome da procuradoria' },
+      { name: 'office_phone', description: 'Telefone da procuradoria' },
+      { name: 'office_email', description: 'E-mail da procuradoria' },
     ],
     body_html: `<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
   <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); padding: 32px 24px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -248,7 +248,7 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
           <td style="padding: 8px 0; color: #1e3a5f; font-weight: 600;">{{hearing_location}}</td>
         </tr>
         <tr>
-          <td style="padding: 8px 0; color: #6b7280; font-size: 13px; vertical-align: top;">ADVOGADO</td>
+          <td style="padding: 8px 0; color: #6b7280; font-size: 13px; vertical-align: top;">PROCURADOR</td>
           <td style="padding: 8px 0; color: #1e3a5f; font-weight: 600;">{{lawyer_name}}</td>
         </tr>
       </table>
@@ -262,7 +262,7 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
         <li>Vestir-se de forma adequada</li>
       </ul>
     </div>
-    <p style="color: #374151; line-height: 1.6; margin: 16px 0;">Em caso de impossibilidade de comparecimento, entre em contato <strong>imediatamente</strong> com o escritório.</p>
+    <p style="color: #374151; line-height: 1.6; margin: 16px 0;">Em caso de impossibilidade de comparecimento, entre em contato <strong>imediatamente</strong> com a procuradoria.</p>
     <div style="text-align: center; margin: 24px 0;">
       <a href="#" style="background: #7c3aed; color: #ffffff; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 500; display: inline-block;">Confirmar Presença</a>
     </div>
@@ -279,13 +279,13 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
     subject: 'Documento Disponível: {{document_name}} - Processo {{case_number}}',
     category: 'document_ready',
     variables: [
-      { name: 'client_name', description: 'Nome do cliente' },
+      { name: 'client_name', description: 'Nome da parte' },
       { name: 'case_number', description: 'Número do processo' },
       { name: 'document_name', description: 'Nome do documento' },
-      { name: 'lawyer_name', description: 'Nome do advogado' },
-      { name: 'office_name', description: 'Nome do escritório' },
-      { name: 'office_phone', description: 'Telefone do escritório' },
-      { name: 'office_email', description: 'E-mail do escritório' },
+      { name: 'lawyer_name', description: 'Nome do procurador' },
+      { name: 'office_name', description: 'Nome da procuradoria' },
+      { name: 'office_phone', description: 'Telefone da procuradoria' },
+      { name: 'office_email', description: 'E-mail da procuradoria' },
     ],
     body_html: `<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
   <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); padding: 32px 24px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -298,7 +298,7 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
       <p style="color: #065f46; font-size: 18px; font-weight: 700; margin: 0;">{{document_name}}</p>
     </div>
     <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">Prezado(a) <strong>{{client_name}}</strong>,</p>
-    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">Informamos que o documento <strong>{{document_name}}</strong> referente ao processo <strong>{{case_number}}</strong> está pronto e disponível para download no portal do cliente.</p>
+    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">Informamos que o documento <strong>{{document_name}}</strong> referente ao processo <strong>{{case_number}}</strong> está pronto e disponível para download no portal.</p>
     <div style="background: #f3f4f6; border-left: 4px solid #059669; padding: 16px; margin: 16px 0; border-radius: 0 4px 4px 0;">
       <p style="margin: 0 0 8px; color: #6b7280; font-size: 13px;">DOCUMENTO</p>
       <p style="margin: 0 0 12px; color: #1e3a5f; font-size: 16px; font-weight: 600;">{{document_name}}</p>
@@ -322,15 +322,15 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
     subject: 'Fatura {{invoice_number}} - Vencimento em {{due_date}}',
     category: 'invoice',
     variables: [
-      { name: 'client_name', description: 'Nome do cliente' },
+      { name: 'client_name', description: 'Nome da parte' },
       { name: 'invoice_number', description: 'Número da fatura' },
       { name: 'invoice_amount', description: 'Valor da fatura' },
       { name: 'due_date', description: 'Data de vencimento' },
       { name: 'case_number', description: 'Número do processo' },
-      { name: 'lawyer_name', description: 'Nome do advogado' },
-      { name: 'office_name', description: 'Nome do escritório' },
-      { name: 'office_phone', description: 'Telefone do escritório' },
-      { name: 'office_email', description: 'E-mail do escritório' },
+      { name: 'lawyer_name', description: 'Nome do procurador' },
+      { name: 'office_name', description: 'Nome da procuradoria' },
+      { name: 'office_phone', description: 'Telefone da procuradoria' },
+      { name: 'office_email', description: 'E-mail da procuradoria' },
     ],
     body_html: `<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
   <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); padding: 32px 24px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -365,11 +365,11 @@ const prebuiltTemplates: PrebuiltTemplate[] = [
         </table>
       </div>
     </div>
-    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">O pagamento pode ser realizado via PIX, transferência bancária ou boleto. Para obter os dados de pagamento, acesse o portal do cliente ou entre em contato com nosso escritório.</p>
+    <p style="color: #374151; line-height: 1.6; margin: 0 0 16px;">O pagamento pode ser realizado via PIX, transferência bancária ou boleto. Para obter os dados de pagamento, acesse o portal ou entre em contato com a procuradoria.</p>
     <div style="text-align: center; margin: 24px 0;">
       <a href="#" style="background: #2d5a8e; color: #ffffff; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 500; display: inline-block;">Pagar Fatura</a>
     </div>
-    <p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 16px 0 0;">Advogado responsável: {{lawyer_name}}</p>
+    <p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 16px 0 0;">Procurador responsável: {{lawyer_name}}</p>
   </div>
   <div style="background: #f9fafb; padding: 24px; text-align: center; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
     <p style="color: #6b7280; font-size: 13px; margin: 0 0 4px;">{{office_name}}</p>

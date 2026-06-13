@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { Editor } from '@tinymce/tinymce-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,8 @@ import { Switch } from '@/components/ui/switch';
 
 export default function NewTemplatePage() {
   const router = useRouter();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const { createTemplate, isCreating } = useTemplates();
   const { blueprints } = useBlueprints();
   const { toast } = useToast();
@@ -203,17 +206,20 @@ export default function NewTemplatePage() {
               <Label>Conteúdo do Template *</Label>
               <div className="mt-2 border rounded-lg overflow-hidden">
                 <Editor
+                  key={resolvedTheme}
                   apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                   onInit={(_evt, editor) => (editorRef.current = editor)}
                   value={editorContent}
                   onEditorChange={handleEditorChange}
                   init={{
-                  license_key: 'gpl',
+                    license_key: 'gpl',
                     height: 600,
                     menubar: true,
+                    skin_url: isDark ? '/tinymce/skins/ui/oxide-dark' : '/tinymce/skins/ui/oxide',
+                    content_css: isDark ? '/tinymce/skins/content/dark/content.css' : '/tinymce/skins/content/default/content.css',
                     plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table wordcount',
                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor | table image link | removeformat code fullscreen',
-                    content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; }',
+                    content_style: `body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; background-color: ${isDark ? '#1a1a1a' : '#ffffff'}; color: ${isDark ? '#e0e0e0' : '#000000'}; }`,
                     images_upload_handler: (blobInfo: any) => {
                       return new Promise((resolve) => {
                         const base64 = 'data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64();

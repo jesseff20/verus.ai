@@ -101,7 +101,7 @@ export default function ClientPortalDashboard() {
       {/* ── Welcome ───────────────────────────────────── */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          {client ? `Olá, ${client.name.split(' ')[0]}` : 'Portal do Cliente'}
+          {client ? `Olá, ${client.name.split(' ')[0]}` : 'Portal de Acompanhamento'}
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
           Acompanhe seus processos, documentos e comunicações

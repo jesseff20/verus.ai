@@ -21,6 +21,14 @@ def _role_level(user) -> int:
     return hierarchy.get(role, 0)
 
 
+def _is_admin(user) -> bool:
+    """Verifica se o usuário é superadmin ou admin (acesso total)."""
+    role = getattr(user, 'role', 'visualizador')
+    aliases = getattr(CustomUser, 'ROLE_ALIASES', {})
+    resolved = aliases.get(role, role)
+    return resolved in ('superadmin', 'admin') or getattr(user, 'is_superuser', False)
+
+
 def _has_permission(user, action: str) -> bool:
     """Verifica se usuário tem permissão para a ação específica."""
     from apps.accounts.models import User as CustomUser
@@ -34,15 +42,16 @@ def _has_permission(user, action: str) -> bool:
 
 
 class BelongsToOrgan(BasePermission):
-    """Usuário deve estar vinculado a um órgão."""
+    """Usuário deve estar vinculado a um órgão (superadmin/admin bypass)."""
     message = 'Usuário não está vinculado a um órgão.'
 
     def has_permission(self, request, view):
-        return bool(
-            request.user and
-            request.user.is_authenticated and
-            getattr(request.user, 'organ', None)
-        )
+        if not (request.user and request.user.is_authenticated):
+            return False
+        # Superadmin e admin sempre passam — podem não ter órgão
+        if _is_admin(request.user):
+            return True
+        return bool(getattr(request.user, 'organ', None))
 
 
 class CanStartFlow(BelongsToOrgan):
@@ -52,6 +61,9 @@ class CanStartFlow(BelongsToOrgan):
     def has_permission(self, request, view):
         if not super().has_permission(request, view):
             return False
+        # Superadmin/admin já passaram no super() — acesso total
+        if _is_admin(request.user):
+            return True
         return _role_level(request.user) >= 30  # distribuidor
 
 
@@ -62,12 +74,16 @@ class CanApproveRequests(BelongsToOrgan):
     def has_permission(self, request, view):
         if not super().has_permission(request, view):
             return False
+        # Superadmin/admin já passaram no super() — acesso total
+        if _is_admin(request.user):
+            return True
         return _role_level(request.user) >= 70  # gerente
 
 
 class IsTaskAssigneeOrManager(BasePermission):
     """
     Pode completar uma task se:
+    - É superadmin ou admin (acesso total)
     - É o usuário atribuído à task
     - OU tem nível de gerente ou superior no mesmo órgão
     """
@@ -77,6 +93,9 @@ class IsTaskAssigneeOrManager(BasePermission):
         user = request.user
         if not user.is_authenticated:
             return False
+        # Superadmin/admin — acesso total
+        if _is_admin(user):
+            return True
         # Assignee direto
         if obj.assigned_to and obj.assigned_to == user:
             return True

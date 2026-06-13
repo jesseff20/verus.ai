@@ -438,7 +438,7 @@ export default function FinanceiroPage() {
               <span>Receitas por Cliente</span>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardTitle>
-            <CardDescription>Honorários pagos no periodo</CardDescription>
+            <CardDescription>Recursos utilizados no período</CardDescription>
           </CardHeader>
           <CardContent>
             {data.by_client.length === 0 ? (
@@ -485,8 +485,8 @@ export default function FinanceiroPage() {
         {/* By Lawyer */}
         <Card>
           <CardHeader>
-            <CardTitle>Receitas por Advogado</CardTitle>
-            <CardDescription>Honorários gerados por advogado responsavel</CardDescription>
+            <CardTitle>Atuação por Procurador</CardTitle>
+            <CardDescription>Processos por procurador responsável</CardDescription>
           </CardHeader>
           <CardContent>
             {data.by_lawyer.length === 0 ? (
@@ -494,7 +494,7 @@ export default function FinanceiroPage() {
             ) : (
               <div className="space-y-2">
                 <div className="grid grid-cols-2 text-sm font-medium text-muted-foreground border-b pb-2">
-                  <span>Advogado</span>
+                  <span>Procurador</span>
                   <span className="text-right">Total</span>
                 </div>
                 {data.by_lawyer.map((entry, idx) => (
@@ -518,7 +518,7 @@ export default function FinanceiroPage() {
               Previsão de Fluxo de Caixa
             </DialogTitle>
             <DialogDescription>
-              Análise preditiva baseada em IA do seu histórico financeiro
+              Análise preditiva baseada em IA do seu histórico orçamentário
             </DialogDescription>
           </DialogHeader>
           {cashFlowMutation.data && (
@@ -646,16 +646,16 @@ export default function FinanceiroPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog de Cobrança */}
+      {/* Dialog de Comunicado */}
       <Dialog open={collectionDialogOpen} onOpenChange={setCollectionDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <MessageSquare className="h-5 w-5" />
-              Gerar Mensagem de Cobrança
+              Gerar Comunicado
             </DialogTitle>
             <DialogDescription>
-              IA gera mensagem personalizada baseada no perfil do cliente
+              IA gera comunicado personalizado baseado no perfil da parte
             </DialogDescription>
           </DialogHeader>
           {selectedClientForCollection && (
