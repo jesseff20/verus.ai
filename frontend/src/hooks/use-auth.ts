@@ -83,7 +83,7 @@ export function useAuth() {
       if (responseData?.detail) {
         errorMessage = responseData.detail;
       } else if (responseData?.non_field_errors?.length > 0) {
-        errorMessage = 'Usuário ou senha incorretos.';
+        errorMessage = responseData.non_field_errors[0];
       } else if (responseData?.username || responseData?.password) {
         errorMessage = 'Preencha todos os campos.';
       }

@@ -98,16 +98,33 @@ class LoginSerializer(serializers.Serializer):
         username = attrs.get('username')
         password = attrs.get('password')
 
-        if username and password:
-            user = authenticate(username=username, password=password)
-            if not user:
-                raise serializers.ValidationError('Credenciais inválidas.')
-            if not user.is_active:
-                raise serializers.ValidationError('Usuário inativo.')
-        else:
-            raise serializers.ValidationError('Username e senha são obrigatórios.')
+        if not username or not password:
+            raise serializers.ValidationError('Usuário e senha são obrigatórios.')
 
-        attrs['user'] = user
+        from apps.accounts.models import User
+
+        # Tenta encontrar por username OU email
+        try:
+            user_obj = User.objects.get(username=username)
+        except User.DoesNotExist:
+            try:
+                user_obj = User.objects.get(email=username)
+            except User.DoesNotExist:
+                raise serializers.ValidationError(
+                    'Usuário não encontrado. Verifique o nome de usuário.'
+                )
+
+        if not user_obj.is_active:
+            raise serializers.ValidationError(
+                'Conta desativada. Entre em contato com o administrador.'
+            )
+
+        if not user_obj.check_password(password):
+            raise serializers.ValidationError('Senha incorreta.')
+
+        # Necessário para django.contrib.auth.login() funcionar sem authenticate()
+        user_obj.backend = 'django.contrib.auth.backends.ModelBackend'
+        attrs['user'] = user_obj
         return attrs
 
 
