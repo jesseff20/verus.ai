@@ -143,17 +143,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database - PostgreSQL (configuração baseada em ENVIRONMENT)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': get_env_var('DB_NAME', default='verus_ai'),
-        'USER': get_env_var('DB_USER', default='verus_ai'),
-        'PASSWORD': get_env_var('DB_PASSWORD', default='verus_ai123'),
-        'HOST': get_env_var('DB_HOST', default='localhost'),
-        'PORT': get_env_var('DB_PORT', default='5433'),
+# Database - PostgreSQL
+# Se DATABASE_URL estiver definida (Railway, Render, etc.), ela tem prioridade.
+# Caso contrário, usa variáveis individuais DB_* (docker-compose).
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': env.db('DATABASE_URL')
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': get_env_var('DB_NAME', default='verus_ai'),
+            'USER': get_env_var('DB_USER', default='verus_ai'),
+            'PASSWORD': get_env_var('DB_PASSWORD', default='verus_ai123'),
+            'HOST': get_env_var('DB_HOST', default='localhost'),
+            'PORT': get_env_var('DB_PORT', default='5433'),
+        }
+    }
 
 # Custom User
 AUTH_USER_MODEL = 'accounts.User'
