@@ -212,6 +212,7 @@ export default function NewTemplatePage() {
                   value={editorContent}
                   onEditorChange={handleEditorChange}
                   init={{
+                    // @ts-expect-error -- TinyMCE types want licenseKey prop instead of init.license_key
                     license_key: 'gpl',
                     height: 600,
                     menubar: true,

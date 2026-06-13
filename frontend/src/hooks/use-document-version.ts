@@ -110,7 +110,7 @@ export function useDocumentVersion(documentId: string | null) {
 
   // Mutation para rollback
   const rollbackMutation = useMutation({
-    mutationFn: async (versionId: string, params?: RollbackParams) => {
+    mutationFn: async ({ versionId, params }: { versionId: string; params?: RollbackParams }) => {
       if (!documentId) throw new Error('Document ID required');
       const response = await api.post(
         `/api/v1/documents/items/${documentId}/versions/${versionId}/rollback/`,
@@ -129,7 +129,7 @@ export function useDocumentVersion(documentId: string | null) {
   }, [createVersionMutation]);
 
   const rollback = useCallback((versionId: string, params?: RollbackParams) => {
-    rollbackMutation.mutate(versionId, params);
+    rollbackMutation.mutate({ versionId, params });
   }, [rollbackMutation]);
 
   const getDiff = useCallback(async (oldVersionId: string, newVersionId: string) => {

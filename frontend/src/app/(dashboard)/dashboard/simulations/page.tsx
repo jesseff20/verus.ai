@@ -877,7 +877,7 @@ export default function SimulationsPage() {
                           <p className="font-medium text-sm truncate">{sim.title}</p>
                           <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <Badge variant="outline" className="text-xs">
-                              {{ jury: 'Júri', judge: 'Sentença', stf: 'STF', acordao_2inst: '2a Instância', stj: 'STJ', trabalho: 'Vara do Trabalho', trt: 'TRT', tst: 'TST', jec: 'JEC', jecrim: 'JECRIM', eleitoral: 'Eleitoral', tre: 'TRE', tse: 'TSE', turma_recursal: 'Turma Recursal', militar: 'Militar', stm: 'STM' }[sim.simulation_type] || sim.simulation_type}
+                              {{ jury: 'Júri', judge: 'Sentença', stf: 'STF', acordao_2inst: '2a Instância', stj: 'STJ', trabalho: 'Vara do Trabalho', trt: 'TRT', tst: 'TST', jec: 'JEC', jecrim: 'JECRIM', jef: 'JEF', eleitoral: 'Eleitoral', tre: 'TRE', tse: 'TSE', turma_recursal: 'Turma Recursal', militar: 'Militar', stm: 'STM' }[sim.simulation_type] || sim.simulation_type}
                             </Badge>
                             <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
                             {resultBadge}

@@ -393,6 +393,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'apps.copilot.tasks.sync_user_knowledge_bases',
         'schedule': crontab(hour=2, minute=0),  # 2am nightly
     },
+    'cleanup-stuck-simulations': {
+        'task': 'apps.simulations.tasks.cleanup_stuck_simulations',
+        'schedule': crontab(minute=0, hour='*/2'),  # Every 2 hours
+    },
 }
 
 # LLM

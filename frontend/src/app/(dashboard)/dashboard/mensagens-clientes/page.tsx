@@ -552,7 +552,7 @@ export default function MensagensClientesPage() {
     const files = e.target.files;
     if (!files) return;
 
-    const newAttachments: FileAttachment[] = Array.from(files).map((file) => ({
+    const newAttachments: FileAttachment[] = (Array.from(files) as File[]).map((file) => ({
       file,
       preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
     }));

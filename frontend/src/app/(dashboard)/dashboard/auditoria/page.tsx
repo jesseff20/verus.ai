@@ -645,7 +645,7 @@ function TokenUsageTab() {
                       outerRadius={80}
                       innerRadius={40}
                       paddingAngle={2}
-                      label={({ name, percent }) => `${(name as string).split('@')[0]} ${(percent * 100).toFixed(0)}%`}
+                      label={(props: any) => `${String(props.name).split('@')[0]} ${(Number(props.percent) * 100).toFixed(0)}%`}
                       labelLine={false}
                     >
                       {userTokens.map((entry, index) => (

@@ -58,7 +58,7 @@ export default function EditAgentDialog({
   const [displayOrder, setDisplayOrder] = useState(agent.display_order || 0);
   const [systemPrompt, setSystemPrompt] = useState(agent.system_prompt);
   const [userPromptTemplate, setUserPromptTemplate] = useState(agent.user_prompt_template);
-  const [llmProvider, setLlmProvider] = useState<string>(agent.llm_provider);
+  const [llmProvider, setLlmProvider] = useState<'openai' | 'anthropic' | 'watsonx'>(agent.llm_provider);
   const [modelName, setModelName] = useState(agent.model_name);
   const [temperature, setTemperature] = useState([agent.temperature ?? 0.7]);
   const [maxTokens, setMaxTokens] = useState(agent.max_tokens ?? 1000);
@@ -385,7 +385,7 @@ export default function EditAgentDialog({
                 <RadioGroup
                   value={llmProvider}
                   onValueChange={(value) => {
-                    setLlmProvider(value as string);
+                    setLlmProvider(value as 'openai' | 'anthropic' | 'watsonx');
                     setModelName('');
                   }}
                   className="flex flex-col gap-3 mt-2"

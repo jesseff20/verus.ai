@@ -46,7 +46,7 @@ export function useAuth() {
         throw err;
       }
     },
-    staleTime: 24 * 60 * 60 * 1000, // 24 horas — coincide com o lifetime do access token
+    staleTime: 15 * 60 * 1000, // 15 min — garante que mudanças de permissão/role reflitam rapidamente
     gcTime: 30 * 60 * 1000,
     retry: (failureCount, error: any) => {
       // Nunca retenta em 401 (token inválido) — evita duplicate redirects

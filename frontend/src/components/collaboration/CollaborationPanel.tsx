@@ -205,6 +205,7 @@ export function CollaborationPanel({
             suggestions={suggestions}
             onReview={reviewSuggestion}
             onCreate={() => setShowSuggestionForm(true)}
+            onCancel={() => setShowSuggestionForm(false)}
             showForm={showSuggestionForm}
             suggestionText={suggestionText}
             setSuggestionText={setSuggestionText}
@@ -440,6 +441,7 @@ interface SuggestionsListProps {
   suggestions: Suggestion[];
   onReview: (params: { suggestionId: string; status: string; comment?: string }) => void;
   onCreate: () => void;
+  onCancel: () => void;
   showForm: boolean;
   suggestionText: string;
   setSuggestionText: (value: string) => void;
@@ -450,6 +452,7 @@ function SuggestionsList({
   suggestions,
   onReview,
   onCreate,
+  onCancel,
   showForm,
   suggestionText,
   setSuggestionText,
@@ -498,7 +501,7 @@ function SuggestionsList({
               <Button
                 variant="outline"
                 onClick={() => {
-                  setShowForm(false);
+                  onCancel();
                   setSuggestionText('');
                 }}
               >

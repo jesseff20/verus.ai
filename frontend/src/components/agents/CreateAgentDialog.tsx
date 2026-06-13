@@ -191,7 +191,7 @@ export default function CreateAgentDialog({
       console.log('=== DEBUG: Criando agente ===');
       console.log('Payload enviado:', JSON.stringify(payload, null, 2));
 
-      await createAgent(payload);
+      await createAgent(payload as any);
 
       toast({
         title: 'Agente criado',

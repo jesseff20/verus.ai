@@ -325,7 +325,7 @@ function JudgeSimulationPageInner() {
 
   const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setUploadedFiles((prev) => [...prev, ...Array.from(e.target.files!)]);
+      setUploadedFiles((prev) => [...prev, ...Array.from(e.target.files!) as File[]]);
     }
   }, []);
 

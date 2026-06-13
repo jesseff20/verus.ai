@@ -26,16 +26,20 @@
         "./src/*"
       ]
     },
-    "target": "ES2017"
+    "target": "ES2020",
+    "types": [
+      "react",
+      "react-dom"
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/__tests__/**",
+    ".next/**"
   ]
 }

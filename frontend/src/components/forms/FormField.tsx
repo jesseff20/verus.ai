@@ -18,7 +18,7 @@ interface Field {
   type: 'text' | 'textarea' | 'select' | 'date' | 'number' | 'email';
   required?: boolean;
   placeholder?: string;
-  options?: string[];
+  options?: Array<string | { value: string; label: string }>;
   help_text?: string;
 }
 

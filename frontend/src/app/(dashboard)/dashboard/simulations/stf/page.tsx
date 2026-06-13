@@ -859,7 +859,7 @@ function STFSimulationPageInner() {
               <div className="flex items-center gap-3">
                 <div className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
                   isVoting ? 'bg-purple-500/20 animate-pulse' :
-                  hasVoted ? categorizeVote(ministerVote.vote).iconClass :
+                  hasVoted ? categorizeVote(ministerVote!.vote).iconClass :
                   'bg-primary/10'
                 }`}>
                   {isVoting ? (
@@ -1004,7 +1004,7 @@ function STFSimulationPageInner() {
                 >
                   <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-1 ${
                     isVoting ? 'bg-purple-500/20 animate-pulse' :
-                    hasVoted ? categorizeVote(ministerVote.vote).iconClass :
+                    hasVoted ? categorizeVote(ministerVote!.vote).iconClass :
                     'bg-muted'
                   }`}>
                     {isVoting ? (

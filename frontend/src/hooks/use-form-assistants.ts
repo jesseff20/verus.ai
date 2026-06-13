@@ -11,7 +11,7 @@ export interface FormAssistant {
   icon?: string;
   color?: string;
   display_order: number;
-  llm_provider: 'openai' | 'anthropic';
+  llm_provider: 'openai' | 'anthropic' | 'watsonx';
   provider_display: string;
   model_name: string;
   temperature: number;
@@ -53,7 +53,7 @@ interface CreateFormAssistantData {
   display_order?: number;
   system_prompt: string;
   user_prompt_template: string;
-  llm_provider: 'openai' | 'anthropic';
+  llm_provider: 'openai' | 'anthropic' | 'watsonx';
   model_name: string;
   temperature: number;
   max_tokens: number;
@@ -72,7 +72,7 @@ interface UpdateFormAssistantData {
   display_order?: number;
   system_prompt?: string;
   user_prompt_template?: string;
-  llm_provider?: 'openai' | 'anthropic';
+  llm_provider?: 'openai' | 'anthropic' | 'watsonx';
   model_name?: string;
   temperature?: number;
   max_tokens?: number;

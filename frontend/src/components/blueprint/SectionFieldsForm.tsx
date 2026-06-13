@@ -526,6 +526,7 @@ function RichTextField({ field, value, onChange, disabled }: RichTextFieldProps)
         onEditorChange={(content) => onChange(content)}
         disabled={disabled}
         init={{
+                  // @ts-expect-error -- TinyMCE types want licenseKey prop instead of init.license_key
                   license_key: 'gpl',
           // Editor cresce automaticamente conforme conteudo.
           min_height: field.height ?? 300,

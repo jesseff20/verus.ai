@@ -992,7 +992,7 @@ export default function PrazosInteligentesPage() {
             </div>
           )}
 
-          {!criticalDeadlines && !criticalMutation.isFetching && (
+          {!criticalDeadlines && !criticalQuery.isFetching && (
             <p className="text-sm text-muted-foreground text-center py-8">
               Clique em "Carregar Críticos" para identificar prazos urgentes
             </p>

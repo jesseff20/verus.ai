@@ -178,7 +178,7 @@ function SubSectionEditor({ subSection, agents, onSave, onDelete, isSaving }: Su
       sub_key: generateSectionKey(subName),
       description: subDescription,
       default_text: defaultText,
-      generator_agent: generatorAgentId && generatorAgentId !== 'none' ? generatorAgentId : null,
+      generator_agent_id: generatorAgentId && generatorAgentId !== 'none' ? generatorAgentId : null,
     });
   };
 

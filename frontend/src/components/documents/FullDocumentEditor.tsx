@@ -482,7 +482,7 @@ export function FullDocumentEditor({
           <Editor
             tinymceScriptSrc="/tinymce/tinymce.min.js"
             initialValue={content}
-            init={editorConfig}
+            init={editorConfig as any}
             onEditorChange={handleEditorChange}
             onInit={(_evt: any, editor: any) => {
               editorRef.current = editor;

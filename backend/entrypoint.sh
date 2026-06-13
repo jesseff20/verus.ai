@@ -68,25 +68,21 @@ echo "Migrando usuário admin → usuario_demo (se existir)..."
 python manage.py migrate_admin_to_usuario_demo || true
 
 # ===========================================================================
-# Seeds de dados iniciais — executados em background para não bloquear o
-# startup do gunicorn. Todos os seeds são idempotentes (|| true garante que
-# falhas não derrubam o container). O gunicorn sobe imediatamente após as
-# migrações — qualquer dado ainda não semeado simplesmente retorna vazio/padrão
-# até o seed concluir em segundo plano.
+# Seeds CRÍTICOS — rodam ANTES do gunicorn (sistema não funciona sem eles)
+# ===========================================================================
+echo "Criando módulos do sistema (crítico)..."
+python manage.py seed_modules || { echo "WARN: seed_modules falhou — sistema pode ter módulos faltando"; }
+
+echo "Criando tipos de documentos jurídicos (crítico)..."
+python manage.py seed_document_types || { echo "WARN: seed_document_types falhou — tipos de documento podem faltar"; }
+
+# ===========================================================================
+# Seeds OPCIONAIS — executados em background para não bloquear o gunicorn.
+# Todos são idempotentes (|| true garante que falhas não derrubam o container).
 # ===========================================================================
 SEED_LOG="/app/logs/seeds.log"
 (
-  echo "[seed] Iniciando seeds em background (não bloqueia o gunicorn)..."
-
-  # TODO(verus-ai): seed_modules foi escrito para escritório privado (BravoJus).
-  # Revisar quais módulos são aplicáveis a procuradorias públicas antes de ativar em produção.
-  echo "[seed] Criando módulos do sistema..."
-  python manage.py seed_modules || true
-
-  # TODO(verus-ai): seed_document_types inclui tipos de advocacia privada.
-  # Adicionar tipos específicos de procuradoria (pareceres, notas técnicas, etc.).
-  echo "[seed] Criando tipos de documentos jurídicos..."
-  python manage.py seed_document_types || true
+  echo "[seed] Iniciando seeds opcionais em background..."
 
   echo "[seed] Removendo tipos/blueprints legados de licitação (ETP, DFD, etc)..."
   python manage.py clean_legacy_document_types || true

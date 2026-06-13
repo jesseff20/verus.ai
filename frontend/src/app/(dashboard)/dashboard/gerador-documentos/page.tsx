@@ -62,8 +62,6 @@ export default function GeradorDocumentosPage() {
   const {
     Documents: documents,
     isLoading,
-    isFetching,
-    refetch,
     deleteDocument,
     isDeleting
   } = useDocuments();
@@ -118,10 +116,6 @@ export default function GeradorDocumentosPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-            <RefreshCw className={`mr-2 h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
-            Atualizar
-          </Button>
           <Link href="/dashboard/documents/new">
             <Button>
               <Plus className="mr-2 h-4 w-4" />

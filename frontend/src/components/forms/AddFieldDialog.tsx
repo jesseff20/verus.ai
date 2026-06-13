@@ -350,7 +350,7 @@ export function AddFieldDialog({ children, onAdd, initialField, isEditing = fals
               />
               <div className="absolute top-1 right-1">
                 <AIEnhanceButton
-                  value={field.help_text}
+                  value={field.help_text || ''}
                   onEnhance={(text) => setField({ ...field, help_text: text })}
                   context="texto de ajuda de campo de formulário jurídico"
                 />

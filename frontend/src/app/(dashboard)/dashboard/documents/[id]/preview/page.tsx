@@ -83,7 +83,7 @@ export default function DocumentPreviewPage({ params }: PageProps) {
     );
   }
 
-  const documentHtml = etp.generated_html || etp.generated_content;
+  const documentHtml = etp.generated_html || etp.generated_content || '';
 
   return (
     <PermissionGuard anyPermission={['documents.edit_own', 'documents.edit_all']} redirectOnDeny redirectTo="/dashboard/documents">

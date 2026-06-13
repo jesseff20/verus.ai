@@ -29,6 +29,7 @@ interface SectionData {
   score?: number;
   status: string;
   feedback?: string[];
+  tokens_used?: number;
 }
 
 interface AnalysisPhaseProps {

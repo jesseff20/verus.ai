@@ -104,6 +104,8 @@ export interface IntelligentSession {
   created_at: string;
   updated_at?: string;
   documents_count?: number;
+  uploaded_documents?: Array<{ id: string; filename?: string; [key: string]: any }>;
+  generated_documents?: Array<{ id: string; title?: string; pdf_url?: string; [key: string]: any }>;
 }
 
 export interface GeneratedDocument {
@@ -391,7 +393,7 @@ export function useIntelligentAssistant() {
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const currentGsIdRef = useRef<string | null>(null);
-  const edgeTraverseTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const edgeTraverseTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // ── Batching refs for fast streaming ─────────────────────────────────────
   // Instead of calling setGenerationProgress on every SSE section_chunk (which
@@ -761,14 +763,14 @@ export function useIntelligentAssistant() {
           ...prev,
           activeNode: data.node,
           nodes: prev.nodes.map(n =>
-            n.id === data.node ? { ...n, status: 'running' as const, kbs: [], llm: null } : n
+            n.id === data.node ? { ...n, status: 'running' as const, kbs: [] as PipelineNode['kbs'], llm: undefined } : n
           ),
           edges: prev.edges.map(e =>
             e.target === data.node ? { ...e, animated: true } : e
           ),
           log: [...prev.log, {
             timestamp: now,
-            type: 'node_enter',
+            type: 'node_enter' as const,
             message: `${data.agent} iniciou (${data.type})`,
             node: data.node,
           }],

@@ -77,7 +77,7 @@ export default function EditDocumentGeneratorDialog({
   const [displayOrder, setDisplayOrder] = useState(generator.display_order || 0);
   const [systemPrompt, setSystemPrompt] = useState(generator.system_prompt);
   const [userPromptTemplate, setUserPromptTemplate] = useState(generator.user_prompt_template);
-  const [llmProvider, setLlmProvider] = useState<'openai' | 'watsonx'>(generator.llm_provider);
+  const [llmProvider, setLlmProvider] = useState<'openai' | 'anthropic' | 'watsonx'>(generator.llm_provider);
   const [modelName, setModelName] = useState(generator.model_name);
   const [temperature, setTemperature] = useState([generator.temperature ?? 0.7]);
   const [maxTokens, setMaxTokens] = useState(generator.max_tokens ?? 1000);

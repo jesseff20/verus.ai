@@ -1,3 +1,8 @@
+// ========== INTELLIGENT ASSISTANT PHASES ==========
+export type Phase = 'upload' | 'generation' | 'evaluation' | 'analysis' | 'result' | 'history';
+
+export type ApprovalStatus = 'approved' | 'improved' | 'pending';
+
 // ========== AUTH ==========
 export interface User {
   id: string;
@@ -144,6 +149,7 @@ export interface FormTemplate {
   id: string;
   name: string;
   description?: string;
+  category?: string;
   version: number;
   is_active: boolean;
   fields?: FormField[];
@@ -156,6 +162,7 @@ export interface FormTemplate {
   document_generator?: string;
   document_generator_name?: string;
   has_generator_warning?: boolean;
+  generator_warning_message?: string;
   field_count?: number;
   created_by_name?: string;
   created_at: string;
@@ -423,13 +430,16 @@ export interface ETP {
   title: string;
   numero_processo?: string;
   form_template: string;
+  form_template_name?: string;
   document_template: string;
+  document_template_name?: string;
   data: Record<string, any>;
   progress: number;
   status: 'rascunho' | 'em_analise' | 'aprovado' | 'rejeitado' | 'finalizado';
   version: number;
   generated_content?: string;
   generated_html?: string;
+  markdown_content?: string;
   metadata?: Record<string, any>;
   created_by: string;
   reviewed_by?: string;

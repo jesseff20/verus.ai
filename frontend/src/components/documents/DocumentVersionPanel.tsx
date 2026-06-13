@@ -142,7 +142,7 @@ export function DocumentVersionPanel({
           ) : (
             <ScrollArea className="h-[400px]">
               <div className="space-y-2">
-                {versions.map((version, idx) => (
+                {versions.map((version: any, idx: number) => (
                   <VersionItem
                     key={version.version_id}
                     version={version}

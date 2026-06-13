@@ -685,6 +685,7 @@ export default function DocumentDetailPage() {
                         setHasUnsavedEdits(true);
                       }}
                       init={{
+                  // @ts-expect-error -- TinyMCE types want licenseKey prop instead of init.license_key
                   license_key: 'gpl',
                         height: 600,
                         menubar: true,

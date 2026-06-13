@@ -66,8 +66,8 @@ export function useLoadingState(config: LoadingStateConfig = {}): LoadingStateRe
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [isSlow, setIsSlow] = useState(false);
   const [shouldWait, setShouldWait] = useState(false);
-  const minDisplayTimerRef = useRef<ReturnType<typeof setTimeout>>();
-  const stopDelayTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const minDisplayTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const stopDelayTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -200,7 +200,7 @@ export function useOperationLoading(operations: Record<string, { message: string
     }
   }, [operations, startTime]);
 
-  const completeTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const completeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Cleanup completeOperation timer on unmount
   useEffect(() => {

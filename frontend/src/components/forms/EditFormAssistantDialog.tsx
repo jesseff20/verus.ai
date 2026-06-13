@@ -70,7 +70,7 @@ export default function EditFormAssistantDialog({
   const [displayOrder, setDisplayOrder] = useState(assistant.display_order || 0);
   const [systemPrompt, setSystemPrompt] = useState(assistant.system_prompt);
   const [userPromptTemplate, setUserPromptTemplate] = useState(assistant.user_prompt_template);
-  const [llmProvider, setLlmProvider] = useState<'openai' | 'watsonx'>(assistant.llm_provider);
+  const [llmProvider, setLlmProvider] = useState<'openai' | 'anthropic' | 'watsonx'>(assistant.llm_provider);
   const [modelName, setModelName] = useState(assistant.model_name);
   const [temperature, setTemperature] = useState([assistant.temperature ?? 0.7]);
   const [maxTokens, setMaxTokens] = useState(assistant.max_tokens ?? 1000);

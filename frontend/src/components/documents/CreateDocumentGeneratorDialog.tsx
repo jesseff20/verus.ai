@@ -74,7 +74,7 @@ export default function CreateDocumentGeneratorDialog({
   const [displayOrder, setDisplayOrder] = useState(0);
   const [systemPrompt, setSystemPrompt] = useState('');
   const [userPromptTemplate, setUserPromptTemplate] = useState('');
-  const [llmProvider, setLlmProvider] = useState<'openai' | 'watsonx'>('openai');
+  const [llmProvider, setLlmProvider] = useState<'openai' | 'anthropic' | 'watsonx'>('openai');
   const [modelName, setModelName] = useState('');
   const [temperature, setTemperature] = useState([0.7]);
   const [maxTokens, setMaxTokens] = useState(4000);

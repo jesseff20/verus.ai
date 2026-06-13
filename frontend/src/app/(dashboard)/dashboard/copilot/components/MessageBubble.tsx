@@ -93,7 +93,7 @@ function MarkdownLink({ href, children }: { href?: string; children?: React.Reac
   );
 }
 
-export function MessageBubble({ message, messageIndex, onEdit, isStreaming }: MessageBubbleProps) {
+export function MessageBubble({ message, messageIndex, onEdit, onDelete, isStreaming }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(message.content);

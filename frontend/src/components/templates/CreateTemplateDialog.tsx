@@ -80,7 +80,7 @@ export function CreateTemplateDialog({ children, onSuccess }: CreateTemplateDial
     const selectedForm = forms.find((f) => f.id === formData.form_template);
     if (!selectedForm) return;
 
-    const formFieldIds = selectedForm.fields.map((f) => f.name);
+    const formFieldIds = (selectedForm.fields ?? []).map((f) => f.id);
     const placeholderSet = new Set(placeholders);
     const formFieldSet = new Set(formFieldIds);
 
@@ -267,6 +267,7 @@ export function CreateTemplateDialog({ children, onSuccess }: CreateTemplateDial
             value={editorContent}
             onEditorChange={handleEditorChange}
             init={{
+              // @ts-expect-error -- TinyMCE types want licenseKey prop instead of init.license_key
               license_key: 'gpl',
               height: 500,
               menubar: true,

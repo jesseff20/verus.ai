@@ -65,11 +65,10 @@ const DOCUMENT_DEPENDENCIES: Record<string, { code: string; label: string }[]> =
 const LUCIDE_ICONS: Record<string, any> = {
   FileText, FileSearch, ClipboardList, ScrollText, Briefcase, Scale, Settings,
   AlertCircle, CheckCircle2, Clock, AlertTriangle, DollarSign, Wrench,
-  CheckSquare, UserCheck, Award, CheckCircle: CheckCircle2, MessageCircle,
+  CheckSquare, UserCheck: UserCheckIcon, Award, CheckCircle: CheckCircle2, MessageCircle,
   ArrowUpCircle, ArrowDownCircle, Gavel, Play, FilePlus, File,
   Shield, TrendingUp, Zap, Send, BookOpen, FileSignature,
   FileEdit, FileWarning,
-  UserCheck: UserCheckIcon,
 };
 
 const STATUS_LABELS: Record<string, { label: string; variant: string }> = {

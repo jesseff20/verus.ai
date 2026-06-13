@@ -72,6 +72,7 @@ interface UpdateDocumentData {
   numero_processo?: string;
   document_template?: string;
   data?: Record<string, any>;
+  generated_html?: string;
   status?: 'rascunho' | 'em_analise' | 'aprovado' | 'rejeitado' | 'finalizado';
 }
 

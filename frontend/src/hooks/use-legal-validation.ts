@@ -41,7 +41,7 @@ export function useLegalValidation({
   });
   const [isValidating, setIsValidating] = useState(false);
   const [touched, setTouched] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Cleanup debounce timer on unmount
   useEffect(() => {

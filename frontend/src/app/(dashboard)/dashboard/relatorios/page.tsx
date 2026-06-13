@@ -291,7 +291,7 @@ function CustomTooltip({
 }: {
   active?: boolean;
   payload?: Array<{ name: string; value: number; color: string }>;
-  label?: string;
+  label?: string | number;
   formatter?: (v: number) => string;
 }) {
   if (!active || !payload?.length) return null;

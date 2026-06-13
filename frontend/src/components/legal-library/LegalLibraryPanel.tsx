@@ -344,7 +344,7 @@ export function LegalLibraryPanel({
                 />
                 <div className="absolute top-1 right-1">
                   <AIEnhanceButton
-                    value={newArgument.summary}
+                    value={newArgument.summary || ''}
                     onEnhance={(text) => setNewArgument({ ...newArgument, summary: text })}
                     context="resumo de argumento jurídico"
                   />
@@ -365,7 +365,7 @@ export function LegalLibraryPanel({
                 />
                 <div className="absolute top-1 right-1">
                   <AIEnhanceButton
-                    value={newArgument.content}
+                    value={newArgument.content || ''}
                     onEnhance={(text) => setNewArgument({ ...newArgument, content: text })}
                     context="conteúdo de argumento jurídico"
                     objective="Melhore a fundamentação jurídica, clareza e precisão terminológica"
@@ -405,7 +405,7 @@ export function LegalLibraryPanel({
               <p>Nenhum argumento encontrado</p>
             </div>
           ) : (
-            args.map((arg) => (
+            args.map((arg: any) => (
               <ArgumentCard
                 key={arg.id}
                 argument={arg}

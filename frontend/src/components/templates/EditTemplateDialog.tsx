@@ -115,7 +115,7 @@ export function EditTemplateDialog({ children, template, onSuccess }: EditTempla
     const selectedForm = forms.find((f) => f.id === formData.form_template);
     if (!selectedForm) return;
 
-    const formFieldIds = selectedForm.fields.map((f) => f.name);
+    const formFieldIds = (selectedForm.fields ?? []).map((f) => f.id);
     const placeholderSet = new Set(placeholders);
     const formFieldSet = new Set(formFieldIds);
 
@@ -177,7 +177,7 @@ export function EditTemplateDialog({ children, template, onSuccess }: EditTempla
         form_template: formData.form_template || undefined,
       };
 
-      await updateTemplate(template.id, payload);
+      await updateTemplate({ id: template.id, data: payload });
 
       toast({
         title: 'Template atualizado',
@@ -295,6 +295,7 @@ export function EditTemplateDialog({ children, template, onSuccess }: EditTempla
                 value={editorContent}
                 onEditorChange={handleEditorChange}
                 init={{
+                  // @ts-expect-error -- TinyMCE types want licenseKey prop instead of init.license_key
                   license_key: 'gpl',
                   height: 500,
                   menubar: true,

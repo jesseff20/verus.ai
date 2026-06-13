@@ -140,6 +140,22 @@ def _sse_event(data: dict) -> str:
     return f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
 
 
+def _safe_event_stream(generator):
+    """Wrap a SSE generator to stop cleanly on client disconnect.
+
+    Django's StreamingHttpResponse only detects a closed connection when
+    the next ``yield`` fails.  Expensive LLM calls that happen *between*
+    yields would keep running even after the client is gone.  By catching
+    the connection-error family of exceptions at the outermost layer we
+    ensure the generator (and any pending LLM work) is abandoned as soon
+    as the broken pipe is detected.
+    """
+    try:
+        yield from generator
+    except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError, OSError) as exc:
+        logger.info('Client disconnected during SSE stream: %s', exc)
+
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def start_jury_debate(request, simulation_pk):
@@ -168,6 +184,12 @@ def start_jury_debate(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulação já está em execução.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = JurySimulationService(str(simulation_pk))
 
     def event_stream():
@@ -179,7 +201,7 @@ def start_jury_debate(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -215,6 +237,12 @@ def start_judge_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulação já está em execução.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = JudgeSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -226,7 +254,7 @@ def start_judge_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -515,6 +543,12 @@ def start_stf_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulação já está em execução.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = STFSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -526,7 +560,7 @@ def start_stf_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -561,6 +595,12 @@ def start_acordao_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = AcordaoSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -572,7 +612,7 @@ def start_acordao_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -607,6 +647,12 @@ def start_stj_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = STJSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -618,7 +664,7 @@ def start_stj_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -668,6 +714,12 @@ def start_jec_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulação já está em execução.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = JECSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -679,7 +731,7 @@ def start_jec_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -715,6 +767,12 @@ def start_jecrim_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulação já está em execução.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = JECRIMSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -726,7 +784,7 @@ def start_jecrim_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -757,6 +815,12 @@ def _start_eleitoral_view(request, simulation_pk, sim_type, label):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = EleitoralSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -768,7 +832,7 @@ def _start_eleitoral_view(request, simulation_pk, sim_type, label):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -828,6 +892,12 @@ def start_trabalho_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = TrabalhoSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -839,7 +909,7 @@ def start_trabalho_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -875,6 +945,12 @@ def start_trt_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = TRTSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -886,7 +962,7 @@ def start_trt_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -922,6 +998,12 @@ def start_tst_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = TSTSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -933,7 +1015,7 @@ def start_tst_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -966,6 +1048,12 @@ def start_turma_recursal_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = TurmaRecursalSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -977,7 +1065,7 @@ def start_turma_recursal_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -1010,6 +1098,12 @@ def start_militar_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = MilitarSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -1021,7 +1115,7 @@ def start_militar_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
@@ -1051,6 +1145,12 @@ def start_stm_simulation(request, simulation_pk):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if simulation.status == 'running':
+        return Response(
+            {'error': 'Esta simulacao ja esta em execucao.'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     service = STMSimulationService(str(simulation_pk))
 
     def event_stream():
@@ -1062,7 +1162,7 @@ def start_stm_simulation(request, simulation_pk):
             yield _sse_event({'event': 'error', 'content': str(e)})
 
     response = StreamingHttpResponse(
-        event_stream(),
+        _safe_event_stream(event_stream()),
         content_type='text/event-stream',
     )
     response['Cache-Control'] = 'no-cache'
