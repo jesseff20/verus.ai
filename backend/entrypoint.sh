@@ -52,6 +52,9 @@ fi
 echo "Running database migrations..."
 python manage.py migrate --noinput
 
+echo "Migrando registros anthropic → watsonx..."
+python manage.py migrate_anthropic_to_watsonx || true
+
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
