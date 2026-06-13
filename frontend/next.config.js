@@ -69,7 +69,7 @@ const nextConfig = {
   //
   // /api/schema/* ainda é rewritado aqui pois não tem Route Handler dedicado.
   async rewrites() {
-    const backendUrl = process.env.BACKEND_URL || 'http://verus-backend:8000'
+    const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000'
     return [
       {
         source: '/api/schema/:path*',

@@ -15,7 +15,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
 // Lida em runtime, não em build time
-const BACKEND_URL = process.env.BACKEND_URL || 'http://verus-backend:8000'
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000'
 
 // Headers hop-by-hop que nunca devem ser repassados
 const HOP_BY_HOP = new Set([
