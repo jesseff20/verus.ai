@@ -146,10 +146,13 @@ async function proxy(
     )
   }
 
-  // Constrói headers de resposta (remove hop-by-hop)
+  // Constrói headers de resposta (remove hop-by-hop e encoding)
+  // fetch() do Node.js descomprime gzip/br automaticamente, então
+  // Content-Encoding e Content-Length do backend não são mais válidos.
+  const SKIP_HEADERS = new Set([...HOP_BY_HOP, 'content-encoding', 'content-length'])
   const responseHeaders = new Headers()
   for (const [key, value] of backendResponse.headers.entries()) {
-    if (!HOP_BY_HOP.has(key.toLowerCase())) {
+    if (!SKIP_HEADERS.has(key.toLowerCase())) {
       responseHeaders.set(key, value)
     }
   }
