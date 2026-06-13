@@ -1,6 +1,23 @@
 #!/bin/bash
 set -e
 
+# Wait for database to be reachable (Railway may start the app before DB is ready)
+echo "Waiting for database..."
+for i in $(seq 1 30); do
+  if python -c "
+import os, sys
+try:
+    import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE','config.settings.local'); django.setup()
+    from django.db import connection; connection.ensure_connection(); sys.exit(0)
+except Exception: sys.exit(1)
+" 2>/dev/null; then
+    echo "Database ready."
+    break
+  fi
+  echo "  DB not ready (attempt $i/30), retrying in 2s..."
+  sleep 2
+done
+
 echo "Running database migrations..."
 python manage.py migrate --noinput
 
@@ -200,9 +217,9 @@ SEED_LOG="/app/logs/seeds.log"
 
 # ===========================================================================
 
-echo "Starting Gunicorn (seeds rodando em background)..."
+echo "Starting Gunicorn on port ${PORT:-8000} (seeds rodando em background)..."
 exec gunicorn config.wsgi:application \
-  --bind 0.0.0.0:8000 \
+  --bind 0.0.0.0:${PORT:-8000} \
   --timeout 600 \
   --workers 2 \
   --threads 4 \
