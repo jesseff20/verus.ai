@@ -1,0 +1,49 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.env
+
+# Frontend (not needed for backend image)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Documentation
+docs/
+FLUXOS VERUS/
+*.md
+LICENSE
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker (avoid recursive)
+docker-compose*.yml
+Dockerfile
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Planning & development
+.planning/
+Planning/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups
+backups/
+*.bak
+*.backup

@@ -11,7 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Environment
 env = environ.Env(DEBUG=(bool, True))
-environ.Env.read_env(os.path.join(BASE_DIR.parent, '.env'))  # ← CORRIGIDO: raiz/.env
+_env_file = os.path.join(BASE_DIR.parent, '.env')
+if os.path.isfile(_env_file):
+    environ.Env.read_env(_env_file)
 
 # ========================================
 # AMBIENTE: local | homolog | production
@@ -57,13 +59,15 @@ if ENVIRONMENT == 'local':
 else:
     ALLOWED_HOSTS = get_env_var(
         'ALLOWED_HOSTS',
-        default=['verus-backend'],
+        default=['localhost', '127.0.0.1'],
         cast=list,
     )
-# Sempre inclui o hostname interno do Docker — necessário para requests
-# vindas do Route Handler do Next.js que proxy via rede Docker.
-if 'verus-backend' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('verus-backend')
+    # Aceita qualquer subdomain do Railway (PaaS)
+    if not any(h.endswith('.railway.app') for h in ALLOWED_HOSTS):
+        ALLOWED_HOSTS.append('.railway.app')
+    # Docker hostname interno (Route Handler do Next.js via rede Docker)
+    if 'verus-backend' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append('verus-backend')
 
 # APPS (SEM django-tenants)
 INSTALLED_APPS = [
@@ -248,10 +252,12 @@ SESSION_COOKIE_SECURE = get_env_var('SESSION_COOKIE_SECURE', default=False, cast
 CSRF_COOKIE_SECURE = get_env_var('CSRF_COOKIE_SECURE', default=False, cast=bool)
 
 # CSRF Trusted Origins (necessário para POST requests via proxy)
+_csrf_defaults = ['http://localhost:3000', 'http://localhost:8000', 'https://verus.ai']
+if _domain:
+    _csrf_defaults.append(f'https://{_domain}')
 CSRF_TRUSTED_ORIGINS = get_env_var(
     'CSRF_TRUSTED_ORIGINS',
-    default=['http://localhost:3000', 'http://localhost:8000', 'http://verus-backend:8000',
-             'https://verus.ai'],
+    default=_csrf_defaults,
     cast=list,
 )
 
@@ -414,19 +420,23 @@ LOGGING = {
 # ENVIRONMENT INFO (para debug)
 # ========================================
 try:
+    _db = DATABASES['default']
+    _db_info = _db.get('HOST', '(DATABASE_URL)')
+    _db_port = _db.get('PORT', '-')
+    _db_name = _db.get('NAME', '-')
+    _db_user = _db.get('USER', '-')
     print(f"""
 +==================================================+
 |  Verus.AI - Django Settings (local.py)           |
 +==================================================+
 |  Environment: {ENVIRONMENT:<35} |
 |  Debug:       {DEBUG!s:<35} |
-|  DB Host:     {DATABASES['default']['HOST']:<35} |
-|  DB Port:     {DATABASES['default']['PORT']:<35} |
-|  DB Name:     {DATABASES['default']['NAME']:<35} |
-|  DB User:     {DATABASES['default']['USER']:<35} |
+|  DB Host:     {_db_info!s:<35} |
+|  DB Port:     {_db_port!s:<35} |
+|  DB Name:     {_db_name!s:<35} |
+|  DB User:     {_db_user!s:<35} |
+|  DATABASE_URL: {'SET' if os.environ.get('DATABASE_URL') else 'NOT SET':<34} |
 |  Celery:      {CELERY_BROKER_URL:<35} |
-|  SSL Redirect:{SECURE_SSL_REDIRECT!s:<35} |
-|  Cookie Secure:{SESSION_COOKIE_SECURE!s:<35} |
 |  R2 Storage:  {USE_R2!s:<35} |
 +==================================================+
 """)

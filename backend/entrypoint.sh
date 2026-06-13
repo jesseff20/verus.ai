@@ -1,22 +1,53 @@
 #!/bin/bash
 set -e
 
-# Wait for database to be reachable (Railway may start the app before DB is ready)
+# ---- Diagnóstico de variáveis de ambiente ----
+echo "============================================"
+echo "  Verus.AI — Entrypoint Diagnostics"
+echo "============================================"
+echo "  PORT:          ${PORT:-8000}"
+echo "  ENVIRONMENT:   ${ENVIRONMENT:-local}"
+echo "  DATABASE_URL:  ${DATABASE_URL:+SET (hidden)}${DATABASE_URL:-NOT SET}"
+echo "  DB_HOST:       ${DB_HOST:-not set}"
+echo "  REDIS_URL:     ${REDIS_URL:+SET (hidden)}${REDIS_URL:-NOT SET}"
+echo "============================================"
+
+if [ -z "$DATABASE_URL" ] && [ -z "$DB_HOST" ]; then
+  echo ""
+  echo "ERROR: Neither DATABASE_URL nor DB_HOST is set."
+  echo "  On Railway: add a PostgreSQL service and link DATABASE_URL."
+  echo "  On Docker:  ensure DB_HOST is set in docker-compose environment."
+  echo ""
+  exit 1
+fi
+
+# Wait for database to be reachable
 echo "Waiting for database..."
+DB_READY=0
 for i in $(seq 1 30); do
   if python -c "
 import os, sys
-try:
-    import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE','config.settings.local'); django.setup()
-    from django.db import connection; connection.ensure_connection(); sys.exit(0)
-except Exception: sys.exit(1)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','config.settings.local')
+import django; django.setup()
+from django.db import connection; connection.ensure_connection()
 " 2>/dev/null; then
     echo "Database ready."
+    DB_READY=1
     break
   fi
   echo "  DB not ready (attempt $i/30), retrying in 2s..."
   sleep 2
 done
+
+if [ "$DB_READY" = "0" ]; then
+  echo ""
+  echo "ERROR: Database unreachable after 60s."
+  echo "  DATABASE_URL=${DATABASE_URL:+SET}${DATABASE_URL:-NOT SET}"
+  echo "  DB_HOST=${DB_HOST:-not set}"
+  echo "  Check your database service is running and env vars are correct."
+  echo ""
+  exit 1
+fi
 
 echo "Running database migrations..."
 python manage.py migrate --noinput
