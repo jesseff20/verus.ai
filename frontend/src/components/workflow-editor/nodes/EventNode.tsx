@@ -3,6 +3,7 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Play, Square, Circle } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 export type EventData = {
   label: string;
@@ -13,6 +14,8 @@ export type EventData = {
 const SIZE = 40;
 
 function EventNode({ data, selected }: NodeProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const d = data as EventData;
   const isStart = d.node_type === 'start_event';
   const isEnd = d.node_type === 'end_event';
@@ -54,12 +57,11 @@ function EventNode({ data, selected }: NodeProps) {
           transform: 'translateX(-50%)',
           whiteSpace: 'nowrap',
           fontSize: 10,
-          color: '#9CA3AF',
+          color: isDark ? '#9CA3AF' : '#374151',
           fontWeight: 500,
           pointerEvents: 'none',
           textAlign: 'center',
           maxWidth: 100,
-          whiteSpace: 'normal',
         }}
       >
         {d.label}

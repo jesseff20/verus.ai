@@ -2,6 +2,7 @@
 
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
+import { useTheme } from 'next-themes';
 
 export type GatewayData = {
   label: string;
@@ -12,6 +13,8 @@ export type GatewayData = {
 const SIZE = 52;
 
 function GatewayNode({ data, selected }: NodeProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const d = data as GatewayData;
   const isParallel = d.node_type === 'parallel_gateway';
   const isInclusive = d.node_type === 'inclusive_gateway';
@@ -95,12 +98,11 @@ function GatewayNode({ data, selected }: NodeProps) {
           transform: 'translateX(-50%) rotate(-45deg)',
           whiteSpace: 'nowrap',
           fontSize: 10,
-          color: '#9CA3AF',
+          color: isDark ? '#9CA3AF' : '#374151',
           fontWeight: 500,
           pointerEvents: 'none',
           textAlign: 'center',
           maxWidth: 120,
-          whiteSpace: 'normal',
         }}
       >
         {d.label}

@@ -3,6 +3,7 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { User, Cog, FileText } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 const ROLE_COLOR: Record<string, string> = {
   distribuidor: '#7030A0',
@@ -23,6 +24,8 @@ export type TaskData = {
 };
 
 function TaskNode({ data, selected }: NodeProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const d = data as TaskData;
   const color = ROLE_COLOR[d.role] ?? ROLE_COLOR.any;
   const Icon = d.node_type === 'service_task' ? Cog : d.node_type === 'user_task' ? User : FileText;
@@ -53,7 +56,7 @@ function TaskNode({ data, selected }: NodeProps) {
         </div>
         <span
           className="text-[11px] font-medium leading-tight"
-          style={{ color: '#E5E7EB' }}
+          style={{ color: isDark ? '#E5E7EB' : '#1f2937' }}
         >
           {d.label}
         </span>
