@@ -34,7 +34,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -1089,11 +1089,14 @@ export default function ClientsPage() {
             {/* Notes */}
             <div>
               <Label>Observações</Label>
-              <Textarea
+              <AITextarea
                 value={formData.notes}
                 onChange={(e) => updateField('notes', e.target.value)}
+                onAIChange={(text) => updateField('notes', text)}
                 rows={3}
                 placeholder="Anotações sobre a parte..."
+                aiContext="observações sobre parte ou cliente em procuradoria municipal"
+                aiObjective="Melhore a redação das observações sobre a parte, mantendo as informações relevantes de forma clara e organizada"
               />
             </div>
 

@@ -14,14 +14,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { AIInput } from '@/components/ui/ai-input';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Loader2, FileText, Link as LinkIcon,
   AlertCircle, CheckCircle, Eye, Info
 } from 'lucide-react';
-import { AIEnhanceButton } from '@/components/ui/ai-enhance-button';
 import { useTemplates } from '@/hooks/use-templates';
 import { useForms } from '@/hooks/use-forms';
 import { useBlueprints } from '@/hooks/use-blueprints';
@@ -208,33 +208,29 @@ export function EditTemplateDialog({ children, template, onSuccess }: EditTempla
       <div className="space-y-4">
         <div>
           <Label htmlFor="name">Nome *</Label>
-          <Input
+          <AIInput
             id="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            setValue={(val) => setFormData({ ...formData, name: val })}
             placeholder="Ex: Petição Inicial Cível"
+            aiContext="nome de template de documento jurídico de procuradoria"
+            aiObjective="Sugira um nome claro e descritivo para o template"
           />
         </div>
 
         <div>
           <Label htmlFor="description">Descrição</Label>
-          <div className="relative">
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Descreva o propósito deste template..."
-              rows={3}
-              className="pr-32"
-            />
-            <div className="absolute top-1 right-1">
-              <AIEnhanceButton
-                value={formData.description}
-                onEnhance={(text) => setFormData({ ...formData, description: text })}
-                context="descrição de template de documento jurídico"
-              />
-            </div>
-          </div>
+          <AITextarea
+            id="description"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            setValue={(val) => setFormData({ ...formData, description: val })}
+            placeholder="Descreva o propósito deste template..."
+            rows={3}
+            aiContext="descrição de template de documento jurídico de procuradoria"
+            aiObjective="Descreva de forma clara o propósito e uso deste template"
+          />
         </div>
 
         <div>

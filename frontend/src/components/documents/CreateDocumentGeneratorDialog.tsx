@@ -16,9 +16,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
+import { AIInput } from '@/components/ui/ai-input';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import {
   Select,
   SelectContent,
@@ -29,7 +30,6 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Loader2, Sparkles, Info } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AIEnhanceButton } from '@/components/ui/ai-enhance-button';
 
 interface CreateDocumentGeneratorDialogProps {
   open: boolean;
@@ -244,34 +244,30 @@ export default function CreateDocumentGeneratorDialog({
           <div className="space-y-4">
             <div>
               <Label htmlFor="name">Nome *</Label>
-              <Input
+              <AIInput
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                setValue={setName}
                 placeholder="Ex: Gerador de Parecer Jurídico"
                 required
+                aiContext="nome de gerador de documentos jurídicos de procuradoria"
+                aiObjective="Sugira um nome claro e descritivo para o gerador de documentos"
               />
             </div>
 
             <div>
               <Label htmlFor="description">Descrição</Label>
-              <div className="relative">
-                <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Descrição opcional do gerador"
-                  rows={2}
-                  className="pr-32"
-                />
-                <div className="absolute top-1 right-1">
-                  <AIEnhanceButton
-                    value={description}
-                    onEnhance={setDescription}
-                    context="descrição de gerador de documentos jurídicos"
-                  />
-                </div>
-              </div>
+              <AITextarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                setValue={setDescription}
+                placeholder="Descrição opcional do gerador"
+                rows={2}
+                aiContext="descrição de gerador de documentos jurídicos de procuradoria"
+                aiObjective="Descreva de forma clara as capacidades e propósito do gerador"
+              />
             </div>
           </div>
 
@@ -392,25 +388,17 @@ export default function CreateDocumentGeneratorDialog({
           <div className="space-y-4">
             <div>
               <Label htmlFor="system-prompt">System Prompt *</Label>
-              <div className="relative">
-                <Textarea
-                  id="system-prompt"
-                  value={systemPrompt}
-                  onChange={(e) => setSystemPrompt(e.target.value)}
-                  placeholder="Você é um gerador especializado em..."
-                  rows={4}
-                  required
-                  className="pr-32"
-                />
-                <div className="absolute top-1 right-1">
-                  <AIEnhanceButton
-                    value={systemPrompt}
-                    onEnhance={setSystemPrompt}
-                    context="system prompt de gerador de documentos jurídicos"
-                    objective="Melhore a clareza das instruções, mantendo variáveis {{}} intactas"
-                  />
-                </div>
-              </div>
+              <AITextarea
+                id="system-prompt"
+                value={systemPrompt}
+                onChange={(e) => setSystemPrompt(e.target.value)}
+                setValue={setSystemPrompt}
+                placeholder="Você é um gerador especializado em..."
+                rows={4}
+                required
+                aiContext="system prompt de gerador de documentos jurídicos de procuradoria"
+                aiObjective="Melhore a clareza das instruções, mantendo variáveis {{}} intactas"
+              />
               <p className="text-xs text-muted-foreground mt-1">
                 Instruções gerais para o comportamento do gerador
               </p>
@@ -418,25 +406,17 @@ export default function CreateDocumentGeneratorDialog({
 
             <div>
               <Label htmlFor="user-prompt">User Prompt Template *</Label>
-              <div className="relative">
-                <Textarea
-                  id="user-prompt"
-                  value={userPromptTemplate}
-                  onChange={(e) => setUserPromptTemplate(e.target.value)}
-                  placeholder="Gere um documento com os seguintes dados: {{dados}}"
-                  rows={4}
-                  required
-                  className="pr-32"
-                />
-                <div className="absolute top-1 right-1">
-                  <AIEnhanceButton
-                    value={userPromptTemplate}
-                    onEnhance={setUserPromptTemplate}
-                    context="user prompt template de gerador de documentos jurídicos"
-                    objective="Melhore a clareza do template, mantendo variáveis {{}} intactas"
-                  />
-                </div>
-              </div>
+              <AITextarea
+                id="user-prompt"
+                value={userPromptTemplate}
+                onChange={(e) => setUserPromptTemplate(e.target.value)}
+                setValue={setUserPromptTemplate}
+                placeholder="Gere um documento com os seguintes dados: {{dados}}"
+                rows={4}
+                required
+                aiContext="user prompt template de gerador de documentos jurídicos de procuradoria"
+                aiObjective="Melhore a clareza do template, mantendo variáveis {{}} intactas"
+              />
               <p className="text-xs text-muted-foreground mt-1">
                 Use <code className="bg-muted px-1 py-0.5 rounded">{'{{variavel}}'}</code> para
                 variáveis dinâmicas. Exemplos: <code className="bg-muted px-1 py-0.5 rounded">{'{{dados}}'}</code>,{' '}
@@ -560,24 +540,16 @@ export default function CreateDocumentGeneratorDialog({
             {useRag && (
               <div>
                 <Label htmlFor="rag-query">Template de Query RAG *</Label>
-                <div className="relative">
-                  <Textarea
-                    id="rag-query"
-                    value={ragQueryTemplate}
-                    onChange={(e) => setRagQueryTemplate(e.target.value)}
-                    placeholder="Buscar informações sobre {{topic}} relacionado a {{context}}"
-                    rows={3}
-                    className="pr-32"
-                  />
-                  <div className="absolute top-1 right-1">
-                    <AIEnhanceButton
-                      value={ragQueryTemplate}
-                      onEnhance={setRagQueryTemplate}
-                      context="template de query RAG para base de conhecimento jurídica"
-                      objective="Melhore a clareza da query, mantendo variáveis {{}} intactas"
-                    />
-                  </div>
-                </div>
+                <AITextarea
+                  id="rag-query"
+                  value={ragQueryTemplate}
+                  onChange={(e) => setRagQueryTemplate(e.target.value)}
+                  setValue={setRagQueryTemplate}
+                  placeholder="Buscar informações sobre {{topic}} relacionado a {{context}}"
+                  rows={3}
+                  aiContext="template de query RAG para base de conhecimento jurídica de procuradoria"
+                  aiObjective="Melhore a clareza da query, mantendo variáveis {{}} intactas"
+                />
                 <p className="text-xs text-muted-foreground mt-1">
                   Template para buscar contexto na base de conhecimento
                 </p>

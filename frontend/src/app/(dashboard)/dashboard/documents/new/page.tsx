@@ -24,7 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { AIInput } from '@/components/ui/ai-input';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import {
   Dialog,
   DialogContent,
@@ -286,14 +287,17 @@ export default function NewDocumentPage() {
                 <Label htmlFor="title">
                   Título <span className="text-red-500">*</span>
                 </Label>
-                <Input
+                <AIInput
                   id="title"
                   placeholder="Ex: Petição Inicial - João Silva vs Empresa X"
                   value={basicData.title}
                   onChange={(e) =>
                     setBasicData({ ...basicData, title: e.target.value })
                   }
+                  onAIChange={(v) => setBasicData({ ...basicData, title: v })}
                   required
+                  aiContext="título de documento jurídico em procuradoria municipal"
+                  aiObjective="Sugira um título claro e formal para o documento, identificando o tipo de peça e as partes envolvidas"
                 />
               </div>
 
@@ -516,12 +520,15 @@ export default function NewDocumentPage() {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="copilot-prompt">Descrição do Documento</Label>
-              <Textarea
+              <AITextarea
                 id="copilot-prompt"
                 placeholder="Ex: Gere uma petição inicial de ação de danos morais contra empresa de telefonia por cobrança indevida..."
                 value={copilotPrompt}
                 onChange={(e) => setCopilotPrompt(e.target.value)}
+                onAIChange={(text) => setCopilotPrompt(text)}
                 rows={6}
+                aiContext="descrição de documento jurídico a ser gerado por IA em procuradoria municipal"
+                aiObjective="Melhore a descrição do documento solicitado, tornando-a mais precisa e detalhada para gerar um documento jurídico de qualidade"
               />
             </div>
 

@@ -11,12 +11,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { AIInput } from '@/components/ui/ai-input';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Sparkles, Loader2, Plus, Trash2, Wrench, Brain } from 'lucide-react';
-import { AIEnhanceButton } from '@/components/ui/ai-enhance-button';
 import api from '@/lib/api';
 
 // Interface para agentes de seção do Blueprint
@@ -239,11 +239,14 @@ export function EditFieldDialog({ field: initialField, open, onClose, onSave, bl
             <Label htmlFor="field-label">
               Label (Título) <span className="text-red-500">*</span>
             </Label>
-            <Input
+            <AIInput
               id="field-label"
               value={field.label}
               onChange={(e) => setField({ ...field, label: e.target.value })}
+              setValue={(val) => setField({ ...field, label: val })}
               placeholder="Ex: Descrição do Objeto da Contratação"
+              aiContext="título/label de campo de formulário jurídico de procuradoria"
+              aiObjective="Sugira um título claro e descritivo para o campo do formulário"
             />
           </div>
 
@@ -270,33 +273,29 @@ export function EditFieldDialog({ field: initialField, open, onClose, onSave, bl
           {/* Help Text */}
           <div>
             <Label htmlFor="field-help">Texto de Ajuda</Label>
-            <div className="relative">
-              <Textarea
-                id="field-help"
-                value={field.help_text || ''}
-                onChange={(e) => setField({ ...field, help_text: e.target.value })}
-                placeholder="Texto explicativo para auxiliar o preenchimento"
-                rows={2}
-                className="pr-32"
-              />
-              <div className="absolute top-1 right-1">
-                <AIEnhanceButton
-                  value={field.help_text || ''}
-                  onEnhance={(text) => setField({ ...field, help_text: text })}
-                  context="texto de ajuda de campo de formulário jurídico"
-                />
-              </div>
-            </div>
+            <AITextarea
+              id="field-help"
+              value={field.help_text || ''}
+              onChange={(e) => setField({ ...field, help_text: e.target.value })}
+              setValue={(val) => setField({ ...field, help_text: val })}
+              placeholder="Texto explicativo para auxiliar o preenchimento"
+              rows={2}
+              aiContext="texto de ajuda de campo de formulário jurídico de procuradoria"
+              aiObjective="Crie um texto de ajuda claro e orientativo para o preenchimento do campo"
+            />
           </div>
 
           {/* Placeholder */}
           <div>
             <Label htmlFor="field-placeholder">Placeholder</Label>
-            <Input
+            <AIInput
               id="field-placeholder"
               value={field.placeholder || ''}
               onChange={(e) => setField({ ...field, placeholder: e.target.value })}
+              setValue={(val) => setField({ ...field, placeholder: val })}
               placeholder="Ex: Digite aqui a descrição detalhada..."
+              aiContext="placeholder de campo de formulário jurídico de procuradoria"
+              aiObjective="Sugira um placeholder útil que oriente o preenchimento do campo"
             />
           </div>
 

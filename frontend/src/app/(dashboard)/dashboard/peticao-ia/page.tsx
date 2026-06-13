@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { AITextarea } from '@/components/ui/ai-textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bot, FileText, Loader2, Copy, Download, PenLine, Save, Check } from 'lucide-react';
@@ -129,7 +130,7 @@ export default function PeticaoIAPage() {
             </div>
             <div>
               <Label>Instruções Adicionais</Label>
-              <Textarea value={extraInstructions} onChange={e => setExtraInstructions(e.target.value)} placeholder="Instruções específicas para o assistente de procuradoria..." rows={4} />
+              <AITextarea value={extraInstructions} onChange={e => setExtraInstructions(e.target.value)} onAIChange={(text) => setExtraInstructions(text)} placeholder="Instruções específicas para o assistente de procuradoria..." rows={4} aiContext="instruções adicionais para geração de petição jurídica em procuradoria municipal" aiObjective="Melhore as instruções para que o assistente de IA gere uma petição mais precisa e adequada ao contexto processual" />
             </div>
             <Button className="w-full" onClick={() => generate.mutate()} disabled={!caseId || !petitionType || generate.isPending}>
               {generate.isPending ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Gerando...</> : <><Bot className="h-4 w-4 mr-2" /> Gerar Petição</>}

@@ -14,7 +14,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { AIInput } from '@/components/ui/ai-input';
 import { AITextarea } from '@/components/ui/ai-textarea';
 import { Switch } from '@/components/ui/switch';
@@ -539,7 +538,7 @@ function NewContractDialog() {
                 </div>
                 <div className="space-y-2">
                   <Label>Condições de Pagamento</Label>
-                  <Textarea placeholder="Descreva as condições de pagamento..." value={paymentTerms} onChange={(e) => setPaymentTerms(e.target.value)} rows={3} />
+                  <AITextarea placeholder="Descreva as condições de pagamento..." value={paymentTerms} onChange={(e) => setPaymentTerms(e.target.value)} setValue={setPaymentTerms} rows={3} aiContext="condições de pagamento de contrato administrativo em procuradoria municipal" aiObjective="Redija as condições de pagamento com linguagem jurídica formal, incluindo prazos, forma de pagamento e penalidades aplicáveis" />
                 </div>
               </>
             )}
