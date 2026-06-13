@@ -164,6 +164,7 @@ class User(AbstractUser):
         choices=[
             ('openai', 'OpenAI'),
             ('watsonx', 'IBM WatsonX'),
+            ('anthropic', 'Anthropic (legado)'),
         ],
         blank=True,
         null=True

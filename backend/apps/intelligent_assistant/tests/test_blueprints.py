@@ -76,7 +76,7 @@ def db_setup(db):
             'agent_type': 'generator',
             'system_prompt': 'Você é um assistente jurídico especializado.',
             'user_prompt_template': 'Gere conteúdo para: {{objective}}',
-            'llm_provider': 'anthropic',
+            'llm_provider': 'watsonx',
         },
     )
     validator, _ = SectionAgentConfig.objects.get_or_create(
@@ -85,7 +85,7 @@ def db_setup(db):
             'agent_type': 'validator',
             'system_prompt': 'Você é um validador jurídico.',
             'user_prompt_template': 'Valide: {{content}}',
-            'llm_provider': 'anthropic',
+            'llm_provider': 'watsonx',
         },
     )
 

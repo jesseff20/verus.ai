@@ -876,6 +876,7 @@ class TokenUsageLog(models.Model):
     PROVIDER_CHOICES = [
         ('openai', 'OpenAI'),
         ('watsonx', 'IBM WatsonX'),
+        ('anthropic', 'Anthropic (legado)'),
         ('other', 'Outro'),
     ]
 

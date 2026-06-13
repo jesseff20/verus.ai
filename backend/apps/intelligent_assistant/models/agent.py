@@ -34,6 +34,7 @@ class SectionAgentConfig(models.Model):
     LLM_PROVIDER_CHOICES = [
         ('openai', 'OpenAI (GPT)'),
         ('watsonx', 'IBM WatsonX'),
+        ('anthropic', 'Anthropic (legado)'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

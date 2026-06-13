@@ -18,6 +18,7 @@ class CopilotConfig(models.Model):
     PROVIDER_CHOICES = [
         ('watsonx', 'IBM WatsonX (Llama)'),
         ('openai', 'OpenAI (GPT)'),
+        ('anthropic', 'Anthropic (legado)'),
     ]
 
     # ── Identidade ───────────────────────────────────────────────────────────

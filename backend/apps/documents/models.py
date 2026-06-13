@@ -14,6 +14,7 @@ class DocumentGenerator(models.Model):
     LLM_CHOICES = [
         ('openai', 'OpenAI'),
         ('watsonx', 'IBM WatsonX'),
+        ('anthropic', 'Anthropic (legado)'),
     ]
 
     SPECIALTY_CHOICES = [
