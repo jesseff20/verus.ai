@@ -5,6 +5,7 @@ import { Bot, Trash2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useCopilot } from '@/hooks/use-copilot';
+import { useBrandSettings } from '@/hooks/use-brand-settings';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { MessageBubble } from './MessageBubble';
@@ -485,6 +486,9 @@ export function CopilotChat({ initialPrompt = '' }: CopilotChatProps) {
     loadSession,
   } = useCopilot();
 
+  const { brandSettings } = useBrandSettings();
+  const appName = brandSettings?.system_name || process.env.NEXT_PUBLIC_APP_NAME || 'Verus.AI';
+
   const bottomRef = useRef<HTMLDivElement>(null);
   const initialPromptSent = useRef(false);
 
@@ -636,7 +640,7 @@ export function CopilotChat({ initialPrompt = '' }: CopilotChatProps) {
                 <Bot className="h-7 w-7 text-primary" />
               </div>
               <div>
-                <h2 className="text-base font-semibold">Copilot de Procuradoria · Verus.AI</h2>
+                <h2 className="text-base font-semibold">Copilot de Procuradoria · {appName}</h2>
                 <p className="mt-1 text-sm text-muted-foreground max-w-sm">
                   Especialista em direito público e processos municipais. Pergunte sobre
                   jurisprudência, prazos, dívida ativa ou anexe um documento para análise.

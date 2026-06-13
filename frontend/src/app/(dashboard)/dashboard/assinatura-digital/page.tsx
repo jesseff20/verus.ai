@@ -73,6 +73,7 @@ import {
 } from '@/hooks/useSignature';
 import { AIInput } from '@/components/ui/ai-input';
 import { AITextarea } from '@/components/ui/ai-textarea';
+import { useBrandSettings } from '@/hooks/use-brand-settings';
 
 const DOCUMENT_TYPES = [
   { value: 'despacho', label: 'Despacho' },
@@ -83,12 +84,14 @@ const DOCUMENT_TYPES = [
   { value: 'outro', label: 'Outro' },
 ];
 
-const PROVIDERS_LIST = [
-  { value: 'internal', label: 'Protocolo Verus.AI' },
-  { value: 'd4sign', label: 'D4Sign (ICP-Brasil)' },
-  { value: 'docusign', label: 'DocuSign' },
-  { value: 'govbr', label: 'GOV.BR' },
-];
+function getProvidersList(appName: string) {
+  return [
+    { value: 'internal', label: `Protocolo ${appName}` },
+    { value: 'd4sign', label: 'D4Sign (ICP-Brasil)' },
+    { value: 'docusign', label: 'DocuSign' },
+    { value: 'govbr', label: 'GOV.BR' },
+  ];
+}
 
 const PROVIDERS = [
   {
@@ -260,6 +263,10 @@ function SignatureTimeline({ signature }: { signature: DigitalSignatureDto }) {
 }
 
 export default function AssinaturaDigitalPage() {
+  const { brandSettings } = useBrandSettings();
+  const appName = brandSettings?.system_name || process.env.NEXT_PUBLIC_APP_NAME || 'Verus.AI';
+  const providersList = getProvidersList(appName);
+
   const { data: signatures, isLoading } = useMySignatures();
   const signDocument = useSignDocument();
   const verifyMutation = useVerifySignature();
@@ -359,15 +366,15 @@ export default function AssinaturaDigitalPage() {
           </div>
         </div>
 
-        {/* Protocolo Verus.AI */}
+        {/* Protocolo interno */}
         <Card className="border-indigo-200 bg-indigo-50/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-indigo-900">
               <ShieldCheck className="h-5 w-5 text-indigo-600" />
-              Protocolo Verus.AI
+              Protocolo {appName}
             </CardTitle>
             <CardDescription>
-              Protocolo interno de assinatura digital do Verus.AI. Funciona sem provedores externos, utilizando criptografia própria do sistema.
+              Protocolo interno de assinatura digital do {appName}. Funciona sem provedores externos, utilizando criptografia própria do sistema.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -441,7 +448,7 @@ export default function AssinaturaDigitalPage() {
                 <div className="flex items-start gap-3 rounded-lg border border-indigo-200 bg-indigo-50/30 p-3">
                   <ShieldCheck className="h-4 w-4 text-indigo-600 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-sm font-medium">Protocolo Verus.AI</p>
+                    <p className="text-sm font-medium">Protocolo {appName}</p>
                     <p className="text-xs text-muted-foreground">Interno — Hash SHA-256, timestamp, chave do usuário, QR Code e certificado de autenticidade gerado pelo sistema.</p>
                   </div>
                 </div>
@@ -763,7 +770,7 @@ export default function AssinaturaDigitalPage() {
                   <Select value={signProvider} onValueChange={setSignProvider}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {PROVIDERS_LIST.map((p) => (
+                      {providersList.map((p) => (
                         <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
                       ))}
                     </SelectContent>

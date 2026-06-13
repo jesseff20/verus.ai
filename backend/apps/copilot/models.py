@@ -7,6 +7,7 @@ limites. Editável pelo admin sem necessidade de redeploy.
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 
 class CopilotConfig(models.Model):
@@ -14,12 +15,6 @@ class CopilotConfig(models.Model):
     Configuração singleton do Copilot.
     Só pode existir um registro (id=1). Admin bloqueia criação e deleção.
     """
-
-    PROVIDER_CHOICES = [
-        ('watsonx', 'IBM WatsonX (Llama)'),
-        ('openai', 'OpenAI (GPT)'),
-        ('anthropic', 'Anthropic (legado)'),
-    ]
 
     # ── Identidade ───────────────────────────────────────────────────────────
     name = models.CharField(
@@ -42,7 +37,7 @@ class CopilotConfig(models.Model):
     # ── Modelo LLM ───────────────────────────────────────────────────────────
     provider = models.CharField(
         max_length=20,
-        choices=PROVIDER_CHOICES,
+        choices=LLM_PROVIDER_CHOICES,
         default='watsonx',
         verbose_name='Provider',
         help_text='Provedor de IA. As credenciais são gerenciadas em Core › Provedores LLM.',

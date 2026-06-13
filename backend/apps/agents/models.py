@@ -4,6 +4,7 @@ Models para Agentes de IA (prompts editáveis)
 import uuid
 from django.db import models
 from django.conf import settings
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 
 class AgentPrompt(models.Model):
@@ -15,11 +16,6 @@ class AgentPrompt(models.Model):
     NOTA: Para assistentes de formulário, use FormAssistant (apps.forms)
     NOTA: Para agentes de seção/documento, use SectionAgentConfig (apps.intelligent_assistant)
     """
-    LLM_PROVIDER_CHOICES = [
-        ('openai', 'OpenAI'),
-        ('watsonx', 'IBM WatsonX'),
-        ('anthropic', 'Anthropic (legado)'),
-    ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 

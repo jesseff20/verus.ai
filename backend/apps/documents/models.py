@@ -4,6 +4,7 @@ Models para Documents
 import uuid
 from django.db import models
 from django.conf import settings
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 
 class DocumentGenerator(models.Model):
@@ -11,11 +12,6 @@ class DocumentGenerator(models.Model):
     Gerador de Documento - configura prompts e parâmetros de IA para gerar
     documentos jurídicos de um determinado tipo.
     """
-    LLM_CHOICES = [
-        ('openai', 'OpenAI'),
-        ('watsonx', 'IBM WatsonX'),
-        ('anthropic', 'Anthropic (legado)'),
-    ]
 
     SPECIALTY_CHOICES = [
         ('geral', 'Geral (Todas as Especialidades)'),
@@ -50,7 +46,7 @@ class DocumentGenerator(models.Model):
                                      help_text='Instruções do sistema para o gerador de documentos')
     user_prompt_template = models.TextField('User Prompt Template',
                                             help_text='Template com {{placeholders}} para dados do formulário')
-    llm_provider = models.CharField('Provedor LLM', max_length=20, choices=LLM_CHOICES, default='openai')
+    llm_provider = models.CharField('Provedor LLM', max_length=20, choices=LLM_PROVIDER_CHOICES, default='openai')
     model_name = models.CharField('Nome do Modelo', max_length=100, default='gpt-4o',
                                   help_text='Ex: gpt-4o, mistralai/mistral-medium-2505')
     temperature = models.FloatField('Temperature', default=0.7,
@@ -122,7 +118,7 @@ class DocumentGenerator(models.Model):
 
     @property
     def provider_display(self):
-        return dict(self.LLM_CHOICES).get(self.llm_provider, self.llm_provider)
+        return dict(LLM_PROVIDER_CHOICES).get(self.llm_provider, self.llm_provider)
 
 
 class Document(models.Model):

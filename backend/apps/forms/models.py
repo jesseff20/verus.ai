@@ -5,6 +5,7 @@ import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 
 def validate_form_fields(value):
@@ -209,12 +210,6 @@ class FormAssistant(models.Model):
     - Correções automáticas
     - Expansão de conteúdo
     """
-    LLM_PROVIDER_CHOICES = [
-        ('openai', 'OpenAI'),
-        ('watsonx', 'IBM WatsonX'),
-        ('anthropic', 'Anthropic (legado)'),
-    ]
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Metadados

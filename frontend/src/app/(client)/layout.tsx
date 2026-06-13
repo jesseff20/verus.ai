@@ -20,6 +20,7 @@ import {
   Bot,
 } from 'lucide-react';
 import { useClientPortalAuth } from '@/hooks/use-client-portal';
+import { useBrandSettings } from '@/hooks/use-brand-settings';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -41,6 +42,8 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const { client, loading, isAuthenticated, logout } = useClientPortalAuth();
+  const { brandSettings } = useBrandSettings();
+  const appName = brandSettings?.system_name || process.env.NEXT_PUBLIC_APP_NAME || 'Verus.AI';
   const router = useRouter();
   const pathname = usePathname();
   // Lazy initializer lê localStorage imediatamente — sem race condition entre os dois effects
@@ -130,7 +133,7 @@ export default function ClientLayout({
                 <Scale className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
-                <span className="text-sm font-semibold">Verus.AI</span>
+                <span className="text-sm font-semibold">{appName}</span>
                 <span className="hidden sm:inline text-xs text-muted-foreground ml-2">
                   Portal de Acompanhamento
                 </span>
@@ -229,7 +232,7 @@ export default function ClientLayout({
       {/* ── Footer ────────────────────────────────────── */}
       <footer className="border-t bg-background px-4 py-2 shrink-0">
         <p className="text-center text-[10px] sm:text-[11px] text-muted-foreground">
-          Verus.AI - Portal de Acompanhamento.{' '}
+          {appName} - Portal de Acompanhamento.{' '}
           <strong className="font-medium text-foreground/60">
             As informações exibidas são apenas para acompanhamento e não constituem aconselhamento jurídico.
           </strong>

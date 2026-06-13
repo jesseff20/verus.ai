@@ -2,6 +2,7 @@
 Serializers para RAG
 """
 from rest_framework import serializers
+from apps.core.constants import LLM_PROVIDER_CHOICES
 from .models import RAGQuery, RAGContext
 
 
@@ -79,7 +80,7 @@ class RAGQueryExecuteSerializer(serializers.Serializer):
         help_text='ID do contexto RAG a usar (opcional)'
     )
     llm_provider = serializers.ChoiceField(
-        choices=[('openai', 'OpenAI'), ('watsonx', 'IBM WatsonX'), ('anthropic', 'Anthropic (legado)')],
+        choices=LLM_PROVIDER_CHOICES,
         default='openai',
         help_text='Provedor LLM para gerar resposta'
     )

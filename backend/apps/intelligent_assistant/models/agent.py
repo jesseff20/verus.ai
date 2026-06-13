@@ -5,6 +5,7 @@ import uuid
 import re
 from django.db import models
 from django.contrib.auth import get_user_model
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 User = get_user_model()
 
@@ -29,12 +30,6 @@ class SectionAgentConfig(models.Model):
         ('validator', 'Validador de Conteúdo'),
         ('analyzer', 'Analisador de Exemplos'),
         ('refiner', 'Refinador com Feedback'),
-    ]
-
-    LLM_PROVIDER_CHOICES = [
-        ('openai', 'OpenAI (GPT)'),
-        ('watsonx', 'IBM WatsonX'),
-        ('anthropic', 'Anthropic (legado)'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

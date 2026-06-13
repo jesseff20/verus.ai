@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.conf import settings
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 
 class SystemModule(models.Model):
@@ -873,10 +874,7 @@ class TokenUsageLog(models.Model):
     controle de custos e analytics do sistema.
     """
 
-    PROVIDER_CHOICES = [
-        ('openai', 'OpenAI'),
-        ('watsonx', 'IBM WatsonX'),
-        ('anthropic', 'Anthropic (legado)'),
+    PROVIDER_CHOICES = LLM_PROVIDER_CHOICES + [
         ('other', 'Outro'),
     ]
 

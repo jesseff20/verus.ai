@@ -18,6 +18,7 @@ import {
   useClientPortalCopilot,
   useClientPortalCopilotSuggestions,
 } from '@/hooks/use-client-portal';
+import { useBrandSettings } from '@/hooks/use-brand-settings';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -44,17 +45,21 @@ function renderMarkdown(text: string): string {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
-const WELCOME_MESSAGE: ChatMessage = {
-  id: 'welcome',
-  role: 'bot',
-  content:
-    'Olá! Sou o assistente virtual do Verus.AI. Posso ajudar com informações sobre seus processos, prazos e documentos. Para orientação jurídica, sempre consulte o procurador responsável. Como posso ajudá-lo?',
-};
+function makeWelcomeMessage(appName: string): ChatMessage {
+  return {
+    id: 'welcome',
+    role: 'bot',
+    content: `Olá! Sou o assistente virtual do ${appName}. Posso ajudar com informações sobre seus processos, prazos e documentos. Para orientação jurídica, sempre consulte o procurador responsável. Como posso ajudá-lo?`,
+  };
+}
 
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function ClientCopilotPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
+  const { brandSettings } = useBrandSettings();
+  const appName = brandSettings?.system_name || process.env.NEXT_PUBLIC_APP_NAME || 'Verus.AI';
+
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [makeWelcomeMessage(appName)]);
   const [input, setInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);

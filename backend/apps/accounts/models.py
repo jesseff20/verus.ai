@@ -5,6 +5,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
+from apps.core.constants import LLM_PROVIDER_CHOICES
 
 
 class User(AbstractUser):
@@ -161,11 +162,7 @@ class User(AbstractUser):
     preferred_llm_provider = models.CharField(
         'Provedor LLM Preferido',
         max_length=20,
-        choices=[
-            ('openai', 'OpenAI'),
-            ('watsonx', 'IBM WatsonX'),
-            ('anthropic', 'Anthropic (legado)'),
-        ],
+        choices=LLM_PROVIDER_CHOICES,
         blank=True,
         null=True
     )
