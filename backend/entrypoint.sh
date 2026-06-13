@@ -58,6 +58,9 @@ SEED_LOG="/app/logs/seeds.log"
   echo "[seed] Criando blueprints de Tributário e Administrativo..."
   python manage.py seed_tributario_administrativo --force || true
 
+  echo "[seed] Criando blueprints de Procuradoria Municipal (pareceres, minutas, execução fiscal, contratos)..."
+  python manage.py seed_procuradoria_municipal --force || true
+
   echo "[seed] Criando blueprints de Digital/LGPD e Empresarial..."
   python manage.py seed_digital_lgpd_empresarial --force || true
 
@@ -105,6 +108,9 @@ SEED_LOG="/app/logs/seeds.log"
 
   echo "[seed] Corrigindo areas M2M dos blueprints (fix_blueprint_areas)..."
   python manage.py fix_blueprint_areas || true
+
+  echo "[seed] Configurando visibilidade de blueprints para Procuradoria Municipal..."
+  python manage.py set_blueprint_visibility || true
 
   echo "[seed] Aplicando padrão PDF ABNT a todos os blueprints..."
   python manage.py fix_pdf_standards || true
