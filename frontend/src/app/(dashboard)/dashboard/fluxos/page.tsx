@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Plus, Workflow, Clock, CheckCircle2, Archive,
   Copy, Trash2, ExternalLink, Loader2, AlertCircle, Play,
+  FilePlus2, Inbox, ListChecks, MessageSquareText,
 } from 'lucide-react';
 import { AIInput } from '@/components/ui/ai-input';
+import { AITextarea } from '@/components/ui/ai-textarea';
+import api from '@/lib/api';
 import {
   useFlowTemplates,
   useCreateFlowTemplate,
@@ -14,7 +17,7 @@ import {
   useDeleteFlowTemplate,
   type FlowTemplateListItem,
 } from '@/hooks/useFlowTemplates';
-import { useStartFlow } from '@/hooks/useFlowExecution';
+import { useStartFlow, useStartFlowForCase } from '@/hooks/useFlowExecution';
 import { useAuth } from '@/hooks/use-auth';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -29,6 +32,292 @@ const STATUS_CONFIG = {
   published: { label: 'Publicado', color: '#22C55E', icon: CheckCircle2 },
   archived: { label: 'Arquivado', color: '#6B7280', icon: Archive },
 };
+
+type DemoCaseOption = {
+  id: string;
+  numero_processo: string;
+  titulo: string;
+  cliente_nome?: string;
+  active_flow_id?: string | null;
+  active_flow_status?: string | null;
+};
+
+type CasesResponse = {
+  results?: DemoCaseOption[];
+};
+
+function isDemoUser(user: { username?: string; email?: string } | null | undefined) {
+  const identity = `${user?.username ?? ''} ${user?.email ?? ''}`.toLowerCase();
+  return identity.includes('usuario_demo') || identity.includes('demo');
+}
+
+function DemoEntryModal({
+  onClose,
+  onNewTask,
+  onNewProcess,
+  onExistingExecution,
+  onMyTask,
+}: {
+  onClose: () => void;
+  onNewTask: () => void;
+  onNewProcess: () => void;
+  onExistingExecution: () => void;
+  onMyTask: () => void;
+}) {
+  const options = [
+    {
+      icon: MessageSquareText,
+      title: 'Iniciar nova tarefa',
+      description: 'Escolha o fluxo, selecione um processo existente e descreva o objetivo para a IA.',
+      action: onNewTask,
+    },
+    {
+      icon: FilePlus2,
+      title: 'Iniciar novo processo',
+      description: 'Crie um processo/caso antes de vincula-lo a uma jornada de trabalho.',
+      action: onNewProcess,
+    },
+    {
+      icon: Workflow,
+      title: 'Abrir tarefa existente',
+      description: 'Veja execucoes ja abertas e acompanhe o andamento dos processos.',
+      action: onExistingExecution,
+    },
+    {
+      icon: Inbox,
+      title: 'Tratar tarefa comigo',
+      description: 'Abra a fila de tarefas atribuidas ao usuario de demonstracao.',
+      action: onMyTask,
+    },
+  ];
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.75)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-2xl rounded-xl border border-border bg-card p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-5">
+          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-foreground/35">Perfil demo</p>
+          <h2 className="mt-1 text-lg font-semibold">Como deseja iniciar a jornada?</h2>
+          <p className="mt-1 text-sm text-foreground/45">
+            Escolha a entrada do fluxo de trabalho para demonstrar os cenarios principais.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {options.map((option) => {
+            const Icon = option.icon;
+            return (
+              <button
+                key={option.title}
+                type="button"
+                onClick={option.action}
+                className="min-h-[132px] rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4 text-left transition-all hover:border-[#7030A0]/50 hover:bg-[#7030A0]/10"
+              >
+                <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-[#7030A0]/25 bg-[#7030A0]/15 text-[#C084FC]">
+                  <Icon size={17} />
+                </span>
+                <span className="block text-sm font-semibold text-foreground">{option.title}</span>
+                <span className="mt-1 block text-xs leading-relaxed text-foreground/45">{option.description}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-5 flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DemoStartTaskModal({
+  templates,
+  onClose,
+}: {
+  templates: FlowTemplateListItem[];
+  onClose: () => void;
+}) {
+  const router = useRouter();
+  const startFlowForCase = useStartFlowForCase();
+  const publishedTemplates = templates.filter((template) => template.status === 'published');
+  const firstPublishedTemplateId = publishedTemplates[0]?.id ?? '';
+  const [templateId, setTemplateId] = useState(firstPublishedTemplateId);
+  const [cases, setCases] = useState<DemoCaseOption[]>([]);
+  const [caseId, setCaseId] = useState('');
+  const [prompt, setPrompt] = useState('');
+  const [loadingCases, setLoadingCases] = useState(true);
+  const [caseError, setCaseError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadCases() {
+      setLoadingCases(true);
+      setCaseError('');
+      try {
+        const { data } = await api.get<CasesResponse | DemoCaseOption[]>('/api/v1/processos/', {
+          params: { page_size: 50 },
+        });
+        const list = Array.isArray(data) ? data : data.results ?? [];
+        if (!cancelled) {
+          setCases(list);
+          setCaseId((current) => current || list.find((item) => item.active_flow_status !== 'running')?.id || list[0]?.id || '');
+        }
+      } catch {
+        if (!cancelled) {
+          setCaseError('Nao foi possivel carregar os processos disponiveis.');
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingCases(false);
+        }
+      }
+    }
+
+    loadCases();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!templateId && firstPublishedTemplateId) {
+      setTemplateId(firstPublishedTemplateId);
+    }
+  }, [firstPublishedTemplateId, templateId]);
+
+  const selectedCase = cases.find((item) => item.id === caseId);
+  const caseHasRunningFlow = selectedCase?.active_flow_status === 'running';
+  const canSubmit = Boolean(templateId && caseId && prompt.trim() && !caseHasRunningFlow);
+
+  const handleStart = async () => {
+    if (!canSubmit) return;
+    try {
+      const instance = await startFlowForCase.mutateAsync({ caseId, template_id: templateId });
+      router.push(`/dashboard/execucoes/${instance.id}`);
+    } catch {
+      /* handled by react-query */
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.75)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-xl rounded-xl border border-border bg-card p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-5 flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#7030A0]/25 bg-[#7030A0]/15 text-[#C084FC]">
+            <ListChecks size={18} />
+          </span>
+          <div>
+            <h2 className="text-lg font-semibold">Iniciar nova tarefa</h2>
+            <p className="mt-1 text-sm text-foreground/45">
+              Selecione o fluxo publicado, escolha um processo existente e descreva a demanda para a IA.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <label className="block">
+            <span className="mb-1 block text-xs text-foreground/50">Tipo de tarefa</span>
+            <select
+              value={templateId}
+              onChange={(event) => setTemplateId(event.target.value)}
+              className="w-full rounded-lg border border-foreground/10 bg-foreground/5 px-3 py-2 text-sm text-foreground focus:border-[#7030A0] focus:outline-none"
+            >
+              {publishedTemplates.map((template) => (
+                <option key={template.id} value={template.id}>
+                  {template.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-xs text-foreground/50">Processo ou caso criado</span>
+            <select
+              value={caseId}
+              onChange={(event) => setCaseId(event.target.value)}
+              disabled={loadingCases}
+              className="w-full rounded-lg border border-foreground/10 bg-foreground/5 px-3 py-2 text-sm text-foreground focus:border-[#7030A0] focus:outline-none disabled:opacity-60"
+            >
+              {loadingCases && <option>Carregando processos...</option>}
+              {!loadingCases && cases.length === 0 && <option value="">Nenhum processo disponivel</option>}
+              {!loadingCases && cases.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.numero_processo || item.titulo} - {item.titulo}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {caseError && (
+            <p className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-2 text-xs text-red-400">{caseError}</p>
+          )}
+
+          {caseHasRunningFlow && (
+            <p className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-300">
+              Este processo ja possui fluxo em andamento. Escolha outro processo para iniciar uma nova tarefa.
+            </p>
+          )}
+
+          <label className="block">
+            <span className="mb-1 block text-xs text-foreground/50">Pedido inicial para a IA</span>
+            <AITextarea
+              variant="dark"
+              rows={4}
+              value={prompt}
+              onChange={(event) => setPrompt(event.target.value)}
+              setValue={setPrompt}
+              placeholder="Ex: Analise a distribuicao do processo e prepare a triagem inicial."
+              aiContext="inicio de tarefa em fluxo de trabalho juridico"
+              aiObjective="Melhore o pedido inicial para orientar a execucao da tarefa no processo selecionado"
+              className="min-h-[112px]"
+            />
+          </label>
+        </div>
+
+        <div className="mt-5 flex gap-2">
+          <button
+            type="button"
+            onClick={handleStart}
+            disabled={!canSubmit || startFlowForCase.isPending}
+            className="flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all disabled:opacity-50"
+            style={{ background: '#7030A0', color: '#fff' }}
+          >
+            {startFlowForCase.isPending ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} />}
+            Iniciar tarefa
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function StartFlowModal({
   template,
@@ -270,11 +559,20 @@ export default function FluxosPage() {
   const [newName, setNewName] = useState('');
   const [filter, setFilter] = useState<'all' | 'draft' | 'published'>('all');
   const [startingTemplate, setStartingTemplate] = useState<FlowTemplateListItem | null>(null);
+  const [showDemoEntry, setShowDemoEntry] = useState(false);
+  const [showDemoStartTask, setShowDemoStartTask] = useState(false);
 
   // distribuidor=30 é o mínimo para iniciar fluxo (alinhado com CanStartFlow no backend)
   const canStart = hasPermission('distribuidor');
+  const demoProfile = isDemoUser(user);
 
   const filtered = templates?.filter((t) => filter === 'all' || t.status === filter);
+
+  useEffect(() => {
+    if (demoProfile) {
+      setShowDemoEntry(true);
+    }
+  }, [demoProfile]);
 
   const handleCreate = async () => {
     if (!newName.trim()) return;
@@ -311,6 +609,26 @@ export default function FluxosPage() {
         <StartFlowModal
           template={startingTemplate}
           onClose={() => setStartingTemplate(null)}
+        />
+      )}
+
+      {showDemoEntry && (
+        <DemoEntryModal
+          onClose={() => setShowDemoEntry(false)}
+          onNewTask={() => {
+            setShowDemoEntry(false);
+            setShowDemoStartTask(true);
+          }}
+          onNewProcess={() => router.push('/dashboard/processos/novo')}
+          onExistingExecution={() => router.push('/dashboard/execucoes')}
+          onMyTask={() => router.push('/dashboard/minhas-tarefas')}
+        />
+      )}
+
+      {showDemoStartTask && templates && (
+        <DemoStartTaskModal
+          templates={templates}
+          onClose={() => setShowDemoStartTask(false)}
         />
       )}
 
