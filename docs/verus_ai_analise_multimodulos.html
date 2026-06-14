@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verus.AI — Análise Multimódulo: Mapa Completo de Módulos e Fluxos</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --bg: #f8f9fa;
+  --card: #ffffff;
+  --border: #dee2e6;
+  --text: #212529;
+  --text-muted: #6c757d;
+  --frontend: #2563eb;
+  --backend: #16a34a;
+  --database: #7c3aed;
+  --external: #0891b2;
+  --decision: #d97706;
+  --error: #dc2626;
+  --fix: #059669;
+  --test: #4f46e5;
+  --bg-frontend: #eff6ff;
+  --bg-backend: #f0fdf4;
+  --bg-database: #f5f3ff;
+  --bg-decision: #fffbeb;
+  --bg-error: #fef2f2;
+  --bg-fix: #f0fdf4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 2rem;
+}
+.header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.header .subtitle { color: var(--text-muted); font-size: 1.1rem; }
+.header .meta { margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.header .meta span { background: var(--card); border: 1px solid var(--border); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.badge-success { background: #dcfce7; color: #166534; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-error { background: #fef2f2; color: #991b1b; }
+.badge-info { background: #dbeafe; color: #1e40af; }
+
+/* Executive Summary Cards */
+.exec-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.exec-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+}
+.exec-card .number { font-size: 2rem; font-weight: 700; }
+.exec-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; }
+.exec-card.frontend .number { color: var(--frontend); }
+.exec-card.backend .number { color: var(--backend); }
+.exec-card.database .number { color: var(--database); }
+.exec-card.decision .number { color: var(--decision); }
+.exec-card.error .number { color: var(--error); }
+.exec-card.fix .number { color: var(--fix); }
+.exec-card.test .number { color: var(--test); }
+
+/* Section */
+.section { margin-bottom: 2.5rem; }
+.section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--frontend);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Fix Cards */
+.fix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.fix-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  border-left: 4px solid var(--text-muted);
+}
+.fix-card.p0 { border-left-color: var(--error); }
+.fix-card.p1 { border-left-color: var(--decision); }
+.fix-card.p2 { border-left-color: var(--frontend); }
+.fix-card.p3 { border-left-color: var(--text-muted); }
+.fix-card h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+.fix-card .meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+.fix-card p { font-size: 0.9rem; }
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { background: #f1f5f9; font-weight: 600; white-space: nowrap; }
+tr:hover { background: #f8fafc; }
+
+/* Mermaid */
+.mermaid-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.mermaid-wrap svg { max-width: 100%; }
+
+/* Phase Cards */
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+.phase-card h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+.phase-card .tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+.tag-frontend { background: var(--bg-frontend); color: var(--frontend); }
+.tag-backend { background: var(--bg-backend); color: var(--backend); }
+.tag-database { background: var(--bg-database); color: var(--database); }
+.tag-decision { background: var(--bg-decision); color: var(--decision); }
+.tag-error { background: var(--bg-error); color: var(--error); }
+.tag-fix { background: var(--bg-fix); color: var(--fix); }
+.phase-card p { font-size: 0.85rem; margin: 0.3rem 0; color: var(--text-muted); }
+.phase-card ul { list-style: none; padding: 0; }
+.phase-card ul li { font-size: 0.82rem; padding: 0.2rem 0; color: var(--text-muted); }
+.phase-card ul li::before { content: "• "; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 2px solid var(--border);
+  margin-top: 2rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Status indicators */
+.status-ok { color: var(--fix); font-weight: 600; }
+.status-warn { color: var(--decision); font-weight: 600; }
+.status-err { color: var(--error); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .container { padding: 1rem; }
+  .header h1 { font-size: 1.5rem; }
+  .exec-summary { grid-template-columns: repeat(2, 1fr); }
+  .fix-grid { grid-template-columns: 1fr; }
+  .phase-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🏛️ Verus.AI — Mapa Completo de Arquitetura Multimódulo</h1>
+  <p class="subtitle">Análise estrutural de todos os módulos do sistema, suas relações, fluxos, integrações, pontos de decisão, silos e riscos</p>
+  <div class="meta">
+    <span class="badge badge-success">✅ Análise Concluída</span>
+    <span>📅 14/06/2026</span>
+    <span>📋 v1.0</span>
+    <span>🏷️ Auditoria Geral do Sistema</span>
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<h2>📊 Sumário Executivo</h2>
+<div class="exec-summary">
+  <div class="exec-card backend"><div class="number">21</div><div class="label">Apps Django</div></div>
+  <div class="exec-card backend"><div class="number">~360</div><div class="label">Endpoints REST</div></div>
+  <div class="exec-card database"><div class="number">~99</div><div class="label">Modelos</div></div>
+  <div class="exec-card frontend"><div class="number">54+</div><div class="label">Rotas Frontend</div></div>
+  <div class="exec-card decision"><div class="number">18</div><div class="label">Tipos de Simulação</div></div>
+  <div class="exec-card backend"><div class="number">14</div><div class="label">Celery Tasks</div></div>
+  <div class="exec-card error"><div class="number">6</div><div class="label">Problemas Identificados</div></div>
+  <div class="exec-card fix"><div class="number">3</div><div class="label">Correções Propostas</div></div>
+  <div class="exec-card test"><div class="number">13+</div><div class="label">Test Classes (cases)</div></div>
+</div>
+
+<!-- CORRECTIONS SUMMARY -->
+<h2>🛠️ Sumário de Correções</h2>
+<div class="fix-grid">
+  <div class="fix-card p0">
+    <h4>🔴 P0 — Financeiro: Frontend x Backend inconsistente</h4>
+    <div class="meta">Módulo: cases / frontend | Evidência: urls.py + 4 arquivos frontend</div>
+    <p>Backend desativou URLs do financeiro (# comentado no urls.py), mas o frontend ainda tem 4+ páginas chamando `/api/v1/processos/financeiro/*`. Todas essas chamadas retornarão 404 silenciosamente.</p>
+    <span class="badge badge-error">Necessita correção urgente</span>
+  </div>
+  <div class="fix-card p1">
+    <h4>🟡 P1 — Código morto: process_document_task nunca chamada</h4>
+    <div class="meta">Módulo: kb | Evidência: tasks.py + grep .delay()</div>
+    <p>A task `process_document_task` em `apps/kb/tasks.py` é definida com `@shared_task` mas NUNCA é invocada via `.delay()` ou `.apply_async()` em lugar nenhum do código. Processamento de documentos KB é apenas síncrono.</p>
+    <span class="badge badge-warning">Remover ou implementar chamada</span>
+  </div>
+  <div class="fix-card p1">
+    <h4>🟡 P1 — Duplicação de pipeline RAG</h4>
+    <div class="meta">Módulo: rag / intelligent_assistant | Evidência: models.py + knowledge_base_service</div>
+    <p>O app `rag` define modelos RAGQuery e RAGContext que referenciam `documents.Document`. Paralelamente, o `intelligent_assistant` tem seu próprio pipeline RAG via KnowledgeBaseService + pgvector. Duas implementações RAG distintas.</p>
+    <span class="badge badge-warning">Consolidar pipelines</span>
+  </div>
+  <div class="fix-card p2">
+    <h4>🔵 P2 — Módulo collaboration isolado (silo potencial)</h4>
+    <div class="meta">Módulo: collaboration | Evidência: grafo de dependências</div>
+    <p>Nenhum outro app do sistema referencia models do `collaboration` via FK. É um módulo funcional mas sem integração com o resto do sistema.</p>
+    <span class="badge badge-info">Monitorar uso real</span>
+  </div>
+  <div class="fix-card p2">
+    <h4>🔵 P2 — Duplicação de conceito "Documento"</h4>
+    <div class="meta">Módulo: documents / intelligent_assistant | Evidência: models.py</div>
+    <p>O app `documents` define DocumentGenerator e Document. O `intelligent_assistant` define GeneratedDocument e IntelligentSession. Conceitos sobrepostos de "documento" em apps diferentes.</p>
+    <span class="badge badge-info">Avaliar unificação futura</span>
+  </div>
+  <div class="fix-card p2">
+    <h4>🔵 P2 — Testes concentrados em cases app</h4>
+    <div class="meta">Módulo: todos | Evidência: pytest.ini + test directories</div>
+    <p>Casos de teste reais (APITestCase) estão concentrados no app `cases`. Apps críticos como intelligent_assistant, workflow_execution, simulations têm diretórios de teste mas cobertura não confirmada.</p>
+    <span class="badge badge-info">Expandir cobertura</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<h2>🎨 Legenda Visual</h2>
+<div class="legend">
+  <div class="legend-item"><div class="legend-color" style="background:var(--frontend)"></div> Frontend</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--backend)"></div> Backend</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--database)"></div> Banco de Dados</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--external)"></div> Serviço Externo</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--decision)"></div> Ponto de Decisão</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--error)"></div> Erro / Problema</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--fix)"></div> Correção</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--test)"></div> Teste</div>
+  <div class="legend-item"><div class="legend-color" style="background:var(--bg-database);border:1px solid var(--database)"></div> Módulo em Silo</div>
+</div>
+
+<!-- SEQUENCE DIAGRAM -->
+<h2>🔄 Diagrama de Sequência: Fluxo Transversal entre Módulos</h2>
+<div class="mermaid-wrap">
+<div class="mermaid">
+sequenceDiagram
+    actor U as 👤 Usuário
+    participant FE as 🖥️ Frontend (Next.js)
+    participant BE as ⚙️ Backend (Django/DRF)
+    participant IA as 🤖 intelligent_assistant
+    participant CASES as 📋 cases
+    participant WF as 🔄 workflow_execution
+    participant DB as 🗄️ Banco (PostgreSQL+pgvector)
+    participant LLM as 🧠 LLM (Anthropic/OpenAI/WatsonX)
+    participant KB as 📚 kb (RAG)
+    participant R2 as ☁️ Cloudflare R2
+    participant CEL as ⏰ Celery (Redis)
+
+    rect rgb(37,99,235,0.05)
+        Note over U,CEL: FASE 1 — Autenticação e Multi-tenancy
+        U->>FE: Login (credentials)
+        FE->>BE: POST /api/v1/auth/token/
+        BE->>DB: Verify User.organ
+        DB-->>BE: User + Organ
+        BE-->>FE: JWT (access + refresh)
+        FE->>FE: Store tokens (localStorage)
+    end
+
+    rect rgb(22,163,74,0.05)
+        Note over U,CEL: FASE 2 — Gestão de Processos (cases)
+        U->>FE: Criar/Acessar processo
+        FE->>BE: GET/POST /api/v1/processos/
+        BE->>DB: LegalCase + Client + advogado_responsavel
+        DB-->>BE: Caso criado
+        BE-->>FE: Dados do processo
+        alt Possui active_flow
+            BE->>WF: FlowInstance vinculado
+            WF-->>BE: Status do workflow
+        end
+    end
+
+    rect rgb(124,58,237,0.05)
+        Note over U,CEL: FASE 3 — Geração de Documento com IA
+        U->>FE: Selecionar Blueprint
+        FE->>BE: GET /api/v1/intelligent-assistant/blueprints/
+        BE->>IA: DocumentBlueprint + SectionAgentConfig
+        IA->>DB: Busca blueprint
+        DB-->>IA: Blueprint + seções + agentes
+        BE-->>FE: Formulário dinâmico
+        U->>FE: Preencher + Upload docs
+        FE->>BE: POST generate-stream/ (SSE)
+        BE->>IA: OrchestratorService
+        IA->>KB: RAG search (pgvector)
+        KB-->>IA: Contexto relevante
+        IA->>LLM: Generate section (com retry)
+        LLM-->>IA: Conteúdo gerado (stream)
+        IA-->>BE: SSE stream
+        BE-->>FE: Streaming token-a-token
+        Note over IA,LLM: Decisão: provider primário → fallback se falhar
+        U->>FE: Revisar e editar
+        FE->>BE: POST generate-pdf/
+        BE->>IA: PDFService (WeasyPrint)
+        IA->>R2: save_pdf_to_r2_task.delay()
+        R2-->>IA: PDF armazenado
+        IA-->>BE: URL do PDF
+        BE-->>FE: Link para download
+    end
+
+    rect rgb(217,119,6,0.05)
+        Note over U,CEL: FASE 4 — Workflow BPMN
+        U->>FE: Iniciar workflow no processo
+        FE->>BE: POST /api/v1/workflow-execution/executions/
+        BE->>WF: FlowInstance.create()
+        WF->>DB: FlowInstance + TaskInstance
+        DB-->>WF: Tasks criadas
+        WF-->>BE: Instance pronta
+        BE-->>FE: Tela de acompanhamento
+        alt exclusive_gateway
+            U->>FE: Escolher caminho
+            FE->>BE: POST complete/ com gateway_choice
+            BE->>WF: Avançar no fluxo
+        else parallel_gateway
+            Note over U,WF: Múltiplas tasks simultâneas
+        end
+        Note over WF,DB: Signal sync_case_flow_status limpa active_flow
+    end
+
+    rect rgb(8,145,178,0.05)
+        Note over U,CEL: FASE 5 — Copilot + Tasks Periódicas
+        CEL->>CEL: check_upcoming_deadlines (1h)
+        CEL->>CASES: Busca prazos próximos
+        CEL->>DB: Cria Notification
+        CEL->>CEL: sync_user_knowledge_bases (02:00)
+        CEL->>CASES: Varre casos/documents/sessions
+        CEL->>DB: UserKnowledgeEntry hash
+        U->>FE: Abrir Copilot
+        FE->>BE: POST /api/v1/copilot/chat/stream/
+        BE->>KB: RAG + contexto do caso
+        BE->>LLM: Gera resposta (SSE stream)
+        LLM-->>BE: Tokens
+        BE-->>FE: Streaming
+    end
+
+    Note over U,CEL: ⚠️ PROBLEMA: Financeiro desativado — frontend ainda chama (404)
+    Note over BE,KB: ⚠️ PROBLEMA: RAG duplicado (rag app vs intelligent_assistant)
+    Note over KB: ⚠️ PROBLEMA: process_document_task nunca chamada
+</div>
+</div>
+
+<!-- PHASE DETAILS -->
+<h2>📋 Fases Detalhadas</h2>
+<div class="phase-grid">
+  <div class="phase-card">
+    <h4>1. Autenticação & Multi-tenancy</h4>
+    <div>
+      <span class="tag tag-frontend">Frontend</span>
+      <span class="tag tag-backend">Backend</span>
+      <span class="tag tag-database">DB</span>
+    </div>
+    <p><strong>Módulos:</strong> accounts, organization</p>
+    <p><strong>Entrada:</strong> Credenciais do usuário</p>
+    <p><strong>Processamento:</strong> JWT (access 1h + refresh 7d), single-flight refresh, role hierarchy (11 níveis)</p>
+    <p><strong>Saída:</strong> Token JWT com claims de organ/role</p>
+    <p><strong>Decisões:</strong> Token expirado? → Refresh / Redirect login</p>
+    <p><strong>Erros:</strong> Refresh blacklisted mas não expirado? Single-flight trata race condition</p>
+  </div>
+  <div class="phase-card">
+    <h4>2. Gestão de Processos (cases)</h4>
+    <div>
+      <span class="tag tag-frontend">Frontend</span>
+      <span class="tag tag-backend">Backend</span>
+      <span class="tag tag-database">DB</span>
+    </div>
+    <p><strong>Módulos:</strong> cases, accounts, organization</p>
+    <p><strong>Endpoints:</strong> ~120+ (CRUD + prazos + tarefas + documentos + contratos + NFS-e + CRM + KPI + OCR + petição IA)</p>
+    <p><strong>Modelos:</strong> LegalCase, Client, LegalDeadline, CaseTask, CaseDocument, LegalContract, Lead, RiskAssessment, InvoiceNFSe</p>
+    <p><strong>Integrações:</strong> active_flow → workflow_execution, linked_document → intelligent_assistant</p>
+    <p><strong>Decisões:</strong> active_flow exists? → Serializa info do workflow</p>
+  </div>
+  <div class="phase-card">
+    <h4>3. Geração de Documento com IA</h4>
+    <div>
+      <span class="tag tag-backend">Backend</span>
+      <span class="tag tag-frontend">Frontend</span>
+      <span class="tag tag-database">DB</span>
+    </div>
+    <p><strong>Módulos:</strong> intelligent_assistant, core, kb, templates, forms</p>
+    <p><strong>Endpoints:</strong> ~60+ (sessions, blueprints, agents, generation, export)</p>
+    <p><strong>Fluxo:</strong> Blueprint → FormTemplate → Upload → Geração SSE (multi-provider) → Revisão → Exportação (PDF/DOCX/ODT) → R2</p>
+    <p><strong>LLM Providers:</strong> Anthropic (default), OpenAI, IBM WatsonX — configuráveis via core.LLMProvider</p>
+    <p><strong>RAG:</strong> SectionAgentConfig ↔ KnowledgeBase ↔ pgvector embeddings</p>
+    <p><strong>Decisões:</strong> Provider primário falha? → Retry 3x com backoff; Provider selecionado por blueprint ou global?</p>
+    <div class="tag tag-error">⚠️ save_pdf/docx_to_r2_task sem fallback se R2 offline</div>
+  </div>
+  <div class="phase-card">
+    <h4>4. Workflow BPMN</h4>
+    <div>
+      <span class="tag tag-backend">Backend</span>
+      <span class="tag tag-database">DB</span>
+    </div>
+    <p><strong>Módulos:</strong> workflow_definition, workflow_execution, accounts, organization</p>
+    <p><strong>Fluxo:</strong> Template → Publicar → Instanciar → Tasks → Gateways (exclusive/parallel) → Completar</p>
+    <p><strong>Modelos:</strong> FlowTemplate, FlowNode, FlowEdge, FlowVersion, FlowInstance, TaskInstance, TaskRequest, ExecutionEvent</p>
+    <p><strong>Integrações:</strong> cases.LegalCase.active_flow (O2O), signal sync_case_flow_status limpa ao completar</p>
+    <p><strong>Decisões:</strong> exclusive_gateway → usuário escolhe caminho; parallel_gateway → tasks simultâneas</p>
+    <p><strong>Auditoria:</strong> ExecutionEvent imutável para cada transição</p>
+  </div>
+  <div class="phase-card">
+    <h4>5. Copilot & Tasks Periódicas</h4>
+    <div>
+      <span class="tag tag-backend">Backend</span>
+      <span class="tag tag-frontend">Frontend</span>
+    </div>
+    <p><strong>Módulos:</strong> copilot, cases, accounts, intelligent_assistant</p>
+    <p><strong>Tasks:</strong> 7 Celery Beat tasks (check_upcoming_deadlines/h, analyze_idle_cases/diário, check_pending_documents/diário, process_user_reminders/5min, nightly_case_analysis/meia-noite, sync_user_knowledge_bases/2h, cleanup_stuck_simulations/2h)</p>
+    <p><strong>Fluxo:</strong> Session → Chat SSE → RAG → LLM → Histórico → Compartilhar (share_code)</p>
+  </div>
+  <div class="phase-card">
+    <h4>6. Simulações (18 tipos)</h4>
+    <div>
+      <span class="tag tag-backend">Backend</span>
+      <span class="tag tag-database">DB</span>
+      <span class="tag tag-frontend">Frontend</span>
+    </div>
+    <p><strong>Tipos:</strong> jury, judge, stf, stj, tst, trt, tre, tse, jec, jecrim, acordao, eleitoral, trabalho, militar, turma_recursal, stm, tre, trt</p>
+    <p><strong>Serviços:</strong> JurySimulationService, JudgeSimulationService, STFSimulationService, etc. — cada tipo tem service próprio</p>
+    <p><strong>Fluxo:</strong> Criar simulação → Upload docs → SSE stream (debate IA multi-fase) → Veredicto → PDF export</p>
+    <p><strong>Decisão:</strong> Simulation.status = running/completed/failed; cleanup_stuck marca como failed após 2h</p>
+  </div>
+</div>
+
+<!-- ARCHITECTURE DIAGRAM -->
+<h2>🏗️ Diagrama de Arquitetura de Componentes</h2>
+<div class="mermaid-wrap">
+<div class="mermaid">
+graph TB
+    subgraph FRONTEND["🖥️ Frontend (Next.js 16 + React 19)"]
+        A["App Router<br/>54+ rotas do dashboard"]
+        P["Route Handler Proxy<br/>api/v1/[...path]/route.ts"]
+        H["40+ Hooks<br/>use-auth, use-cases,<br/>use-blueprints, etc."]
+        API["API Client (Axios)<br/>JWT interceptor + refresh"]
+    end
+
+    subgraph BACKEND["⚙️ Backend (Django 5 + DRF 3.15)"]
+        BE_CORE["core<br/>LLMProvider, AuditLog<br/>DocumentType, ProcessType"]
+        BE_ACC["accounts<br/>User, Role Hierarchy<br/>JWT, Notifications, LGPD"]
+        BE_CASES["cases ⭐<br/>LegalCase, Client, Deadline<br/>Task, Contract, NFS-e,<br/>CRM, KPI, OCR, Petição IA<br/>~120 endpoints"]
+        BE_IA["intelligent_assistant ⭐<br/>IntelligentSession<br/>DocumentBlueprint<br/>SectionAgent<br/>~60 endpoints"]
+        BE_WF["workflow_execution<br/>FlowInstance, TaskInstance<br/>ExecutionEvent"]
+        BE_WFD["workflow_definition<br/>FlowTemplate, FlowNode<br/>FlowEdge, FlowVersion"]
+        BE_COP["copilot<br/>Chat SSE, Tasks<br/>UserKnowledgeSync"]
+        BE_SIM["simulations<br/>18 tipos de simulação<br/>Jury, Judge, STF, STJ..."]
+        BE_ORG["organization<br/>Organ, Unit<br/>Multi-tenancy"]
+    end
+
+    subgraph DATABASE["🗄️ Data Layer"]
+        DB_PG[("PostgreSQL 15<br/>+ pgvector")]
+        DB_REDIS[("Redis 7<br/>Cache + Celery Broker")]
+    end
+
+    subgraph EXTERNAL["🌐 Serviços Externos"]
+        EXT_LLM["LLM Providers<br/>Anthropic · OpenAI · WatsonX"]
+        EXT_R2[("Cloudflare R2<br/>Storage de Documentos")]
+        EXT_RESEND["Resend<br/>Email Transacional"]
+        EXT_TRIB["Tribunais<br/>PJe · e-SAJ · DataJud"]
+        EXT_SIGN["Assinatura Digital<br/>ICP-Brasil · GovBR<br/>Certisign · SERPRO"]
+    end
+
+    subgraph WORKERS["⏰ Workers & Filas"]
+        CELERY["Celery Worker<br/>7 periodic tasks<br/>+ on-demand"]
+        CELERY_BEAT["Celery Beat<br/>Scheduler"]
+    end
+
+    subgraph SILOS["🔇 Módulos em Silo Potencial"]
+        SILO_COLLAB["collaboration<br/>Nenhum app<br/>referencia via FK"]
+        SILO_DOC["documents<br/>Document x GeneratedDocument<br/>conceito duplicado"]
+        SILO_RAG["rag<br/>RAGQuery, RAGContext<br/>Pipeline RAG duplicado"]
+        SILO_FIN["financeiro 🚫<br/>Desativado!<br/>Frontend ainda chama"]
+    end
+
+    %% Conexões Frontend → Backend
+    A --> P
+    P --> BE_CASES
+    P --> BE_IA
+    P --> BE_COP
+    P --> BE_SIM
+    P --> BE_WF
+    P --> BE_WFD
+
+    %% Conexões Backend Internas
+    BE_ACC --> BE_ORG
+    BE_CASES --> BE_ACC
+    BE_CASES --> BE_ORG
+    BE_CASES --> BE_WF
+    BE_IA --> BE_ACC
+    BE_IA --> BE_CORE
+    BE_IA --> BE_CASES
+    BE_WF --> BE_WFD
+    BE_WF --> BE_ORG
+    BE_WF --> BE_ACC
+    BE_SIM --> BE_CASES
+
+    %% Conexões Data
+    BE_CASES --> DB_PG
+    BE_IA --> DB_PG
+    BE_WF --> DB_PG
+    BE_ACC --> DB_PG
+    BE_CORE --> DB_PG
+    BE_COP --> DB_PG
+
+    %% Serviços Externos
+    BE_IA --> EXT_LLM
+    BE_COP --> EXT_LLM
+    BE_SIM --> EXT_LLM
+    BE_IA --> EXT_R2
+    BE_ACC --> EXT_RESEND
+
+    %% Celery
+    CELERY --> DB_REDIS
+    CELERY_BEAT --> DB_REDIS
+    CELERY --> BE_CASES
+    CELERY --> BE_IA
+    CELERY --> BE_COP
+    CELERY --> BE_SIM
+
+    %% Silos (destacados)
+    SILO_COLLAB -.-> |❌ Sem conexão| BE_CASES
+    SILO_FIN -.-> |🔴 FRONTEND CHAMA | A
+
+    style SILO_COLLAB fill:#f5f3ff,stroke:#7c3aed,stroke-dasharray: 5 5
+    style SILO_FIN fill:#fef2f2,stroke:#dc2626,stroke-dasharray: 5 5
+    style SILO_DOC fill:#f5f3ff,stroke:#7c3aed,stroke-dasharray: 5 5
+    style SILO_RAG fill:#f5f3ff,stroke:#7c3aed,stroke-dasharray: 5 5
+    style SILO_FIN color:#dc2626,font-weight:700
+</div>
+</div>
+
+<!-- DECISION TREE -->
+<h2>🌳 Diagrama de Pontos de Decisão</h2>
+<div class="mermaid-wrap">
+<div class="mermaid">
+flowchart TD
+    START["Início"] --> AUTH{"Usuário<br/>autenticado?"}
+    AUTH -->|"Sim<br/>JWT válido"| AUTH_OK["✅ Acesso liberado<br/>1h access_token"]
+    AUTH -->|"Não<br/>401 Unauthorized"| REFRESH{"Tem<br/>refresh_token?"}
+    REFRESH -->|"Sim"| TRY_REFRESH["Tenta refresh<br/>single-flight"]
+    TRY_REFRESH -->|"Sucesso"| AUTH_OK
+    TRY_REFRESH -->|"Falha 401/400/403"| LOGIN["Redirect /login"]
+    REFRESH -->|"Não"| LOGIN
+
+    AUTH_OK --> ORGAN{"User.organ<br/>definido?"}
+    ORGAN -->|"Sim"| FILTER_BY_ORG["✅ Filtra queries<br/>por organ"]
+    ORGAN -->|"Não"| RISK["⚠️ Risco: pode<br/>acessar dados<br/>de outros órgãos"]
+
+    FILTER_BY_ORG --> FLOW{"Processo tem<br/>active_flow?"}
+    FLOW -->|"Sim (O2O)"| WF_STATUS{"FlowInstance<br/>status?"}
+    WF_STATUS -->|"running"| SHOW_WF["Exibe workflow<br/>+ tasks pendentes"]
+    WF_STATUS -->|"completed/cancelled"| CLEAN["Signal limpa<br/>active_flow=None"]
+    FLOW -->|"Não"| NO_WF["Processo sem<br/>workflow ativo"]
+
+    SHOW_WF --> GEN{"Gerar<br/>documento?"}
+    GEN -->|"Sim"| BLUEPRINT{"Blueprint<br/>selecionado?"}
+    BLUEPRINT -->|"Sim"| LLM_PROVIDER{"Qual LLM<br/>provider?"}
+    LLM_PROVIDER -->|"anthropic (default)"| ANTHROPIC["Claude Haiku/Sonnet"]
+    LLM_PROVIDER -->|"openai"| OPENAI["GPT-4o-mini"]
+    LLM_PROVIDER -->|"watsonx"| WATSONX["IBM Granite/Mistral"]
+    ANTHROPIC --> LLM_CALL["Chamar LLM<br/>max 3 retries"]
+    LLM_CALL -->|"Sucesso"| SSE_STREAM["Stream SSE → Frontend"]
+    LLM_CALL -->|"Falha após 3 retries"| ERROR_LLM["⚠️ Erro: todas<br/>tentativas falharam"]
+    SSE_STREAM --> REVIEW{"Usuário<br/>revisou?"}
+    REVIEW -->|"Sim"| EXPORT["Exportar PDF/DOCX"]
+    REVIEW -->|"Não"| EDIT["Editar manualmente"]
+    GEN -->|"Não"| DONE["✅ Fluxo concluído"]
+
+    EXPORT --> R2{"R2 habilitado?"}
+    R2 -->|"Sim"| R2_TASK["save_pdf_to_r2_task<br/>delay → Cloudflare"]
+    R2 -->|"Não"| LOCAL["Salva localmente<br/>(MEDIA_ROOT)"]
+    R2_TASK -->|"Falha?"| R2_FALLBACK{"Retry 3x?"}
+    R2_FALLBACK -->|"Sim, falhou"| ERROR_R2["⚠️ Erro: R2<br/>indisponível"]
+    R2_FALLBACK -->|"Sucesso"| DONE
+
+    NO_WF --> WF_START{"Iniciar<br/>workflow?"}
+    WF_START -->|"Sim"| GATEWAY{"Tipo de<br/>gateway?"}
+    GATEWAY -->|"exclusive"| CHOICE["Usuário escolhe<br/>caminho A ou B"]
+    GATEWAY -->|"parallel"| MULTI["Múltiplas tasks<br/>simultâneas"]
+    CHOICE --> TASK_COMPLETE["TaskInstance.complete()"]
+    MULTI --> TASK_COMPLETE
+    TASK_COMPLETE --> ADVANCE["Avançar fluxo"]
+    ADVANCE --> FLOW_END{"end_event<br/>atingido?"}
+    FLOW_END -->|"Sim"| WF_DONE["FlowInstance.completed<br/>signal limpa active_flow"]
+    FLOW_END -->|"Não"| SHOW_WF
+
+    ERROR_LLM --> TASK_REQUEST{"Solicitar<br/>ajuste?"}
+    TASK_REQUEST -->|"Sim"| REVIEW
+    TASK_REQUEST -->|"Não"| ERROR_DONE["⚠️ Tarefa<br/>incompleta"]
+
+    subgraph LEGEND_DECISION["Legenda"]
+        D1["⬜ Decisão do sistema"]
+        D2["🟨 Decisão do usuário"]
+        D3["🟥 Erro / Falha"]
+        D4["🟩 Fluxo feliz"]
+    end
+
+    style LOGIN fill:#fef2f2,stroke:#dc2626
+    style RISK fill:#fef3c7,stroke:#d97706
+    style ERROR_LLM fill:#fef2f2,stroke:#dc2626
+    style ERROR_R2 fill:#fef2f2,stroke:#dc2626
+    style ERROR_DONE fill:#fef2f2,stroke:#dc2626
+</div>
+</div>
+
+<!-- PROBLEMS TABLE -->
+<h2>⚠️ Problemas Encontrados</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tipo</th>
+      <th>Módulo</th>
+      <th>Etapa</th>
+      <th>Descrição</th>
+      <th>Impacto</th>
+      <th>Severidade</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>P01</td>
+      <td>Integração</td>
+      <td>cases / frontend</td>
+      <td>Financeiro</td>
+      <td>Financeiro desativado no backend (urls.py comentado), mas frontend ainda tem 4+ páginas que chamam esses endpoints</td>
+      <td>Usuário vê 404 ao acessar páginas financeiras</td>
+      <td><span class="status-err">Crítica</span></td>
+      <td><span class="badge badge-error">Aberta</span></td>
+    </tr>
+    <tr>
+      <td>P02</td>
+      <td>Código morto</td>
+      <td>kb</td>
+      <td>Processamento KB</td>
+      <td>process_document_task definida em kb/tasks.py mas nunca chamada via .delay()</td>
+      <td>Processamento de documentos KB é síncrono apenas</td>
+      <td><span class="status-warn">Média</span></td>
+      <td><span class="badge badge-warning">Aberta</span></td>
+    </tr>
+    <tr>
+      <td>P03</td>
+      <td>Arquitetura</td>
+      <td>rag / intelligent_assistant</td>
+      <td>Pipeline RAG</td>
+      <td>App `rag` define RAGQuery/RAGContext; intelligent_assistant tem RAG próprio via KnowledgeBaseService + pgvector</td>
+      <td>Duplicação de pipeline e dados</td>
+      <td><span class="status-warn">Média</span></td>
+      <td><span class="badge badge-warning">Aberta</span></td>
+    </tr>
+    <tr>
+      <td>P04</td>
+      <td>Módulo em silo</td>
+      <td>collaboration</td>
+      <td>Geral</td>
+      <td>Nenhum outro app referencia models do collaboration via ForeignKey</td>
+      <td>Módulo não integrado, pode ser redundante</td>
+      <td><span class="status-warn">Baixa</span></td>
+      <td><span class="badge badge-info">Monitorar</span></td>
+    </tr>
+    <tr>
+      <td>P05</td>
+      <td>Arquitetura</td>
+      <td>documents / intelligent_assistant</td>
+      <td>Documentos</td>
+      <td>Duplicação de conceito "Documento": documents app vs GeneratedDocument em intelligent_assistant</td>
+      <td>Confusão de responsabilidades</td>
+      <td><span class="status-warn">Baixa</span></td>
+      <td><span class="badge badge-info">Monitorar</span></td>
+    </tr>
+    <tr>
+      <td>P06</td>
+      <td>Cobertura</td>
+      <td>Geral</td>
+      <td>Testes</td>
+      <td>Casos de teste reais (APITestCase) concentrados em cases app; intelligent_assistant e workflow_execution com cobertura insuficiente</td>
+      <td>Risco de regressão não detectada</td>
+      <td><span class="status-warn">Média</span></td>
+      <td><span class="badge badge-warning">Aberta</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- GRAPH OF DEPENDENCIES -->
+<h2>🔗 Grafo de Dependências entre Apps</h2>
+<div class="mermaid-wrap">
+<div class="mermaid">
+flowchart LR
+    ORG["organization<br/>(raiz)"] --> ACC["accounts"]
+    ACC --> CORE["core"]
+    ACC --> CASES["cases ⭐"]
+    ACC --> IA["intelligent_assistant ⭐"]
+    ACC --> AGENTS["agents"]
+    ACC --> FORMS["forms"]
+    ACC --> TEMPL["templates"]
+    ACC --> DOCS["documents"]
+    ACC --> KB["kb"]
+    ACC --> RAG["rag"]
+    ACC --> COLLAB["collaboration"]
+    ACC --> COPILOT["copilot"]
+    ACC --> INTEG["integration"]
+    ACC --> JURIS["jurisprudence"]
+    ACC --> LEGAL["legal_library"]
+    ACC --> SIM["simulations"]
+    ACC --> WFD["workflow_definition"]
+    ACC --> WFE["workflow_execution"]
+    ACC --> SIG["signature"]
+    CASES --> IA
+    CASES --> SIM
+    CASES --> WFE
+    IA --> KB
+    IA --> CORE
+    IA --> CASES
+    FORMS --> IA
+    TEMPL --> IA
+    TEMPL --> FORMS
+    DOCS --> TEMPL
+    DOCS --> KB
+    DOCS --> FORMS
+    RAG --> DOCS
+    RAG --> KB
+    WFD --> ORG
+    WFE --> WFD
+    WFE --> ORG
+    SIG --> ORG
+
+    style COLLAB fill:#f5f3ff,stroke:#7c3aed,stroke-dasharray: 5 5
+    style RAG fill:#f5f3ff,stroke:#7c3aed,stroke-dasharray: 5 5
+    style DOCS fill:#f5f3ff,stroke:#7c3aed,stroke-dasharray: 5 5
+    style IA fill:#dcfce7,stroke:#16a34a
+    style CASES fill:#dbeafe,stroke:#2563eb
+    style WFE fill:#fef3c7,stroke:#d97706
+    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28 stroke-width:2px
+</div>
+</div>
+
+<!-- TEST TABLE -->
+<h2>🧪 Tabela de Testes</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tipo</th>
+      <th>Fluxo</th>
+      <th>Comando</th>
+      <th>Cobertura</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T01</td>
+      <td>Unitário / API</td>
+      <td>Cases — Permissões</td>
+      <td>pytest apps/cases/tests_new_features.py::PermissionTests</td>
+      <td>13 classes de teste (Permission, Timesheet, Lead, ConflictCheck, KPI, Kanban, NFSe, RiskAssessment, Pagination)</td>
+      <td><span class="status-ok">✅ OK</span></td>
+    </tr>
+    <tr>
+      <td>T02</td>
+      <td>Unitário / Model</td>
+      <td>Cases — Models</td>
+      <td>pytest apps/cases/tests_new_features.py::TimeEntryModelTests</td>
+      <td>TimeEntry, InvoiceNFSe, LawyerScore, LeadStage (4 classes)</td>
+      <td><span class="status-ok">✅ OK</span></td>
+    </tr>
+    <tr>
+      <td>T03</td>
+      <td>Integração</td>
+      <td>IA — blueprints</td>
+      <td>pytest apps/intelligent_assistant/tests/test_blueprints.py</td>
+      <td>Testes de blueprint (parcial)</td>
+      <td><span class="status-warn">⚠️ Incompleto</span></td>
+    </tr>
+    <tr>
+      <td>T04</td>
+      <td>Unitário</td>
+      <td>IA — services</td>
+      <td>pytest apps/intelligent_assistant/tests/test_services.py</td>
+      <td>Testes de serviços (parcial)</td>
+      <td><span class="status-warn">⚠️ Incompleto</span></td>
+    </tr>
+    <tr>
+      <td>T05</td>
+      <td>Unitário</td>
+      <td>IA — agents</td>
+      <td>pytest apps/intelligent_assistant/tests/test_agents.py</td>
+      <td>Testes de agentes (parcial)</td>
+      <td><span class="status-warn">⚠️ Incompleto</span></td>
+    </tr>
+    <tr>
+      <td>T06</td>
+      <td>Unitário</td>
+      <td>IA — models</td>
+      <td>pytest apps/intelligent_assistant/tests/test_models.py</td>
+      <td>Testes de modelos (parcial)</td>
+      <td><span class="status-warn">⚠️ Incompleto</span></td>
+    </tr>
+    <tr>
+      <td>T07</td>
+      <td>BDD</td>
+      <td>API Agents</td>
+      <td>pytest backend/tests/api_agents.feature</td>
+      <td>Teste BDD para agentes</td>
+      <td><span class="status-ok">✅ OK</span></td>
+    </tr>
+    <tr>
+      <td>T08</td>
+      <td>Componente</td>
+      <td>Frontend — UI</td>
+      <td>npx jest src/__tests__/components/</td>
+      <td>DocumentHeader, AnalysisPhase, EvaluationPhase, Stepper, Button, Card, Input</td>
+      <td><span class="status-ok">✅ OK</span></td>
+    </tr>
+    <tr>
+      <td>T09</td>
+      <td>Hook</td>
+      <td>Frontend — Hooks</td>
+      <td>npx jest src/__tests__/hooks/</td>
+      <td>use-blueprints, use-intelligent-assistant</td>
+      <td><span class="status-ok">✅ OK</span></td>
+    </tr>
+    <tr>
+      <td>T10</td>
+      <td>Unitário</td>
+      <td>Lib</td>
+      <td>npx jest src/__tests__/lib/</td>
+      <td>api, utils</td>
+      <td><span class="status-ok">✅ OK</span></td>
+    </tr>
+    <tr>
+      <td>LACUNA</td>
+      <td>Integração E2E</td>
+      <td>Fluxo completo IA + Cases + Workflow</td>
+      <td>Não existe</td>
+      <td>❌ Nenhum teste E2E do fluxo multimódulo</td>
+      <td><span class="status-err">Crítica</span></td>
+    </tr>
+    <tr>
+      <td>LACUNA</td>
+      <td>Integração</td>
+      <td>SSE Streaming</td>
+      <td>Não existe</td>
+      <td>❌ Nenhum teste de SSE streaming (proxy, LLM)</td>
+      <td><span class="status-err">Alta</span></td>
+    </tr>
+    <tr>
+      <td>LACUNA</td>
+      <td>Integração</td>
+      <td>Celery Tasks</td>
+      <td>Não existe</td>
+      <td>❌ Nenhum teste de tasks periódicas</td>
+      <td><span class="status-warn">Média</span></td>
+    </tr>
+    <tr>
+      <td>LACUNA</td>
+      <td>Contrato</td>
+      <td>Proxy Next.js ↔ Django</td>
+      <td>Não existe</td>
+      <td>❌ Nenhum teste de contrato do proxy</td>
+      <td><span class="status-warn">Média</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong>Verus.AI — Análise Multimódulo</strong></p>
+  <p>Documento gerado em 14 de junho de 2026 | v1.0</p>
+  <p>Autor: Agente de Análise (Qwen Code) | Auditoria completa do sistema</p>
+  <p><span class="badge badge-success">✅ Análise Concluída — 21 módulos mapeados, 6 problemas identificados, 3 correções propostas</span></p>
+  <p style="margin-top:1rem;font-size:0.75rem;">Este documento é uma ferramenta de auditoria visual. Cada elemento corresponde a uma evidência real do código-fonte.</p>
+</div>
+
+</div><!-- /container -->
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#2563eb',
+    primaryTextColor: '#fff',
+    primaryBorderColor: '#1d4ed8',
+    lineColor: '#94a3b8',
+    secondaryColor: '#f1f5f9',
+    tertiaryColor: '#f8fafc',
+    fontSize: '14px'
+  },
+  sequence: {
+    showSequenceNumbers: true,
+    actorFontSize: 14,
+    noteFontSize: 12,
+    messageFontSize: 12
+  },
+  flowchart: {
+    htmlLabels: true,
+    curve: 'basis',
+    nodeSpacing: 50,
+    rankSpacing: 75
+  }
+});
+</script>
+</body>
+</html>
