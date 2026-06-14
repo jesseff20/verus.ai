@@ -419,7 +419,7 @@ export default function CaseDetailPage() {
   const statusCfg = statusConfig[caso.status] || { color: 'bg-gray-100 text-gray-800' };
 
   return (
-    <div className="space-y-6 pb-20 sm:pb-6">
+    <div className="space-y-6 pb-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start gap-4">
         <Button variant="outline" size="icon" asChild className="shrink-0">

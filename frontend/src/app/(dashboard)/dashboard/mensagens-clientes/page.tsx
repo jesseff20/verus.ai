@@ -662,7 +662,7 @@ export default function MensagensClientesPage() {
   // ── Render ──
 
   return (
-    <div className="space-y-4 pb-20 sm:pb-6">
+    <div className="space-y-4 pb-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>

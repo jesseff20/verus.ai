@@ -439,7 +439,7 @@ export default function ClientsPage() {
   // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="space-y-6 pb-20 sm:pb-6">
+    <div className="space-y-6 pb-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>

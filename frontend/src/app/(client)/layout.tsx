@@ -167,7 +167,7 @@ export default function ClientLayout({
         {/* ── Sidebar ─────────────────────────────────── */}
         <aside
           className={`
-            fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)] w-64 border-r bg-card
+            fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)] w-[75vw] sm:w-64 border-r bg-card
             transition-transform duration-200 ease-in-out
             lg:sticky lg:translate-x-0 lg:block
             ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}

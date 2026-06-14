@@ -320,7 +320,7 @@ ${sectionsHtml}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col lg:flex-row gap-4 sm:gap-8 pb-20 sm:pb-0"
+      className="flex flex-col lg:flex-row gap-4 sm:gap-8 pb-16 sm:pb-0"
     >
       {/* Document preview (shown first on mobile, second on desktop via order) */}
       <div className="order-1 lg:order-2 lg:flex-1 min-w-0">

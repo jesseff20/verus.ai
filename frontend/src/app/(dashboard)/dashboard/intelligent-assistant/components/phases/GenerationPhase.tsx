@@ -694,7 +694,7 @@ function GenerationPhaseComponent({
 
       {/* Generation progress (during generation) */}
       {showProgress && (
-        <div className="space-y-3 pb-20 sm:pb-0">
+        <div className="space-y-3 pb-16 sm:pb-0">
           {Object.entries(generationProgress.sections).map(([key, section]) =>
             renderSectionCard(key, section, false)
           )}
@@ -703,7 +703,7 @@ function GenerationPhaseComponent({
 
       {/* Results (after generation completed) */}
       {showResults && (
-        <div className="space-y-3 pb-20 sm:pb-0">
+        <div className="space-y-3 pb-16 sm:pb-0">
           {Object.entries(generationProgress.sections).map(([key, section]) =>
             renderSectionCard(key, section, true)
           )}

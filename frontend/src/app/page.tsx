@@ -439,7 +439,7 @@ export default function LandingPage() {
       {/* ── Workflows ────────────────────────────────────────── */}
       <Section id="fluxos" className={`py-24 px-6 border-t ${t.divider}`}>
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-16 items-center">
             <div>
               <p className="text-xs font-mono text-[#8B5CF6] uppercase tracking-widest mb-4">Workflows BPMN</p>
               <h2 className="text-3xl font-bold tracking-tight mb-6">
@@ -581,7 +581,7 @@ export default function LandingPage() {
       {/* ── Segurança ────────────────────────────────────────── */}
       <Section id="seguranca" className={`py-24 px-6 border-t ${t.divider}`}>
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-16 items-center">
             <div className="order-2 md:order-1">
               <div className="grid grid-cols-2 gap-3">
                 {[

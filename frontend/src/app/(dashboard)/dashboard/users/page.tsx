@@ -301,6 +301,62 @@ export default function UsersPage() {
               <Loader2 className="h-8 w-8 animate-spin" />
             </div>
           ) : (
+            <>
+            {/* Mobile card view */}
+            <div className="sm:hidden space-y-3">
+              {users.map((user) => (
+                <div key={user.id} className="border rounded-lg p-3 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm truncate">{user.full_name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                      {user.is_active ? (
+                        <UserCheck className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <UserX className="h-4 w-4 text-red-600" />
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <Badge variant={roleColors[user.role]} className="text-xs">
+                      {roleLabels[user.role]}
+                    </Badge>
+                    {user.department && (
+                      <Badge variant="outline" className="text-xs">{user.department}</Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between pt-1 border-t">
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(user.created_at).toLocaleDateString('pt-BR')}
+                    </span>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEditClick(user)}
+                        disabled={isUpdating || isDeleting}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteClick(user)}
+                        disabled={isUpdating || isDeleting}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop table view */}
+            <div className="hidden sm:block">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -367,6 +423,8 @@ export default function UsersPage() {
                 ))}
               </TableBody>
             </Table>
+            </div>
+            </>
           )}
         </CardContent>
       </Card>
@@ -380,7 +438,7 @@ export default function UsersPage() {
               Preencha os dados do novo usuário
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-4 py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="create-username">Username *</Label>
               <Input
@@ -556,7 +614,7 @@ export default function UsersPage() {
               Atualizar dados do usuário
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-4 py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="edit-first-name">Nome</Label>
               <AIInput

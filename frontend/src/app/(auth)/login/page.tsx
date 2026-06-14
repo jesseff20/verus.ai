@@ -197,7 +197,7 @@ export default function LoginPage() {
         </p>
 
         {/* Hero */}
-        <h1 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-extrabold tracking-[-0.03em] leading-[1.05] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <h1 className={`text-2xl sm:text-3xl lg:text-4xl xl:text-[3.5rem] font-extrabold tracking-[-0.03em] leading-[1.05] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           Sua procuradoria,{' '}
           <span className="text-[#7030A0]">
             mais eficaz.
@@ -304,7 +304,7 @@ export default function LoginPage() {
 
           {/* Login Card */}
           <div className={`
-            rounded-2xl border p-6 sm:p-7 shadow-xl transition-colors duration-500
+            rounded-2xl border p-4 sm:p-6 lg:p-7 shadow-xl transition-colors duration-500
             ${isDark
               ? 'border-white/[0.08] bg-[#18181B]/80 backdrop-blur-xl shadow-black/40'
               : 'border-gray-200 bg-white shadow-gray-200/50'}
