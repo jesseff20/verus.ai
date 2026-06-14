@@ -174,8 +174,11 @@ def start_flow(
                 case_ref = legal_case.numero_processo or str(legal_case.id)
             if not case_title:
                 case_title = legal_case.titulo
-        except Exception:
-            pass  # case_id inválido não bloqueia
+        except Exception as exc:
+            raise ValueError(f'Caso {case_id} nao encontrado.') from exc
+
+        if legal_case.organ_id and legal_case.organ_id != organ.id:
+            raise ValueError('Caso nao pertence ao orgao do usuario.')
 
     # Nó de início
     start_node = template.nodes.filter(node_type='start_event').first()
@@ -359,11 +362,27 @@ def _advance_from_node(
     # (ou será criada logo abaixo via _proceed_to_node)
 
 
+    if node_type in ('user_task', 'task'):
+        for edge in outgoing:
+            next_node = _get_node(template, edge.target_node_id)
+            if next_node:
+                _proceed_to_node(
+                    instance,
+                    template,
+                    next_node,
+                    actor,
+                    gateway_choice=gateway_choice,
+                    _visited=_visited,
+                )
+        return
+
+
 def _proceed_to_node(
     instance: FlowInstance,
     template: FlowTemplate,
     node: FlowNode,
     actor=None,
+    gateway_choice: str = '',
     _visited: frozenset | None = None,
 ):
     """Cria task para o nó e, se automático, avança imediatamente."""
@@ -382,12 +401,26 @@ def _proceed_to_node(
         task.completed_at = _now()
         task.completed_by = actor
         task.save()
-        _advance_from_node(instance, template, node, actor=actor, _visited=_visited)
+        _advance_from_node(
+            instance,
+            template,
+            node,
+            actor=actor,
+            gateway_choice=gateway_choice,
+            _visited=_visited,
+        )
         return
 
     # Gateways: não criam task, apenas avaliam
     if node.node_type in ('exclusive_gateway', 'parallel_gateway', 'inclusive_gateway'):
-        _advance_from_node(instance, template, node, actor=actor, _visited=_visited)
+        _advance_from_node(
+            instance,
+            template,
+            node,
+            actor=actor,
+            gateway_choice=gateway_choice,
+            _visited=_visited,
+        )
         return
 
     # user_task / task: cria task e aguarda interação
@@ -406,7 +439,8 @@ def _resolve_exclusive_gateway(
     Prioridade:
     1. gateway_choice == source_handle da aresta
     2. gateway_choice == edge_id da aresta
-    3. Primeira aresta disponível (fallback)
+    Raises:
+        ValueError: se a escolha for obrigatoria e nao corresponder a uma aresta.
     """
     if gateway_choice:
         # Tenta pelo handle
@@ -418,15 +452,14 @@ def _resolve_exclusive_gateway(
             if edge.edge_id == gateway_choice:
                 return edge
 
-        # gateway_choice fornecido mas nenhuma aresta correspondente encontrada
-        logger.warning(
-            'Gateway exclusivo "%s" (node %s): escolha "%s" nao corresponde a nenhuma aresta. '
-            'Usando fallback para a primeira aresta disponivel.',
-            gateway_node.label, gateway_node.node_id, gateway_choice,
+        raise ValueError(
+            f'Escolha "{gateway_choice}" invalida para o gateway "{gateway_node.label}".'
         )
 
-    # Fallback: primeira aresta
-    return outgoing[0] if outgoing else None
+    if len(outgoing) == 1:
+        return outgoing[0]
+
+    raise ValueError(f'Gateway "{gateway_node.label}" exige uma escolha valida.')
 
 
 def _finish_flow(instance: FlowInstance, actor=None):

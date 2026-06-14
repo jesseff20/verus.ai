@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from apps.organization.models import Organ
+from apps.cases.models import LegalCase
 from apps.workflow_definition.models import FlowTemplate, FlowNode, FlowEdge
 from apps.workflow_execution.models import FlowInstance, TaskInstance, ExecutionEvent
 from apps.workflow_execution import service
@@ -15,7 +16,12 @@ User = get_user_model()
 
 
 def _make_organ(name='PGM Teste'):
-    return Organ.objects.create(name=name, slug=name.lower().replace(' ', '-'))
+    return Organ.objects.create(
+        name=name,
+        short_name=name[:30],
+        state='ES',
+        city='Serra',
+    )
 
 
 def _make_user(organ, role='distribuidor', username=None):
@@ -74,6 +80,18 @@ def _make_gateway_template(organ=None):
     FlowEdge.objects.create(template=tpl, edge_id='e5', source_node_id='t_yes', target_node_id='end')
     FlowEdge.objects.create(template=tpl, edge_id='e6', source_node_id='t_no', target_node_id='end')
     return tpl
+
+
+def _make_case(organ, user, title='Caso Teste'):
+    return LegalCase.objects.create(
+        titulo=title,
+        cliente_nome='Cliente Teste',
+        especialidade='civel',
+        status='ativo',
+        organ=organ,
+        advogado_responsavel=user,
+        created_by=user,
+    )
 
 
 class StartFlowTests(TestCase):
@@ -147,6 +165,33 @@ class StartFlowTests(TestCase):
         with self.assertRaises(ValueError):
             service.start_flow(str(tpl.id), self.organ, self.distribuidor)
 
+    def test_start_flow_invalid_case_id_raises(self):
+        tpl = _make_linear_template(self.organ)
+        with self.assertRaises(ValueError):
+            service.start_flow(
+                str(tpl.id),
+                self.organ,
+                self.distribuidor,
+                case_id='00000000-0000-0000-0000-000000000000',
+            )
+
+    def test_start_flow_case_from_other_organ_raises(self):
+        tpl = _make_linear_template(self.organ)
+        other_organ = _make_organ('Outra PG')
+        other_user = _make_user(other_organ, 'distribuidor', 'dist_other')
+        other_case = _make_case(other_organ, other_user, 'Caso de outro orgao')
+
+        with self.assertRaises(ValueError):
+            service.start_flow(
+                str(tpl.id),
+                self.organ,
+                self.distribuidor,
+                case_id=str(other_case.id),
+            )
+
+        other_case.refresh_from_db()
+        self.assertIsNone(other_case.active_flow)
+
 
 class CompleteTaskTests(TestCase):
     def setUp(self):
@@ -218,6 +263,12 @@ class GatewayTests(TestCase):
         t_yes = instance.tasks.filter(node_id='t_yes').first()
         self.assertIsNotNone(t_no, 'Branch no deve criar tarefa t_no')
         self.assertIsNone(t_yes, 'Branch yes NÃO deve criar tarefa t_yes')
+
+
+    def test_gateway_without_choice_raises(self):
+        t1 = self.instance.tasks.filter(node_id='t1', status='pending').first()
+        with self.assertRaises(ValueError):
+            service.complete_task(str(t1.id), self.procurador)
 
 
 class CancelFlowTests(TestCase):

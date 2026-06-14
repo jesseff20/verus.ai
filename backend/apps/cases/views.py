@@ -1191,6 +1191,10 @@ def extract_case_from_document(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    is_valid_upload, upload_error = validate_upload(file)
+    if not is_valid_upload:
+        return Response({'error': upload_error}, status=status.HTTP_400_BAD_REQUEST)
+
     # Validar extensão
     file_name = file.name.lower()
     allowed_extensions = ('.pdf', '.docx', '.doc', '.odt', '.txt')
@@ -5666,6 +5670,9 @@ def case_start_flow(request, case_id):
     except LegalCase.DoesNotExist:
         return Response({'detail': 'Caso não encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
+    if not user_can_access_case(request.user, case):
+        return _deny()
+
     if case.active_flow and case.active_flow.status == 'running':
         return Response(
             {'detail': 'Este caso já possui um fluxo em andamento.'},
@@ -5706,4 +5713,3 @@ def case_start_flow(request, case_id):
 
     from apps.workflow_execution.serializers import FlowInstanceDetailSerializer
     return Response(FlowInstanceDetailSerializer(instance).data, status=status.HTTP_201_CREATED)
-

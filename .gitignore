@@ -219,6 +219,7 @@ readme.txt
 # Claude Code
 # ======================
 .claude/
+.qwen/
 
 # ======================
 # Backup & Old Files

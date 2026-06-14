@@ -5,9 +5,12 @@ import { useRouter } from 'next/navigation';
 import {
   Activity, Play, CheckCircle2, XCircle, Clock,
   ExternalLink, Loader2, AlertCircle, ChevronRight, Workflow,
+  FileUp, Sparkles,
 } from 'lucide-react';
 import { useFlowTemplates } from '@/hooks/useFlowTemplates';
 import { useFlowInstance, useStartFlowForCase } from '@/hooks/useFlowExecution';
+import { useAuth } from '@/hooks/use-auth';
+import api from '@/lib/api';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType }> = {
   pending:   { label: 'Aguardando',   color: '#F59E0B', icon: Clock },
@@ -25,6 +28,89 @@ type FlowPanelProps = {
   activeFlowTemplateName: string | null;
 };
 
+type ExtractedCaseData = {
+  titulo?: string;
+  numero_processo?: string;
+  especialidade?: string;
+  descricao?: string;
+  observacoes?: string;
+  cliente_nome?: string;
+  cliente_documento?: string;
+  parte_contraria?: string;
+  parte_contraria_documento?: string;
+  tribunal?: string;
+  comarca?: string;
+  vara_juizo?: string;
+  estado?: string;
+  valor_causa?: string | number;
+  data_distribuicao?: string;
+  prazos_identificados?: unknown[];
+};
+
+function applyCNJMask(value: string): string {
+  const digits = value.replace(/\D/g, '').slice(0, 20);
+  let result = '';
+  for (let i = 0; i < digits.length; i++) {
+    if (i === 7) result += '-';
+    if (i === 9) result += '.';
+    if (i === 13) result += '.';
+    if (i === 14) result += '.';
+    if (i === 16) result += '.';
+    result += digits[i];
+  }
+  return result;
+}
+
+function applyCpfCnpjMask(value: string): string {
+  const digits = value.replace(/\D/g, '');
+  if (digits.length <= 11) {
+    let result = '';
+    for (let i = 0; i < Math.min(digits.length, 11); i++) {
+      if (i === 3 || i === 6) result += '.';
+      if (i === 9) result += '-';
+      result += digits[i];
+    }
+    return result;
+  }
+
+  const cnpj = digits.slice(0, 14);
+  let result = '';
+  for (let i = 0; i < cnpj.length; i++) {
+    if (i === 2) result += '.';
+    if (i === 5) result += '.';
+    if (i === 8) result += '/';
+    if (i === 12) result += '-';
+    result += cnpj[i];
+  }
+  return result;
+}
+
+function toCasePatch(data: ExtractedCaseData): Record<string, string | number> {
+  const patch: Record<string, string | number> = {};
+  const assign = (target: string, value: unknown, transform?: (v: string) => string) => {
+    if (value === undefined || value === null || value === '') return;
+    const normalized = typeof value === 'number' ? value : String(value).trim();
+    if (normalized === '') return;
+    patch[target] = transform && typeof normalized === 'string' ? transform(normalized) : normalized;
+  };
+
+  assign('titulo', data.titulo);
+  assign('numero_processo', data.numero_processo, applyCNJMask);
+  assign('especialidade', data.especialidade);
+  assign('descricao', data.descricao);
+  assign('observacoes', data.observacoes);
+  assign('cliente_nome', data.cliente_nome);
+  assign('cliente_cpf_cnpj', data.cliente_documento, applyCpfCnpjMask);
+  assign('parte_contraria', data.parte_contraria);
+  assign('parte_contraria_cpf_cnpj', data.parte_contraria_documento, applyCpfCnpjMask);
+  assign('tribunal', data.tribunal);
+  assign('comarca', data.comarca);
+  assign('vara_juizo', data.vara_juizo);
+  assign('valor_causa', data.valor_causa);
+  assign('data_distribuicao', data.data_distribuicao);
+  return patch;
+}
+
 function SelectTemplateModal({
   caseId,
   onClose,
@@ -33,20 +119,84 @@ function SelectTemplateModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+  const { user } = useAuth();
   const { data: templates } = useFlowTemplates();
   const startFlow = useStartFlowForCase();
   const [selectedId, setSelectedId] = useState('');
+  const [documentName, setDocumentName] = useState('');
+  const [extractedData, setExtractedData] = useState<ExtractedCaseData | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
+  const [extractError, setExtractError] = useState('');
 
   const published = templates?.filter((t) => t.status === 'published') ?? [];
+  const filledFields = extractedData ? Object.keys(toCasePatch(extractedData)).length : 0;
+  const userIdentity = `${user?.username ?? ''} ${user?.email ?? ''}`.toLowerCase();
+  const isDemoUser = (
+    userIdentity.includes('demo')
+    || userIdentity.includes('demonstracao')
+    || userIdentity.includes('demonstração')
+  );
+
+  const handleDocumentUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setDocumentName(file.name);
+    setExtractedData(null);
+    setExtractError('');
+    setIsExtracting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const { data } = await api.post<ExtractedCaseData>(
+        '/api/v1/processos/extract-from-document/',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+      );
+      setExtractedData(data);
+
+      const suggestionPayload = {
+        especialidade: data.especialidade || '',
+        descricao: data.descricao || data.titulo || '',
+        tribunal: data.tribunal || '',
+      };
+      const suggestion = await api.post('/api/v1/workflow-execution/suggest-flow/', suggestionPayload);
+      const firstSuggestion = suggestion.data?.suggestions?.[0];
+      if (firstSuggestion?.id) {
+        setSelectedId(String(firstSuggestion.id));
+      }
+    } catch (error: any) {
+      setExtractError(
+        error?.response?.data?.error
+        || error?.response?.data?.detail
+        || 'Nao foi possivel extrair dados do documento.',
+      );
+    } finally {
+      setIsExtracting(false);
+      event.target.value = '';
+    }
+  };
 
   const handleStart = async () => {
     if (!selectedId) return;
+    setIsApplying(true);
     try {
+      if (isDemoUser && extractedData) {
+        const patch = toCasePatch(extractedData);
+        if (Object.keys(patch).length > 0) {
+          await api.patch(`/api/v1/processos/${caseId}/`, patch);
+        }
+      }
       const instance = await startFlow.mutateAsync({ caseId, template_id: selectedId });
       onClose();
       router.push(`/dashboard/execucoes/${instance.id}`);
     } catch {
       /* handled */
+    } finally {
+      setIsApplying(false);
     }
   };
 
@@ -63,8 +213,63 @@ function SelectTemplateModal({
       >
         <h2 className="text-base font-semibold mb-1">Iniciar fluxo de trabalho</h2>
         <p className="text-xs text-white/40 mb-4">
-          Selecione o template de fluxo para este processo
+          {isDemoUser
+            ? 'Anexe o documento do processo para preencher os dados e sugerir o fluxo.'
+            : 'Selecione o template de fluxo para este processo.'}
         </p>
+
+        {isDemoUser && (
+          <>
+            <label
+              className="mb-4 flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-3 transition-all hover:bg-white/5"
+              style={{ borderColor: '#2A2A2A', background: '#0A0A0A' }}
+            >
+              <input
+                type="file"
+                className="hidden"
+                accept=".pdf,.docx,.doc,.odt,.txt"
+                onChange={handleDocumentUpload}
+                disabled={isExtracting || isApplying}
+              />
+              <FileUp size={16} className="text-[#C084FC] shrink-0" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-white/80 truncate">
+                  {documentName || 'Anexar documento processual'}
+                </p>
+                <p className="text-[10px] text-white/35">
+                  PDF, DOCX, ODT ou TXT. A IA extrai numero, partes, tribunal, prazos e assunto.
+                </p>
+              </div>
+              {isExtracting && <Loader2 size={14} className="animate-spin text-[#C084FC]" />}
+            </label>
+
+            {extractError && (
+              <div
+                className="mb-4 rounded-lg border px-3 py-2 text-xs"
+                style={{ borderColor: '#EF444440', background: '#EF444410', color: '#FCA5A5' }}
+              >
+                {extractError}
+              </div>
+            )}
+
+            {extractedData && (
+              <div
+                className="mb-4 rounded-lg border px-3 py-2 text-xs"
+                style={{ borderColor: '#22C55E40', background: '#22C55E10', color: '#86EFAC' }}
+              >
+                <div className="flex items-center gap-2 font-medium">
+                  <Sparkles size={12} />
+                  {filledFields} campo{filledFields !== 1 ? 's' : ''} do processo pronto{filledFields !== 1 ? 's' : ''} para atualizar
+                </div>
+                {(extractedData.titulo || extractedData.numero_processo) && (
+                  <p className="mt-1 truncate text-white/55">
+                    {extractedData.numero_processo ? applyCNJMask(extractedData.numero_processo) : extractedData.titulo}
+                  </p>
+                )}
+              </div>
+            )}
+          </>
+        )}
 
         {published.length === 0 && (
           <p className="text-sm text-white/30 text-center py-4">
@@ -100,12 +305,12 @@ function SelectTemplateModal({
         <div className="flex gap-2">
           <button
             onClick={handleStart}
-            disabled={!selectedId || startFlow.isPending}
+            disabled={!selectedId || startFlow.isPending || isExtracting || isApplying}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50"
             style={{ background: '#7030A0', color: '#fff' }}
           >
-            {startFlow.isPending ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} />}
-            Iniciar fluxo
+            {startFlow.isPending || isApplying ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} />}
+            {extractedData ? 'Atualizar e iniciar' : 'Iniciar fluxo'}
           </button>
           <button
             onClick={onClose}
@@ -130,7 +335,11 @@ export default function FlowPanel({
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  const hasFlow = Boolean(activeFlowId && activeFlowStatus && activeFlowStatus !== 'cancelled');
+  const hasFlow = Boolean(
+    activeFlowId
+    && activeFlowStatus
+    && !['completed', 'cancelled'].includes(activeFlowStatus),
+  );
   const conf = activeFlowStatus ? STATUS_CONFIG[activeFlowStatus] : null;
   const StatusIcon = conf?.icon ?? Activity;
 

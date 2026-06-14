@@ -164,9 +164,10 @@ export function useStartFlowForCase() {
       );
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (_data, payload) => {
       qc.invalidateQueries({ queryKey: ['flow-instances'] });
       qc.invalidateQueries({ queryKey: ['legal-cases'] });
+      qc.invalidateQueries({ queryKey: ['caso', payload.caseId] });
       toast.success('Fluxo iniciado com sucesso.');
     },
   });
