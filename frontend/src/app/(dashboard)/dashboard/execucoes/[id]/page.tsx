@@ -133,7 +133,7 @@ export default function ExecucaoDetailPage({
       </button>
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-6 gap-4">
+      <div className="flex items-start justify-between mb-6 gap-4" data-tour="ed-header">
         <div>
           <h1 className="text-xl font-bold tracking-tight">{instance.template_name_snapshot}</h1>
           <p className="text-sm text-foreground/50 mt-1">
@@ -187,7 +187,7 @@ export default function ExecucaoDetailPage({
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Tasks — 3 cols */}
-        <div className="lg:col-span-3 flex flex-col gap-3">
+        <div className="lg:col-span-3 flex flex-col gap-3" data-tour="ed-tasks">
           <h2 className="text-xs font-mono uppercase tracking-widest text-foreground/30 mb-1">
             Tarefas ({instance.tasks.length})
           </h2>
@@ -200,7 +200,7 @@ export default function ExecucaoDetailPage({
         </div>
 
         {/* Timeline — 2 cols */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2" data-tour="ed-timeline">
           <h2 className="text-xs font-mono uppercase tracking-widest text-foreground/30 mb-3">
             Histórico
           </h2>

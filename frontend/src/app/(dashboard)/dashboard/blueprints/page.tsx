@@ -168,7 +168,7 @@ export default function BlueprintsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" data-tour="bp-header">
         <div>
           <h1 className="text-3xl font-bold">Blueprints</h1>
           <p className="text-muted-foreground">
@@ -263,7 +263,7 @@ export default function BlueprintsPage() {
         </Card>
       ) : viewMode === 'grid' ? (
         /* Grid of blueprint cards */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-tour="bp-list">
           {filteredBlueprints.map((bp) => (
             <Card
               key={bp.id}
@@ -326,7 +326,7 @@ export default function BlueprintsPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2 mt-4">
+                <div className="flex gap-2 mt-4" data-tour="bp-actions">
                   <Link href={`/dashboard/blueprints/${bp.id}`} className="flex-1">
                     <Button variant="outline" className="w-full">
                       <Edit className="mr-2 h-4 w-4" />

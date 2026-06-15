@@ -114,7 +114,7 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
 
   return (
     <>
-      <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3">
+      <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3" data-tour="sl-card">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5">
@@ -171,6 +171,7 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
               onClick={() => setModal('approve')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={{ background: '#22C55E20', color: '#22C55E', border: '1px solid #22C55E30' }}
+              data-tour="sl-actions"
             >
               <CheckCircle2 size={12} />
               Aprovar
@@ -179,6 +180,7 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
               onClick={() => setModal('reject')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={{ background: '#EF444415', color: '#EF4444', border: '1px solid #EF444430' }}
+              data-tour="sl-actions"
             >
               <XCircle size={12} />
               Rejeitar
@@ -242,7 +244,7 @@ export default function SolicitacoesPage() {
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2" data-tour="sl-header">
           <ClipboardList size={22} className="text-[#8B5CF6]" />
           Solicitações de Tarefas
         </h1>

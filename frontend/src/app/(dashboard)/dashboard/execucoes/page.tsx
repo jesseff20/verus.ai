@@ -35,7 +35,7 @@ function InstanceRow({
       onClick={onView}
     >
       {/* Status */}
-      <div className="flex items-center gap-1.5 w-32 shrink-0">
+      <div className="flex items-center gap-1.5 w-32 shrink-0" data-tour="ex-status">
         <StatusIcon size={13} style={{ color: conf.color }} />
         <span className="text-xs font-medium" style={{ color: conf.color }}>
           {conf.label}
@@ -55,6 +55,7 @@ function InstanceRow({
         <div
           className="px-2 py-0.5 rounded-full text-[10px] font-medium shrink-0"
           style={{ background: '#3B82F620', color: '#3B82F6', border: '1px solid #3B82F640' }}
+          data-tour="ex-pending"
         >
           {instance.pending_task_count} pendente{instance.pending_task_count !== 1 ? 's' : ''}
         </div>
@@ -122,7 +123,7 @@ export default function ExecucoesPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8" data-tour="ex-header">
         <div>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
             <Play size={22} className="text-[#8B5CF6]" />

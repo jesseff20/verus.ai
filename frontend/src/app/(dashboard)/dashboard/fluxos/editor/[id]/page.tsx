@@ -50,7 +50,7 @@ export default function FlowEditorPage({ params }: { params: Promise<{ id: strin
   return (
     <div className="flex flex-col" style={{ height: '100vh' }}>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 px-4 h-10 border-b border-border bg-card shrink-0">
+      <div className="flex items-center gap-2 px-4 h-10 border-b border-border bg-card shrink-0" data-tour="ef-toolbar">
         <button
           onClick={() => router.push('/dashboard/fluxos')}
           className="flex items-center gap-1.5 text-xs text-foreground/40 hover:text-foreground transition-colors"

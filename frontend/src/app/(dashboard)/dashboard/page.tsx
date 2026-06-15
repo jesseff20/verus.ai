@@ -105,6 +105,7 @@ function TaskActionModal({ onClose }: { onClose: () => void }) {
       <div
         className="w-full max-w-lg rounded-xl border border-border bg-card p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
+        data-tour="db-tasks"
       >
         {/* Header */}
         <div className="mb-5 flex items-start gap-3">
@@ -300,7 +301,7 @@ export default function DashboardPage() {
       {showTaskModal && <TaskActionModal onClose={() => setShowTaskModal(false)} />}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-tour="db-header">
         <div className="flex items-center gap-3">
           <Image src="/logo.png" alt="Verus.AI" width={40} height={40} className="h-9 w-9 object-contain shrink-0 hidden sm:block" unoptimized />
           <div>
@@ -326,7 +327,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Cards de Estatisticas */}
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4" data-tour="db-stats">
         {statsCards.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -360,7 +361,7 @@ export default function DashboardPage() {
       {/* Grid de Documentos Recentes e Ações Rapidas */}
       <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         {/* Documentos Recentes */}
-        <Card>
+        <Card data-tour="db-recent">
           <CardHeader>
             <CardTitle>Peças Recentes</CardTitle>
             <CardDescription>Últimas peças processuais criadas</CardDescription>

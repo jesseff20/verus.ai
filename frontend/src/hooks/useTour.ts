@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { tourConfigs, type TourStep } from '@/components/tour/tourConfig';
+import { findTourForRoute, type TourStep } from '@/components/tour/tourConfig';
 
 // ── Tipos ──────────────────────────────────────────────────────
 
@@ -67,12 +67,7 @@ export function useTour() {
   const maxRetries = 10;
 
   // Determina qual tour configura para a rota atual
-  const currentConfig = tourConfigs.find((cfg) => {
-    if (typeof cfg.route === 'string') {
-      return pathname === cfg.route;
-    }
-    return cfg.route.test(pathname);
-  });
+  const currentConfig = findTourForRoute(pathname);
 
   // Tour ativo (em andamento)
   const isActive = state.status === 'in_progress' && state.currentTourId !== null;

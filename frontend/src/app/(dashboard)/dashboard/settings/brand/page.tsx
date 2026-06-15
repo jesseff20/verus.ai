@@ -139,7 +139,7 @@ export default function BrandSettingsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
+      <div data-tour="st-brand">
         <h1 className="text-3xl font-bold">Identidade Visual</h1>
         <p className="text-muted-foreground">
           Configure a aparência do sistema, incluindo nome, cores e logos

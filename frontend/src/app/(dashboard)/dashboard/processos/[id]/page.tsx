@@ -421,7 +421,7 @@ export default function CaseDetailPage() {
   return (
     <div className="space-y-6 pb-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start gap-4">
+      <div className="flex flex-col sm:flex-row items-start gap-4" data-tour="pd-header">
         <Button variant="outline" size="icon" asChild className="shrink-0">
           <Link href="/dashboard/processos"><ArrowLeft className="h-4 w-4" /></Link>
         </Button>
@@ -442,7 +442,7 @@ export default function CaseDetailPage() {
             <span>{caso.fase_display}</span>
           </div>
         </div>
-        <Button variant="outline" size="sm" asChild className="hidden sm:inline-flex">
+        <Button variant="outline" size="sm" asChild className="hidden sm:inline-flex" data-tour="pd-actions">
           <Link href={`/dashboard/processos/${caseId}/editar`}>
             <Pencil className="h-4 w-4 mr-2" />
             Editar
@@ -509,7 +509,7 @@ export default function CaseDetailPage() {
       </div>
 
       {/* Abas — 4 tabs: Visão Geral, Cronograma, Atividades, Documentos */}
-      <Tabs defaultValue="visao-geral">
+      <Tabs defaultValue="visao-geral" data-tour="pd-tabs">
         <TabsList className="w-full sm:w-auto overflow-x-auto flex scrollbar-hide">
           <TabsTrigger value="visao-geral" className="flex-shrink-0 min-h-[44px] gap-1.5 text-xs sm:text-sm">
             <Eye className="h-4 w-4" />
@@ -1059,6 +1059,7 @@ export default function CaseDetailPage() {
             activeFlowNode={caso.active_flow_node ?? null}
             activeFlowPendingTasks={caso.active_flow_pending_tasks ?? 0}
             activeFlowTemplateName={caso.active_flow_template_name ?? null}
+            data-tour="pd-flow-panel"
           />
         </TabsContent>
       </Tabs>

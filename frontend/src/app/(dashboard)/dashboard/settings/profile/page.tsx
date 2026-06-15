@@ -301,7 +301,7 @@ export default function ProfileSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div data-tour="st-profile">
         <h1 className="text-2xl sm:text-3xl font-bold">Configurações</h1>
         <p className="text-muted-foreground text-sm sm:text-base">Gerencie suas preferências do sistema</p>
       </div>

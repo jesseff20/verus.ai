@@ -110,7 +110,7 @@ export default function AgentsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" data-tour="ag-header">
         <div>
           <h1 className="text-3xl font-bold">Agentes de IA</h1>
           <p className="text-muted-foreground">
@@ -195,7 +195,7 @@ export default function AgentsPage() {
           </div>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-tour="ag-list">
           {agents.map((agent) => {
             const Icon = getIcon(agent.icon);
 
@@ -286,7 +286,7 @@ export default function AgentsPage() {
                   </div>
 
                   {/* Ações */}
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2 mt-4" data-tour="ag-chat">
                     <Link href={`/dashboard/agents/${agent.id}`} className="flex-1">
                       <Button variant="outline" className="w-full" size="sm">
                         <Eye className="mr-2 h-4 w-4" />

@@ -277,12 +277,12 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" data-tour="us-header">
         <div>
           <h1 className="text-3xl font-bold">Usuários</h1>
           <p className="text-muted-foreground">Gerenciar usuários do sistema</p>
         </div>
-        <Button onClick={handleCreateClick}>
+        <Button onClick={handleCreateClick} data-tour="us-create">
           <Plus className="mr-2 h-4 w-4" />
           Novo Usuário
         </Button>
@@ -357,7 +357,7 @@ export default function UsersPage() {
 
             {/* Desktop table view */}
             <div className="hidden sm:block">
-            <Table>
+            <Table data-tour="us-table">
               <TableHeader>
                 <TableRow>
                   <TableHead>Nome</TableHead>

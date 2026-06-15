@@ -365,8 +365,12 @@ function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
       )}
 
       {/* Canvas area */}
-      <div className="flex-1 relative" ref={reactFlowWrapper}>
-        {!isSystemTemplate && <NodePalette />}
+      <div className="flex-1 relative" ref={reactFlowWrapper} data-tour="ef-canvas">
+        {!isSystemTemplate && (
+          <div data-tour="ef-palette">
+            <NodePalette />
+          </div>
+        )}
 
         <div
           style={{
@@ -420,11 +424,13 @@ function EditorInner({ template, initialNodes, initialEdges }: EditorProps) {
         </div>
 
         {selectedNode && (
-          <PropertiesPanel
-            node={selectedNode}
-            onUpdate={handleNodeUpdate}
-            onClose={() => setSelectedNode(null)}
-          />
+          <div data-tour="ef-properties">
+            <PropertiesPanel
+              node={selectedNode}
+              onUpdate={handleNodeUpdate}
+              onClose={() => setSelectedNode(null)}
+            />
+          </div>
         )}
       </div>
     </div>

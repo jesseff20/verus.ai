@@ -141,7 +141,7 @@ export default function ProcessosPage() {
   return (
     <div className="space-y-6 pb-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-tour="pr-header">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
             <Scale className="h-7 w-7 sm:h-8 sm:w-8" />
@@ -216,7 +216,7 @@ export default function ProcessosPage() {
         <CardContent>
           {/* Search bar - sticky on mobile */}
           <div className="sticky top-0 z-10 bg-card pb-3 -mt-1">
-            <div className="relative">
+            <div className="relative" data-tour="pr-search">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Buscar por número, parte, título..."
@@ -366,7 +366,7 @@ export default function ProcessosPage() {
                     {casos.map((caso) => {
                       const statusCfg = statusConfig[caso.status] || { label: caso.status_display, color: 'bg-gray-100 text-gray-800' };
                       return (
-                        <TableRow key={caso.id} className="cursor-pointer hover:bg-accent/50">
+                        <TableRow key={caso.id} className="cursor-pointer hover:bg-accent/50" data-tour="pr-actions">
                           <TableCell>
                             <Link href={`/dashboard/processos/${caso.id}`} className="block">
                               <p className="font-medium text-sm">{caso.titulo}</p>
@@ -401,7 +401,7 @@ export default function ProcessosPage() {
                               <span className="text-xs text-muted-foreground">—</span>
                             )}
                           </TableCell>
-                          <TableCell>
+                          <TableCell data-tour="pr-flow-status">
                             {caso.active_flow_status === 'running' ? (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />

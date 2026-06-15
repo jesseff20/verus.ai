@@ -274,7 +274,7 @@ export default function EquipePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" data-tour="eq-header">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Gestão de Equipe</h1>
           <p className="text-muted-foreground">Gerencie equipes, membros e atribuições a casos.</p>
@@ -426,7 +426,7 @@ export default function EquipePage() {
       ) : filteredTeams.length === 0 ? (
         <p className="text-muted-foreground">Nenhuma equipe encontrada.</p>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-tour="eq-teams">
           {filteredTeams.map((team) => {
             const isExpanded = expandedTeam === team.id;
             const teamAvailability = availabilityData[team.id];
@@ -875,7 +875,7 @@ function TeamAssignmentsList({ teamId }: { teamId: string }) {
   if (!teamId || !assignments || assignments.length === 0) return null;
 
   return (
-    <div className="mt-2">
+    <div className="mt-2" data-tour="eq-assignments">
       <p className="text-sm font-medium mb-1">Casos Atribuídos</p>
       <ul className="space-y-1">
         {assignments.map((a) => (
