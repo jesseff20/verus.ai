@@ -6,6 +6,8 @@ import { useAuth } from '@/hooks/use-auth';
 import { Sidebar } from '@/components/layouts/sidebar';
 import { Header } from '@/components/layouts/header';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
+import { TourProvider } from '@/components/tour/TourProvider';
+import { TourHelpButton } from '@/components/tour/TourHelpButton';
 
 export default function DashboardLayout({
   children,
@@ -73,16 +75,21 @@ export default function DashboardLayout({
         <Header />
 
         <main className="flex-1 overflow-y-auto overflow-x-hidden bg-muted/30" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div className="max-w-[1800px] mx-auto px-3 py-4 sm:px-4 md:px-6 md:py-6">
-            {/* Breadcrumbs */}
-            <div className="mb-4">
-              <Breadcrumbs />
+          <TourProvider>
+            <div className="max-w-[1800px] mx-auto px-3 py-4 sm:px-4 md:px-6 md:py-6">
+              {/* Breadcrumbs */}
+              <div className="mb-4">
+                <Breadcrumbs />
+              </div>
+              {children}
             </div>
-            {children}
-          </div>
+
+            {/* Botão de ajuda flutuante */}
+            <TourHelpButton />
+          </TourProvider>
 
           {/* ── Aviso Legal ───────────────────────── */}
-          <footer className="border-t bg-background px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 shrink-0">
+            <footer className="border-t bg-background px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 shrink-0">
             <p className="text-center text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
               <span className="hidden sm:inline">Verus.AI é um assistente de procuradoria com inteligência artificial.{' '}</span>
               <strong className="font-medium text-foreground/60">

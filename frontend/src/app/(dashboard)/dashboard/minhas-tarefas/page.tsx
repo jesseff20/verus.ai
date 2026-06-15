@@ -13,6 +13,7 @@ import {
   type TaskInstanceDto,
   type RequestType,
 } from '@/hooks/useFlowExecution';
+import { useUsers } from '@/hooks/use-users';
 import { SignatureModal } from '@/components/signature/SignatureModal';
 import { AIInput } from '@/components/ui/ai-input';
 import { AITextarea } from '@/components/ui/ai-textarea';
@@ -242,6 +243,33 @@ function RequestModal({
   const [type, setType] = useState<RequestType>('redistribuicao');
   const [justification, setJustification] = useState('');
   const [target, setTarget] = useState('');
+  const [search, setSearch] = useState('');
+  const { users } = useUsers();
+
+  const filteredUsers = users.filter(
+    (u) =>
+      u.is_active &&
+      u.id !== task.assigned_to &&
+      (search === '' ||
+        u.full_name.toLowerCase().includes(search.toLowerCase()) ||
+        u.email.toLowerCase().includes(search.toLowerCase())),
+  );
+
+  const ROLE_LABELS_LOCAL: Record<string, string> = {
+    superadmin: 'Super Admin',
+    admin: 'Administrador',
+    procurador_geral: 'Procurador(a)-Geral',
+    subprocurador_geral: 'Subprocurador(a)-Geral',
+    gerente: 'Gerente',
+    procurador: 'Procurador(a)',
+    assessor_gerencial: 'Assessor(a) Gerencial',
+    assessor_gabinete: 'Assessor(a) de Gabinete',
+    distribuidor: 'Distribuidor(a)',
+    servidor: 'Servidor(a)',
+    visualizador: 'Visualizador',
+  };
+
+  const selectedUser = users.find((u) => u.id === target);
 
   return (
     <div
@@ -259,7 +287,7 @@ function RequestModal({
         <label className="block text-xs text-foreground/50 mb-1">Tipo</label>
         <select
           value={type}
-          onChange={(e) => setType(e.target.value as RequestType)}
+          onChange={(e) => { setType(e.target.value as RequestType); setTarget(''); setSearch(''); }}
           className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-4"
         >
           <option value="redistribuicao">Redistribuição</option>
@@ -270,19 +298,66 @@ function RequestModal({
         {(type === 'redistribuicao' || type === 'avocacao') && (
           <>
             <label className="block text-xs text-foreground/50 mb-1">
-              ID do usuário destino (UUID)
+              Usuário destino <span className="text-red-400">*</span>
             </label>
-            <AIInput
+
+            {/* Search filter */}
+            <input
               type="text"
-              variant="dark"
-              value={target}
-              onChange={(e) => setTarget(e.target.value)}
-              setValue={setTarget}
-              placeholder="UUID do usuário..."
-              aiContext="UUID do usuário destino para redistribuição"
-              aiObjective="Informe o identificador único do usuário de destino"
-              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar por nome ou email..."
+              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-2 placeholder:text-foreground/25"
             />
+
+            {/* User list */}
+            <div className="max-h-48 overflow-y-auto mb-4 rounded-lg border border-border bg-muted/30">
+              {filteredUsers.length === 0 ? (
+                <p className="text-xs text-foreground/30 text-center py-6">
+                  Nenhum usuário encontrado.
+                </p>
+              ) : (
+                filteredUsers.map((u) => (
+                  <button
+                    key={u.id}
+                    type="button"
+                    onClick={() => setTarget(u.id)}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm transition-all border-b border-border/50 last:border-b-0 hover:bg-muted/50 ${
+                      target === u.id ? 'bg-[#7030A0]/10 border-l-2 border-l-[#7030A0]' : ''
+                    }`}
+                  >
+                    <div className="w-7 h-7 rounded-full bg-[#7030A0]/20 flex items-center justify-center text-[11px] font-semibold text-[#C084FC] shrink-0">
+                      {u.full_name
+                        ? u.full_name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
+                        : '??'}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-foreground truncate font-medium">
+                        {u.full_name || u.username}
+                      </p>
+                      <p className="text-[10px] text-foreground/35 truncate">
+                        {ROLE_LABELS_LOCAL[u.role] || u.role}
+                        {u.email && ` · ${u.email}`}
+                      </p>
+                    </div>
+                    {target === u.id && (
+                      <svg className="w-4 h-4 text-[#7030A0] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </button>
+                ))
+              )}
+            </div>
+
+            {selectedUser && (
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-[#7030A0]/10 border border-[#7030A0]/20">
+                <span className="text-xs text-foreground/60">
+                  Destino: <strong className="text-foreground">{selectedUser.full_name}</strong>
+                  <span className="text-foreground/40"> ({ROLE_LABELS_LOCAL[selectedUser.role] || selectedUser.role})</span>
+                </span>
+              </div>
+            )}
           </>
         )}
 
@@ -302,7 +377,11 @@ function RequestModal({
         <div className="flex gap-2">
           <button
             onClick={() => onConfirm(type, justification, target || undefined)}
-            disabled={isPending || justification.trim().length < 10}
+            disabled={
+              isPending ||
+              justification.trim().length < 10 ||
+              ((type === 'redistribuicao' || type === 'avocacao') && !target)
+            }
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50"
             style={{ background: '#7030A0', color: '#fff' }}
           >
@@ -340,7 +419,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
 
   return (
     <>
-      <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3">
+      <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3" data-tour="mt-task-card">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5 flex-1 min-w-0">
@@ -370,6 +449,12 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
               {ROLE_LABELS[task.role_required] ?? task.role_required}
             </span>
           )}
+          {task.assigned_to_name && (
+            <span className="flex items-center gap-1 text-[11px] text-foreground/25">
+              <User size={10} />
+              {task.assigned_to_name}
+            </span>
+          )}
           {dueInfo && (
             <span
               className="flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded font-medium"
@@ -397,9 +482,22 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
 
         {/* Pending requests badge */}
         {task.requests.some((r) => r.status === 'pending') && (
-          <div className="flex items-center gap-1.5 text-[11px] text-amber-400/70">
+          <div className="flex items-center gap-1.5 text-[11px] text-amber-400/70 px-2 py-1 rounded-md bg-amber-500/5 border border-amber-500/15">
             <AlertCircle size={11} />
             Solicitação aguardando aprovação
+          </div>
+        )}
+        {/* Approved/rejected request badge */}
+        {task.requests.some((r) => r.status === 'approved') && (
+          <div className="flex items-center gap-1.5 text-[11px] text-green-400/70 px-2 py-1 rounded-md bg-green-500/5 border border-green-500/15">
+            <CheckCircle2 size={11} />
+            Solicitação aprovada
+          </div>
+        )}
+        {task.requests.some((r) => r.status === 'rejected') && (
+          <div className="flex items-center gap-1.5 text-[11px] text-red-400/70 px-2 py-1 rounded-md bg-red-500/5 border border-red-500/15">
+            <AlertCircle size={11} />
+            Solicitação rejeitada
           </div>
         )}
 
@@ -407,6 +505,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
         {canAct && (
           <div className="flex items-center gap-2 pt-2 border-t border-foreground/8">
             <button
+              data-tour="mt-complete-btn"
               onClick={() => setShowComplete(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={{
@@ -419,6 +518,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
               Concluir
             </button>
             <button
+              data-tour="mt-request-btn"
               onClick={() => setShowRequest(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-accent text-foreground/50 hover:text-foreground"
             >
@@ -481,7 +581,7 @@ export default function MinhasTarefasPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-8 flex items-start justify-between" data-tour="mt-header">
         <div>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
             <Briefcase size={22} className="text-[#8B5CF6]" />
@@ -517,7 +617,7 @@ export default function MinhasTarefasPage() {
       )}
 
       {/* Filter tabs */}
-      <div className="flex items-center gap-1 mb-6">
+      <div className="flex items-center gap-1 mb-6" data-tour="mt-filters">
         {filters.map((f) => (
           <button
             key={f.value}
@@ -539,8 +639,25 @@ export default function MinhasTarefasPage() {
 
       {/* Content */}
       {isLoading && (
-        <div className="flex items-center justify-center py-24">
-          <Loader2 size={24} className="animate-spin text-foreground/20" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="rounded-xl border border-border bg-card p-4 animate-pulse">
+              <div className="flex items-start justify-between gap-2 mb-3">
+                <div className="flex-1">
+                  <div className="h-4 bg-foreground/8 rounded w-3/4 mb-2" />
+                  <div className="h-3 bg-foreground/5 rounded w-1/3" />
+                </div>
+                <div className="h-3 bg-foreground/8 rounded w-16" />
+              </div>
+              <div className="h-3 bg-foreground/5 rounded w-1/2 mb-3" />
+              <div className="h-3 bg-foreground/5 rounded w-full mb-1" />
+              <div className="h-3 bg-foreground/5 rounded w-2/3 mb-4" />
+              <div className="flex gap-2 pt-2 border-t border-foreground/8">
+                <div className="h-7 bg-foreground/8 rounded-lg w-20" />
+                <div className="h-7 bg-foreground/5 rounded-lg w-16" />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -554,7 +671,25 @@ export default function MinhasTarefasPage() {
       {tasks?.length === 0 && !isLoading && (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <CheckCircle2 size={40} className="text-foreground/15 mb-4" />
-          <p className="text-foreground/40 text-sm">Nenhuma tarefa encontrada.</p>
+          <p className="text-foreground/40 text-sm font-medium">Nenhuma tarefa encontrada.</p>
+          <p className="text-foreground/25 text-xs mt-1 max-w-sm">
+            {statusFilter === 'pending'
+              ? 'Você não possui tarefas pendentes no momento. Tarefas são criadas quando um fluxo de trabalho é iniciado e atribuído a você.'
+              : statusFilter === 'in_progress'
+                ? 'Nenhuma tarefa em andamento. Inicie uma tarefa pendente para vê-la aqui.'
+                : statusFilter === 'completed'
+                  ? 'Nenhuma tarefa concluída ainda. Complete suas tarefas pendentes para acompanhá-las aqui.'
+                  : 'Nenhuma tarefa encontrada neste filtro.'}
+          </p>
+          {statusFilter !== 'pending' && (
+            <button
+              onClick={() => setStatusFilter('pending')}
+              className="mt-4 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              style={{ background: '#7030A015', color: '#C084FC', border: '1px solid #7030A040' }}
+            >
+              Ver tarefas pendentes
+            </button>
+          )}
         </div>
       )}
 

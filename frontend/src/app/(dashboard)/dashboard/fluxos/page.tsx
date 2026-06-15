@@ -174,7 +174,7 @@ function DemoStartTaskModal({
         const list = Array.isArray(data) ? data : data.results ?? [];
         if (!cancelled) {
           setCases(list);
-          setCaseId((current) => current || list.find((item) => item.active_flow_status !== 'running')?.id || list[0]?.id || '');
+          setCaseId((current) => current || list[0]?.id || '');
         }
       } catch {
         if (!cancelled) {
@@ -201,7 +201,7 @@ function DemoStartTaskModal({
 
   const selectedCase = cases.find((item) => item.id === caseId);
   const caseHasRunningFlow = selectedCase?.active_flow_status === 'running';
-  const canSubmit = Boolean(templateId && caseId && prompt.trim() && !caseHasRunningFlow);
+  const canSubmit = Boolean(templateId && caseId && prompt.trim());
 
   const handleStart = async () => {
     if (!canSubmit) return;
@@ -274,8 +274,9 @@ function DemoStartTaskModal({
           )}
 
           {caseHasRunningFlow && (
-            <p className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-300">
-              Este processo ja possui fluxo em andamento. Escolha outro processo para iniciar uma nova tarefa.
+            <p className="rounded-lg border border-blue-500/20 bg-blue-500/5 px-3 py-2 text-xs text-blue-300">
+              Este processo já possui um fluxo em andamento. A nova tarefa será criada de forma independente,
+              permitindo que você trabalhe em múltiplas demandas simultaneamente.
             </p>
           )}
 
@@ -434,6 +435,7 @@ function TemplateCard({
     <div
       className="group rounded-xl border border-border bg-card p-5 flex flex-col gap-3 hover:border-foreground/15 transition-all cursor-pointer"
       onClick={onOpen}
+      data-tour="fw-card"
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
@@ -493,6 +495,7 @@ function TemplateCard({
         <button
           onClick={(e) => { e.stopPropagation(); onOpen(); }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-foreground/8 text-foreground/60 hover:text-foreground"
+          data-tour="fw-editor-link"
         >
           <ExternalLink size={12} />
           Abrir editor
@@ -587,7 +590,7 @@ export default function FluxosPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8" data-tour="fw-header">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Fluxos de Trabalho</h1>
           <p className="text-sm text-foreground/50 mt-1">
@@ -598,6 +601,7 @@ export default function FluxosPage() {
           onClick={() => setCreating(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
           style={{ background: '#7030A0', color: '#fff' }}
+          data-tour="fw-create-btn"
         >
           <Plus size={15} />
           Novo fluxo
