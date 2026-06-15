@@ -62,7 +62,7 @@ export const AIInput = React.forwardRef<HTMLInputElement, AIInputProps>(
             value={value}
             onChange={onChange}
             className={cn(
-              'w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none pr-16 placeholder:text-white/20',
+              'w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none pr-16 placeholder:text-muted-foreground/50',
               className,
             )}
             {...props}

@@ -65,7 +65,7 @@ export const AITextarea = React.forwardRef<
             onChange={onChange}
             rows={rows ?? 3}
             className={cn(
-              'w-full px-3 py-2 rounded-lg text-sm text-white bg-white/5 border border-white/10 focus:border-[#7030A0] focus:outline-none resize-none pb-7 placeholder:text-white/20',
+              'w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none resize-none pb-7 placeholder:text-muted-foreground/50',
               className,
             )}
             {...props}

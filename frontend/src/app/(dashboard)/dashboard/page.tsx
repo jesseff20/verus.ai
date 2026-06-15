@@ -154,7 +154,7 @@ function TaskActionModal({ onClose }: { onClose: () => void }) {
             className={`group relative rounded-lg border p-4 text-left transition-all ${
               totalActiveTasks > 0
                 ? 'border-amber-500/30 bg-amber-500/5 hover:border-amber-500/50 hover:bg-amber-500/10'
-                : 'border-foreground/10 bg-foreground/[0.03] hover:border-foreground/20 hover:bg-foreground/[0.06]'
+                : 'border-border bg-muted/30 hover:border-muted-foreground/30 hover:bg-muted/50'
             }`}
           >
             <span className={`mb-3 flex h-9 w-9 items-center justify-center rounded-lg ${

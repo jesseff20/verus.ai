@@ -31,7 +31,7 @@ function InstanceRow({
 
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 border-b border-border hover:bg-foreground/[0.03] transition-all cursor-pointer"
+      className="flex items-center gap-3 px-4 py-3 border-b border-border hover:bg-accent transition-all cursor-pointer"
       onClick={onView}
     >
       {/* Status */}

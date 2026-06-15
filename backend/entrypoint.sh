@@ -251,6 +251,9 @@ SEED_LOG="/app/logs/seeds.log"
   echo "[seed] Criando jornada demo de workflow judicial..."
   python manage.py seed_demo_workflow_journey || true
 
+  echo "[seed] Criando dados demo abrangentes (execuções, solicitações, eventos, prazos)..."
+  python manage.py seed_comprehensive_demo || true
+
   echo "[seed] Todos os seeds concluídos em background."
 ) 2>&1 | tee -a "$SEED_LOG" &
 

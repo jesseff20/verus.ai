@@ -154,7 +154,7 @@ function CompleteModal({
                   placeholder="ex: yes / no / edge_id"
                   aiContext="branch de saída do gateway de decisão"
                   aiObjective="Sugira o identificador correto do branch de saída para este gateway"
-                  className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none placeholder:text-foreground/25"
+                  className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none placeholder:text-muted-foreground/50"
                 />
               )}
             </div>
@@ -172,7 +172,7 @@ function CompleteModal({
             rows={3}
             aiContext="observações de conclusão de tarefa"
             aiObjective="Ajude a redigir uma observação clara sobre o resultado da tarefa"
-            className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-foreground/25"
+            className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-muted-foreground/50"
           />
 
           {/* Optional signature */}
@@ -260,7 +260,7 @@ function RequestModal({
         <select
           value={type}
           onChange={(e) => setType(e.target.value as RequestType)}
-          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-4"
         >
           <option value="redistribuicao">Redistribuição</option>
           <option value="avocacao">Avocação</option>
@@ -281,7 +281,7 @@ function RequestModal({
               placeholder="UUID do usuário..."
               aiContext="UUID do usuário destino para redistribuição"
               aiObjective="Informe o identificador único do usuário de destino"
-              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
+              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
             />
           </>
         )}
@@ -296,7 +296,7 @@ function RequestModal({
           rows={3}
           aiContext="justificativa de redistribuição ou solicitação de tarefa"
           aiObjective="Ajude a redigir uma justificativa clara e formal para a solicitação"
-          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-foreground/25"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-muted-foreground/50"
         />
 
         <div className="flex gap-2">

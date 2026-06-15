@@ -117,7 +117,7 @@ function DemoEntryModal({
                 key={option.title}
                 type="button"
                 onClick={option.action}
-                className="min-h-[132px] rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4 text-left transition-all hover:border-[#7030A0]/50 hover:bg-[#7030A0]/10"
+                className="min-h-[132px] rounded-lg border border-border bg-muted/30 p-4 text-left transition-all hover:border-[#7030A0]/50 hover:bg-[#7030A0]/10"
               >
                 <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-[#7030A0]/25 bg-[#7030A0]/15 text-[#C084FC]">
                   <Icon size={17} />
@@ -241,7 +241,7 @@ function DemoStartTaskModal({
             <select
               value={templateId}
               onChange={(event) => setTemplateId(event.target.value)}
-              className="w-full rounded-lg border border-foreground/10 bg-foreground/5 px-3 py-2 text-sm text-foreground focus:border-[#7030A0] focus:outline-none"
+              className="w-full rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm text-foreground focus:border-[#7030A0] focus:outline-none"
             >
               {publishedTemplates.map((template) => (
                 <option key={template.id} value={template.id}>
@@ -257,7 +257,7 @@ function DemoStartTaskModal({
               value={caseId}
               onChange={(event) => setCaseId(event.target.value)}
               disabled={loadingCases}
-              className="w-full rounded-lg border border-foreground/10 bg-foreground/5 px-3 py-2 text-sm text-foreground focus:border-[#7030A0] focus:outline-none disabled:opacity-60"
+              className="w-full rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm text-foreground focus:border-[#7030A0] focus:outline-none disabled:opacity-60"
             >
               {loadingCases && <option>Carregando processos...</option>}
               {!loadingCases && cases.length === 0 && <option value="">Nenhum processo disponivel</option>}
@@ -370,7 +370,7 @@ function StartFlowModal({
           placeholder="ex: 0001234-12.2024.8.00.0000"
           aiContext="número do processo judicial"
           aiObjective="Formate ou sugira o número do processo no padrão CNJ"
-          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-3 placeholder:text-foreground/25"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-3 placeholder:text-muted-foreground/50"
         />
 
         <label className="block text-xs text-foreground/50 mb-1">
@@ -386,7 +386,7 @@ function StartFlowModal({
           placeholder="Breve descrição do processo..."
           aiContext="ementa ou título do processo"
           aiObjective="Sugira uma ementa clara e concisa para o processo judicial"
-          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-muted-foreground/50"
         />
 
         <div className="flex gap-2">
@@ -655,7 +655,7 @@ export default function FluxosPage() {
               placeholder="Nome do fluxo..."
               aiContext="nome do fluxo de trabalho judicial"
               aiObjective="Sugira um nome claro e descritivo para o fluxo de trabalho"
-              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-foreground/25"
+              className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none mb-4 placeholder:text-muted-foreground/50"
             />
             <div className="flex gap-2">
               <button

@@ -72,7 +72,7 @@ function ResolveModal({
           rows={3}
           aiContext="nota de resolução de solicitação de tarefa"
           aiObjective="Ajude a redigir uma observação formal e clara para a decisão de aprovação ou rejeição"
-          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-foreground/5 border border-foreground/10 focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-foreground/25"
+          className="w-full px-3 py-2 rounded-lg text-sm text-foreground bg-muted/50 border border-border focus:border-[#7030A0] focus:outline-none resize-none mb-4 placeholder:text-muted-foreground/50"
         />
 
         <div className="flex gap-2">
@@ -152,7 +152,7 @@ function RequestCard({ req }: { req: TaskRequestDto }) {
 
         {/* Resolution note */}
         {req.resolution_note && (
-          <div className="flex items-start gap-1.5 text-xs px-2 py-1.5 rounded-md bg-foreground/5">
+          <div className="flex items-start gap-1.5 text-xs px-2 py-1.5 rounded-md bg-muted/50">
             <MessageSquare size={11} className="mt-0.5 shrink-0 text-foreground/30" />
             <p className="text-foreground/40 leading-relaxed">{req.resolution_note}</p>
           </div>
