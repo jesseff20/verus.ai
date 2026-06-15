@@ -573,6 +573,7 @@ class Command(BaseCommand):
         # ── 1. Remove categorias legadas ─────────────────────────────────────
         # Primeiro remove DocumentTypes que apontem para categorias legadas
         # (evita ProtectedError ao deletar as categorias)
+        legadas_count = 0
         legadas_cats = DocumentCategory.objects.filter(code__in=CATEGORIAS_LEGADAS)
         if legadas_cats.exists():
             orphan_types = DocumentType.objects.filter(category__in=legadas_cats)

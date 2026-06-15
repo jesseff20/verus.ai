@@ -76,6 +76,9 @@ python manage.py seed_modules || { echo "WARN: seed_modules falhou — sistema p
 echo "Criando tipos de documentos jurídicos (crítico)..."
 python manage.py seed_document_types || { echo "WARN: seed_document_types falhou — tipos de documento podem faltar"; }
 
+echo "Criando ambiente demo de produção — usuários, clientes, casos (crítico)..."
+python manage.py seed_production_demo || { echo "WARN: seed_production_demo falhou — dados demo podem faltar"; }
+
 # ===========================================================================
 # Seeds OPCIONAIS — executados em background para não bloquear o gunicorn.
 # Todos são idempotentes (|| true garante que falhas não derrubam o container).
@@ -241,6 +244,12 @@ SEED_LOG="/app/logs/seeds.log"
 
   echo "[seed] Populando dados demo (prazos, tarefas, audiências, financeiro) nos casos..."
   python manage.py seed_case_demo_data || true
+
+  echo "[seed] Populando dados demo de novas features (Timesheet, CRM, KPIs, NFS-e)..."
+  python manage.py seed_new_features_demo || true
+
+  echo "[seed] Criando jornada demo de workflow judicial..."
+  python manage.py seed_demo_workflow_journey || true
 
   echo "[seed] Todos os seeds concluídos em background."
 ) 2>&1 | tee -a "$SEED_LOG" &
