@@ -46,22 +46,18 @@ export default function ContentError({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-        style={{ background: '#EF444415', border: '1px solid #EF444430' }}
-      >
-        <AlertTriangle size={18} className="text-red-400" />
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-destructive/10 border border-destructive/20">
+        <AlertTriangle size={18} className="text-destructive" />
       </div>
 
       <h2 className="text-base font-semibold mb-1">Erro ao carregar</h2>
-      <p className="text-sm text-foreground/40 mb-4 max-w-xs leading-relaxed">
+      <p className="text-sm text-muted-foreground mb-4 max-w-xs leading-relaxed">
         {error.message || 'Não foi possível carregar este conteúdo.'}
       </p>
 
       <button
         onClick={reset}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all"
-        style={{ background: '#7030A015', color: '#C084FC', border: '1px solid #7030A040' }}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20"
       >
         <RefreshCcw size={13} />
         Tentar novamente

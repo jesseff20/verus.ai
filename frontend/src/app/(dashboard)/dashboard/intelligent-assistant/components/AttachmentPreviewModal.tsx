@@ -227,15 +227,15 @@ export function AttachmentPreviewModal({
               ) : (
                 preview.sections.map((s) => (
                   <div key={s.section_number} className="scroll-mt-4">
-                    <h3 className="text-base font-bold text-black mb-3 flex items-center gap-2">
-                      <span className="text-black/30">
+                    <h3 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
+                      <span className="text-foreground/30">
                         {String(s.section_number).padStart(2, '0')}
                       </span>
                       {s.section_name}
                     </h3>
                     <SafeContent
                       content={s.content}
-                      className="text-black leading-relaxed prose-p:text-sm prose-li:text-sm prose-headings:text-base"
+                      className="text-foreground leading-relaxed prose-p:text-sm prose-li:text-sm prose-headings:text-base"
                     />
                   </div>
                 ))

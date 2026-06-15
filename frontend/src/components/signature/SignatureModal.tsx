@@ -39,47 +39,45 @@ function ProviderCard({
         selected
           ? 'border-[#7030A0] bg-[#7030A015]'
           : provider.available
-          ? 'border-white/10 hover:border-white/20 hover:bg-white/5'
-          : 'border-white/5 opacity-40 cursor-not-allowed'
+          ? 'border-border hover:border-muted-foreground/30 hover:bg-muted/50'
+          : 'border-border/50 opacity-40 cursor-not-allowed'
       }`}
     >
       <div className="flex items-start gap-3">
         <span className="text-xl mt-0.5">{PROVIDER_ICONS[provider.id] || '📝'}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white/80">{provider.name}</span>
+            <span className="text-sm font-medium text-foreground/80">{provider.name}</span>
             {provider.aceito_juridicamente && (
               <span
-                className="text-[10px] px-1.5 py-0.5 rounded font-mono"
-                style={{ background: '#22C55E15', color: '#22C55E', border: '1px solid #22C55E30' }}
+                className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20"
               >
                 juridicamente válido
               </span>
             )}
             {!provider.available && (
               <span
-                className="text-[10px] px-1.5 py-0.5 rounded font-mono"
-                style={{ background: '#F59E0B15', color: '#F59E0B', border: '1px solid #F59E0B30' }}
+                className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
               >
                 não configurado
               </span>
             )}
           </div>
-          <p className="text-[11px] text-white/40 mt-0.5 leading-relaxed">
+          <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
             {provider.description}
           </p>
           {provider.lei && (
-            <p className="text-[10px] text-white/25 mt-1">{provider.lei}</p>
+            <p className="text-[10px] text-muted-foreground/60 mt-1">{provider.lei}</p>
           )}
           {provider.observacao && (
-            <p className="text-[10px] text-amber-400/70 mt-1 flex items-center gap-1">
+            <p className="text-[10px] text-amber-600 dark:text-amber-400/70 mt-1 flex items-center gap-1">
               <Info size={9} />
               {provider.observacao}
             </p>
           )}
         </div>
         {selected && (
-          <CheckCircle2 size={14} style={{ color: '#7030A0', flexShrink: 0, marginTop: 2 }} />
+          <CheckCircle2 size={14} className="text-[#7030A0] shrink-0 mt-0.5" />
         )}
       </div>
     </button>
@@ -124,38 +122,34 @@ export function SignatureModal({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.8)' }}
+      style={{ background: 'rgba(0,0,0,0.6)' }}
       onClick={onClose}
     >
       <div
-        className="rounded-2xl border w-full max-w-lg mx-4 overflow-hidden"
-        style={{ background: '#0D0D0D', borderColor: '#2A2A2A' }}
+        className="rounded-2xl border border-border bg-card w-full max-w-lg mx-4 overflow-hidden shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: '#1A1A1A' }}>
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-            style={{ background: '#7030A015', border: '1px solid #7030A030' }}
-          >
-            <Shield size={15} className="text-[#8B5CF6]" />
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-border">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-primary/10 border border-primary/20">
+            <Shield size={15} className="text-primary" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-white">Assinar Documento</h2>
-            <p className="text-[11px] text-white/40">{documentTitle || documentRef}</p>
+            <h2 className="text-sm font-semibold text-foreground">Assinar Documento</h2>
+            <p className="text-[11px] text-muted-foreground">{documentTitle || documentRef}</p>
           </div>
         </div>
 
         {/* Body */}
         <div className="p-5 space-y-4">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-3">
+            <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground/60 mb-3">
               Escolha o método de assinatura
             </p>
 
             {loadingProviders ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 size={20} className="animate-spin text-white/20" />
+                <Loader2 size={20} className="animate-spin text-muted-foreground/40" />
               </div>
             ) : (
               <div className="space-y-2">
@@ -172,22 +166,16 @@ export function SignatureModal({
           </div>
 
           {/* Hash preview */}
-          <div
-            className="rounded-lg px-3 py-2 text-[10px] text-white/25 font-mono"
-            style={{ background: '#ffffff06' }}
-          >
+          <div className="rounded-lg px-3 py-2 text-[10px] text-muted-foreground/60 font-mono bg-muted/50">
             Conteúdo a assinar: {content.slice(0, 60)}{content.length > 60 ? '...' : ''}
           </div>
         </div>
 
         {/* Footer */}
-        <div
-          className="flex items-center justify-end gap-2 px-5 py-3 border-t"
-          style={{ borderColor: '#1A1A1A', background: '#0A0A0A' }}
-        >
+        <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-border bg-muted/30">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/8 transition-all"
+            className="px-4 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
           >
             Cancelar
           </button>

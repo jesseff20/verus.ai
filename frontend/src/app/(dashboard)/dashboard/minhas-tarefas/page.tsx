@@ -182,7 +182,7 @@ function CompleteModal({
             className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all mb-4 ${
               signed
                 ? 'bg-green-500/10 text-green-400 border border-green-500/25'
-                : 'bg-foreground/4 text-foreground/40 hover:bg-foreground/8 hover:text-foreground/70 border border-foreground/8'
+                : 'bg-muted/50 text-muted-foreground hover:bg-accent hover:text-foreground border border-border'
             }`}
           >
             <Shield size={12} />
@@ -205,7 +205,7 @@ function CompleteModal({
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
+              className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-accent transition-all"
             >
               Cancelar
             </button>
@@ -315,7 +315,7 @@ function RequestModal({
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/8 transition-all"
+            className="px-4 py-2 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-accent transition-all"
           >
             Cancelar
           </button>
@@ -420,7 +420,7 @@ function TaskCard({ task }: { task: TaskInstanceDto }) {
             </button>
             <button
               onClick={() => setShowRequest(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-foreground/8 text-foreground/50 hover:text-foreground"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-accent text-foreground/50 hover:text-foreground"
             >
               <ChevronRight size={12} />
               Solicitar
