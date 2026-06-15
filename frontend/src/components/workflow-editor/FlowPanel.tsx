@@ -427,7 +427,22 @@ export default function FlowPanel({
                   Minhas tarefas
                 </button>
               )}
+              {/* Botão para iniciar NOVO fluxo independente */}
+              <button
+                onClick={() => setShowModal(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-white/8 text-white/50 hover:text-white"
+              >
+                <Play size={12} />
+                Novo fluxo
+              </button>
             </div>
+
+            {activeFlowStatus === 'running' && (
+              <p className="text-[10px] text-white/25 leading-relaxed">
+                Você pode iniciar múltiplos fluxos independentes para o mesmo processo.
+                Cada fluxo é executado separadamente.
+              </p>
+            )}
           </div>
         )}
       </div>

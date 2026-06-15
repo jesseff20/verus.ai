@@ -5673,12 +5673,6 @@ def case_start_flow(request, case_id):
     if not user_can_access_case(request.user, case):
         return _deny()
 
-    if case.active_flow and case.active_flow.status == 'running':
-        return Response(
-            {'detail': 'Este caso já possui um fluxo em andamento.'},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
     template_id = request.data.get('template_id')
     if not template_id:
         return Response({'detail': 'Campo "template_id" obrigatório.'}, status=status.HTTP_400_BAD_REQUEST)
