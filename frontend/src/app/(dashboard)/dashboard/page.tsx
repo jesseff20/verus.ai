@@ -1,7 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { useDashboardStats, type RecentDocument } from '@/hooks/use-dashboard-stats';
+import { useMyTasks, type TaskInstanceDto } from '@/hooks/useFlowExecution';
+import { useFlowTemplates } from '@/hooks/useFlowTemplates';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,6 +32,9 @@ import {
   MessageSquare,
   PenTool,
   Users,
+  Play,
+  Inbox,
+  Workflow,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -74,9 +81,153 @@ const formatRelativeTime = (dateString: string) => {
   return formatDate(dateString);
 };
 
+// ── Modal obrigatório de tarefas (aparece em toda carga do dashboard) ──
+
+function TaskActionModal({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+  const { data: pendingTasks } = useMyTasks('pending');
+  const { data: inProgressTasks } = useMyTasks('in_progress');
+  const { data: templates } = useFlowTemplates();
+
+  const pendingCount = pendingTasks?.length ?? 0;
+  const inProgressCount = inProgressTasks?.length ?? 0;
+  const totalActiveTasks = pendingCount + inProgressCount;
+  const publishedTemplates = templates?.filter((t) => t.status === 'published') ?? [];
+
+  // Tarefa mais urgente (primeiro pending ou in_progress)
+  const urgentTask: TaskInstanceDto | undefined = pendingTasks?.[0] ?? inProgressTasks?.[0];
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.75)' }}
+    >
+      <div
+        className="w-full max-w-lg rounded-xl border border-border bg-card p-6 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="mb-5 flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+            <Workflow size={20} />
+          </span>
+          <div>
+            <h2 className="text-lg font-semibold">Central de Tarefas</h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              O que deseja fazer agora?
+            </p>
+          </div>
+        </div>
+
+        {/* Cards de ação */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Iniciar nova tarefa */}
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              router.push('/dashboard/fluxos');
+            }}
+            className="group relative rounded-lg border border-primary/20 bg-primary/5 p-4 text-left transition-all hover:border-primary/40 hover:bg-primary/10"
+          >
+            <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/20 text-primary">
+              <Play size={17} />
+            </span>
+            <span className="block text-sm font-semibold">Iniciar nova tarefa</span>
+            <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
+              Selecione um fluxo publicado e inicie uma nova jornada de trabalho.
+            </span>
+            {publishedTemplates.length > 0 && (
+              <span className="mt-2 inline-block rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+                {publishedTemplates.length} fluxo{publishedTemplates.length !== 1 ? 's' : ''} disponíve{publishedTemplates.length !== 1 ? 'is' : 'l'}
+              </span>
+            )}
+          </button>
+
+          {/* Finalizar tarefa */}
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              router.push('/dashboard/minhas-tarefas');
+            }}
+            className={`group relative rounded-lg border p-4 text-left transition-all ${
+              totalActiveTasks > 0
+                ? 'border-amber-500/30 bg-amber-500/5 hover:border-amber-500/50 hover:bg-amber-500/10'
+                : 'border-foreground/10 bg-foreground/[0.03] hover:border-foreground/20 hover:bg-foreground/[0.06]'
+            }`}
+          >
+            <span className={`mb-3 flex h-9 w-9 items-center justify-center rounded-lg ${
+              totalActiveTasks > 0
+                ? 'bg-amber-500/20 text-amber-500'
+                : 'bg-muted text-muted-foreground'
+            }`}>
+              <Inbox size={17} />
+            </span>
+            <span className="block text-sm font-semibold">Finalizar tarefa</span>
+            <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
+              {totalActiveTasks > 0
+                ? `Você tem ${totalActiveTasks} tarefa${totalActiveTasks !== 1 ? 's' : ''} aguardando sua ação.`
+                : 'Nenhuma tarefa pendente no momento.'}
+            </span>
+            {totalActiveTasks > 0 && (
+              <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+                {pendingCount > 0 && `${pendingCount} pendente${pendingCount !== 1 ? 's' : ''}`}
+                {pendingCount > 0 && inProgressCount > 0 && ' · '}
+                {inProgressCount > 0 && `${inProgressCount} em andamento`}
+              </span>
+            )}
+            {urgentTask && (
+              <span className="mt-2 block truncate text-[10px] text-muted-foreground">
+                Mais recente: {urgentTask.label}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Quick links */}
+        <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => { onClose(); router.push('/dashboard/execucoes'); }}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Ver execuções
+            </button>
+            <span className="text-muted-foreground/30">·</span>
+            <button
+              type="button"
+              onClick={() => { onClose(); router.push('/dashboard/solicitacoes'); }}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Solicitações
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
+  const router = useRouter();
   const { user } = useAuth();
   const { stats, recentDocuments, isLoading, isFetching, refetch } = useDashboardStats();
+  const [showTaskModal, setShowTaskModal] = useState(false);
+
+  // Mostrar modal de tarefas em toda carga do dashboard
+  useEffect(() => {
+    setShowTaskModal(true);
+  }, []);
 
   // Upcoming reminders (next 7 days, show top 3)
   const { data: upcomingReminders } = useQuery<Array<{
@@ -145,6 +296,9 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {/* Modal obrigatório de tarefas */}
+      {showTaskModal && <TaskActionModal onClose={() => setShowTaskModal(false)} />}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">

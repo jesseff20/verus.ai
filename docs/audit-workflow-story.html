@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verus.AI — Workflow User Story Audit</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e5e7;
+      --text-muted: #8b8d97;
+      --primary: #7030A0;
+      --frontend: #2563eb;
+      --backend: #16a34a;
+      --database: #7c3aed;
+      --decision: #d97706;
+      --error: #dc2626;
+      --fix: #059669;
+      --test: #4f46e5;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: linear-gradient(135deg, #1a1d27 0%, #1e1333 50%, #1a1d27 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a855f7, #7030A0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .header .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-version { background: rgba(112,48,160,0.25); color: #c084fc; border: 1px solid rgba(112,48,160,0.4); }
+    .badge-date   { background: rgba(100,100,120,0.2); color: var(--text-muted); border: 1px solid var(--border); margin-left: 0.5rem; }
+    .badge-p0     { background: rgba(220,38,38,0.2); color: #f87171; border: 1px solid rgba(220,38,38,0.35); }
+    .badge-p1     { background: rgba(217,119,6,0.2); color: #fbbf24; border: 1px solid rgba(217,119,6,0.35); }
+    .badge-p2     { background: rgba(37,99,235,0.2); color: #60a5fa; border: 1px solid rgba(37,99,235,0.35); }
+    .badge-fixed  { background: rgba(5,150,105,0.2); color: #34d399; border: 1px solid rgba(5,150,105,0.35); }
+    .badge-doc    { background: rgba(100,100,120,0.2); color: var(--text-muted); border: 1px solid var(--border); }
+    .badge-frontend { background: rgba(37,99,235,0.15); color: #60a5fa; border: 1px solid rgba(37,99,235,0.3); }
+    .badge-backend  { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.3); }
+    .badge-database { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+
+    /* ---- Layout ---- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    section { margin-bottom: 3rem; }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-title .icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    /* ---- Cards ---- */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    /* ---- Summary grid ---- */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .stat-value {
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .stat-card.modules .stat-value  { color: var(--primary); }
+    .stat-card.problems .stat-value { color: var(--error); }
+    .stat-card.fixes .stat-value    { color: var(--fix); }
+    .stat-card.files .stat-value    { color: var(--frontend); }
+
+    /* ---- Priority cards ---- */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .priority-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border-left: 4px solid;
+    }
+    .priority-card.p0 { border-left-color: var(--error); }
+    .priority-card.p1 { border-left-color: var(--decision); }
+    .priority-card.p2 { border-left-color: var(--frontend); }
+    .priority-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .priority-card p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 0.4rem;
+    }
+    .file-ref {
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.78rem;
+      color: #a78bfa;
+      background: rgba(124,58,237,0.1);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    /* ---- Phase cards ---- */
+    .phase-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 0.75rem;
+    }
+    .phase-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem;
+      text-align: center;
+      position: relative;
+    }
+    .phase-card .phase-num {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phase-card .phase-title {
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 0.3rem;
+      margin-top: 0.3rem;
+    }
+    .phase-card .phase-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ---- Table ---- */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    thead {
+      background: rgba(112,48,160,0.12);
+    }
+    th {
+      text-align: left;
+      padding: 0.85rem 1rem;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: rgba(112,48,160,0.06); }
+
+    /* ---- Mermaid ---- */
+    .mermaid-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      overflow-x: auto;
+    }
+    .mermaid-wrapper pre.mermaid {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ---- Modules list ---- */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 0.75rem;
+    }
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .module-num {
+      background: var(--primary);
+      color: white;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .module-card strong { font-size: 0.95rem; }
+    .module-card .module-desc { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* ---- Corrections summary ---- */
+    .correction-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .corr-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .corr-stat .corr-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--fix);
+    }
+    .corr-stat .corr-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---- User story card ---- */
+    .user-story {
+      background: linear-gradient(135deg, rgba(112,48,160,0.12), rgba(37,99,235,0.08));
+      border: 1px solid rgba(112,48,160,0.3);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.7;
+      position: relative;
+    }
+    .user-story::before {
+      content: '\201C';
+      font-size: 4rem;
+      color: var(--primary);
+      opacity: 0.4;
+      position: absolute;
+      top: -0.1rem;
+      left: 0.75rem;
+      font-family: Georgia, serif;
+    }
+    .user-story p {
+      padding-left: 2rem;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* ---- Stack badges ---- */
+    .stack-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.75rem;
+    }
+    .stack-badge {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============== HEADER ============== -->
+  <header class="header">
+    <h1>Verus.AI &mdash; Workflow User Story Audit</h1>
+    <p class="subtitle">Analise completa da historia de usuario do sistema de fluxos de trabalho</p>
+    <div>
+      <span class="badge badge-version">v1.1.0</span>
+      <span class="badge badge-date">2026-06-14</span>
+    </div>
+    <div class="stack-badges">
+      <span class="stack-badge">Django 5.x</span>
+      <span class="stack-badge">Next.js 14</span>
+      <span class="stack-badge">PostgreSQL</span>
+      <span class="stack-badge">Redis</span>
+      <span class="stack-badge">Celery</span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ============== USER STORY ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(112,48,160,0.2); color:#c084fc;">US</span>
+        User Story Analisada
+      </div>
+      <div class="user-story">
+        <p>Quando qualquer usuario carrega o dashboard, um modal obrigatorio aparece oferecendo: <strong>(1)</strong> iniciar uma nova tarefa baseada em templates de fluxo publicados, ou <strong>(2)</strong> completar uma tarefa pendente atribuida a ele. O sistema de workflow e o nucleo da plataforma.</p>
+      </div>
+    </section>
+
+    <!-- ============== EXECUTIVE SUMMARY ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(112,48,160,0.2); color:#c084fc;">01</span>
+        Resumo Executivo
+      </div>
+      <div class="summary-grid">
+        <div class="stat-card modules">
+          <div class="stat-value">7</div>
+          <div class="stat-label">Modulos Envolvidos</div>
+        </div>
+        <div class="stat-card problems">
+          <div class="stat-value">8</div>
+          <div class="stat-label">Problemas Encontrados</div>
+        </div>
+        <div class="stat-card fixes">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Correcoes Aplicadas</div>
+        </div>
+        <div class="stat-card files">
+          <div class="stat-value">4</div>
+          <div class="stat-label">Arquivos Modificados</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== MODULES ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(124,58,237,0.2); color:#a78bfa;">02</span>
+        Modulos Envolvidos
+      </div>
+      <div class="modules-grid">
+        <div class="module-card">
+          <span class="module-num">1</span>
+          <div>
+            <strong>workflow_definition</strong> <span class="badge badge-backend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">backend</span>
+            <div class="module-desc">FlowTemplate, FlowNode, FlowEdge, FlowVersion &mdash; Design BPMN dos fluxos</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <span class="module-num">2</span>
+          <div>
+            <strong>workflow_execution</strong> <span class="badge badge-backend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">backend</span>
+            <div class="module-desc">FlowInstance, TaskInstance, TaskRequest, ExecutionEvent &mdash; Motor de execucao</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <span class="module-num">3</span>
+          <div>
+            <strong>cases</strong> <span class="badge badge-backend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">backend</span>
+            <div class="module-desc">LegalCase vinculado a fluxos via active_flow FK</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <span class="module-num">4</span>
+          <div>
+            <strong>accounts</strong> <span class="badge badge-backend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">backend</span>
+            <div class="module-desc">User model com hierarquia de roles (superadmin a visualizador)</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <span class="module-num">5</span>
+          <div>
+            <strong>organization</strong> <span class="badge badge-backend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">backend</span>
+            <div class="module-desc">Organ model para isolamento multi-orgao</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <span class="module-num">6</span>
+          <div>
+            <strong>Frontend Dashboard</strong> <span class="badge badge-frontend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">frontend</span>
+            <div class="module-desc">Pagina principal do dashboard com TaskActionModal</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <span class="module-num">7</span>
+          <div>
+            <strong>Frontend Flows/Tasks</strong> <span class="badge badge-frontend" style="font-size:0.68rem; padding:0.1rem 0.5rem;">frontend</span>
+            <div class="module-desc">Flow editor, minhas-tarefas, execucoes pages</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CORRECTIONS SUMMARY ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(5,150,105,0.2); color:#34d399;">03</span>
+        Resumo das Correcoes
+      </div>
+      <div class="correction-stats">
+        <div class="corr-stat">
+          <div class="corr-value">4</div>
+          <div class="corr-label">Arquivos Modificados</div>
+        </div>
+        <div class="corr-stat">
+          <div class="corr-value">1</div>
+          <div class="corr-label">Arquivo Reescrito</div>
+        </div>
+        <div class="corr-stat">
+          <div class="corr-value" style="color:var(--fix);">0</div>
+          <div class="corr-label">Regressoes</div>
+        </div>
+        <div class="corr-stat">
+          <div class="corr-value" style="color:var(--fix);">0</div>
+          <div class="corr-label">Erros TypeScript</div>
+        </div>
+      </div>
+
+      <!-- Priority breakdown -->
+      <div class="priority-grid">
+        <!-- P0 -->
+        <div class="priority-card p0">
+          <h4><span class="badge badge-p0">P0 Critical</span> #1</h4>
+          <p><strong>seed_production_demo ausente do entrypoint</strong> &mdash; App implantado completamente vazio. Sem usuarios, sem casos, sem dados.</p>
+          <span class="file-ref">backend/entrypoint.sh</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+        <div class="priority-card p0">
+          <h4><span class="badge badge-p0">P0 Critical</span> #2</h4>
+          <p><strong>Task modal ausente do dashboard</strong> &mdash; Nenhum modal no carregamento. Usuarios nunca veem o ponto de entrada do workflow.</p>
+          <span class="file-ref">frontend/src/app/(dashboard)/dashboard/page.tsx</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+        <div class="priority-card p0">
+          <h4><span class="badge badge-p0">P0 Critical</span> #3</h4>
+          <p><strong>Sem dados demo de workflow</strong> &mdash; seed_demo_workflow_journey criava apenas 1 fluxo para 1 usuario. Outros viam workflow vazio.</p>
+          <span class="file-ref">seed_demo_workflow_journey.py</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+
+        <!-- P1 -->
+        <div class="priority-card p1">
+          <h4><span class="badge badge-p1">P1 High</span> #4</h4>
+          <p><strong>NameError em seed_document_types</strong> &mdash; legadas_count indefinido em DB limpo &rarr; crash (dados salvos mas comando reporta falha).</p>
+          <span class="file-ref">seed_document_types.py:668</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+        <div class="priority-card p1">
+          <h4><span class="badge badge-p1">P1 High</span> #5</h4>
+          <p><strong>Dois seeds ausentes do entrypoint</strong> &mdash; seed_new_features_demo e seed_demo_workflow_journey nao eram chamados.</p>
+          <span class="file-ref">backend/entrypoint.sh</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+        <div class="priority-card p1">
+          <h4><span class="badge badge-p1">P1 High</span> #6</h4>
+          <p><strong>Usuarios demo sem vinculo a orgao</strong> &mdash; Users do seed_production_demo sem organ, impossibilitando participacao em workflows.</p>
+          <span class="file-ref">seed_demo_workflow_journey.py</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+
+        <!-- P2 -->
+        <div class="priority-card p2">
+          <h4><span class="badge badge-p2">P2 Medium</span> #7</h4>
+          <p><strong>seed_judicial_flows.py duplicado</strong> &mdash; Existe em workflow_definition e workflow_execution. Django usa o ultimo e sombreia o outro.</p>
+          <span class="file-ref">ambos os apps</span>
+          <span class="badge badge-doc" style="margin-left:0.5rem;">DOCUMENTED</span>
+        </div>
+        <div class="priority-card p2">
+          <h4><span class="badge badge-p2">P2 Medium</span> #8</h4>
+          <p><strong>DemoEntryModal apenas para demo users</strong> &mdash; Modal antigo em /fluxos so aparecia para isDemoUser(). Novo TaskActionModal e universal.</p>
+          <span class="file-ref">dashboard/page.tsx</span>
+          <span class="badge badge-fixed" style="margin-left:0.5rem;">FIXED</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SEQUENCE DIAGRAM ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(37,99,235,0.2); color:#60a5fa;">04</span>
+        Diagrama de Sequencia &mdash; Jornada do Usuario
+      </div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant D as Dashboard
+    participant M as TaskActionModal
+    participant F as /fluxos
+    participant T as /minhas-tarefas
+    participant API as Backend API
+    participant DB as PostgreSQL
+
+    U->>D: Acessa dashboard
+    D->>API: GET /api/workflow/tasks/mine/
+    API->>DB: Query TaskInstance (pending)
+    DB-->>API: tasks[]
+    API-->>D: pending tasks + templates
+    D->>M: Exibe modal obrigatorio
+
+    alt Opcao A: Nova Tarefa
+        U->>M: Clica "Iniciar nova tarefa"
+        M->>F: Navega para /fluxos
+        U->>F: Seleciona template
+        F->>API: POST /api/workflow/start/
+        API->>DB: Cria FlowInstance
+        API->>DB: Cria TaskInstance
+        DB-->>API: instance criada
+        API-->>F: Redireciona para execucao
+    else Opcao B: Tarefa Pendente
+        U->>M: Clica "Finalizar tarefa"
+        M->>T: Navega para /minhas-tarefas
+        U->>T: Seleciona tarefa pendente
+        T->>API: POST /api/workflow/tasks/{id}/complete/
+        API->>DB: Atualiza TaskInstance
+        API->>DB: Avanca FlowInstance
+        DB-->>API: fluxo avancado
+        API-->>T: Confirmacao
+    end
+        </pre>
+      </div>
+    </section>
+
+    <!-- ============== PHASE CARDS ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(217,119,6,0.2); color:#fbbf24;">05</span>
+        Fases da Jornada
+      </div>
+      <div class="phase-flow">
+        <div class="phase-card">
+          <span class="phase-num">1</span>
+          <div class="phase-title">Login</div>
+          <div class="phase-desc">Usuario autentica via JWT. Role e organ sao carregados.</div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">2</span>
+          <div class="phase-title">Dashboard</div>
+          <div class="phase-desc">Pagina principal carrega. API retorna tarefas e templates.</div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">3</span>
+          <div class="phase-title">TaskModal</div>
+          <div class="phase-desc">Modal obrigatorio aparece com duas opcoes de acao.</div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">4</span>
+          <div class="phase-title">Iniciar Fluxo</div>
+          <div class="phase-desc">Seleciona template publicado e inicia FlowInstance.</div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">5</span>
+          <div class="phase-title">Executar</div>
+          <div class="phase-desc">TaskInstances sao atribuidas. Usuario preenche formularios.</div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">6</span>
+          <div class="phase-title">Completar</div>
+          <div class="phase-desc">Tarefa concluida. Motor avanca fluxo para proximo no.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ARCHITECTURE DIAGRAM ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(22,163,74,0.2); color:#4ade80;">06</span>
+        Diagrama de Arquitetura
+      </div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+graph TB
+    subgraph Frontend["Frontend (Next.js 14)"]
+        DASH["Dashboard<br/>TaskActionModal"]
+        FLUX["Fluxos<br/>FlowEditor"]
+        TASK["Minhas Tarefas"]
+        EXEC["Execucoes"]
+    end
+
+    subgraph Backend["Backend (Django 5.x)"]
+        WD["workflow_definition<br/>Templates API"]
+        WE["workflow_execution<br/>Executions API"]
+        SVC["service.py<br/>Workflow Engine"]
+        ACC["accounts<br/>User + Roles"]
+        ORG["organization<br/>Organ"]
+        CAS["cases<br/>LegalCase"]
+    end
+
+    subgraph Database["PostgreSQL"]
+        FT["FlowTemplate"]
+        FN["FlowNode"]
+        FE["FlowEdge"]
+        FI["FlowInstance"]
+        TI["TaskInstance"]
+        TR["TaskRequest"]
+        EE["ExecutionEvent"]
+        LC["LegalCase"]
+    end
+
+    DASH -->|"GET templates"| WD
+    DASH -->|"GET pending tasks"| WE
+    FLUX -->|"POST start flow"| WE
+    TASK -->|"POST complete"| WE
+    EXEC -->|"GET executions"| WE
+
+    WE --> SVC
+    SVC --> WD
+    SVC --> CAS
+    WE --> ACC
+    WE --> ORG
+
+    WD --> FT
+    FT --> FN
+    FT --> FE
+    WE --> FI
+    FI --> TI
+    TI --> TR
+    WE --> EE
+    CAS --> LC
+    LC -.->|"active_flow"| FI
+
+    style Frontend fill:#1e293b,stroke:#2563eb,color:#e4e5e7
+    style Backend fill:#14271a,stroke:#16a34a,color:#e4e5e7
+    style Database fill:#1e1533,stroke:#7c3aed,color:#e4e5e7
+        </pre>
+      </div>
+    </section>
+
+    <!-- ============== DECISION POINTS DIAGRAM ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(217,119,6,0.2); color:#fbbf24;">07</span>
+        Pontos de Decisao
+      </div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    A["Usuario acessa Dashboard"] --> B{"TaskActionModal"}
+    B -->|"Iniciar nova tarefa"| C["Listar templates publicados"]
+    B -->|"Finalizar tarefa"| D["Listar tarefas pendentes"]
+
+    C --> E{"Template selecionado?"}
+    E -->|"Sim"| F["Criar FlowInstance"]
+    E -->|"Nao"| C
+
+    F --> G["Atribuir TaskInstance"]
+    G --> H["Usuario executa tarefa"]
+
+    D --> I{"Tarefa selecionada?"}
+    I -->|"Sim"| H
+    I -->|"Nao"| D
+
+    H --> J["Submeter conclusao"]
+    J --> K{"Proximo no existe?"}
+    K -->|"Sim"| L["Avancar fluxo"]
+    K -->|"Nao"| M["Encerrar FlowInstance"]
+
+    L --> G
+
+    style B fill:#d97706,stroke:#fbbf24,color:#fff
+    style E fill:#d97706,stroke:#fbbf24,color:#fff
+    style I fill:#d97706,stroke:#fbbf24,color:#fff
+    style K fill:#d97706,stroke:#fbbf24,color:#fff
+    style M fill:#059669,stroke:#34d399,color:#fff
+        </pre>
+      </div>
+    </section>
+
+    <!-- ============== PROBLEMS TABLE ============== -->
+    <section>
+      <div class="section-title">
+        <span class="icon" style="background:rgba(220,38,38,0.2); color:#f87171;">08</span>
+        Tabela de Problemas
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Prioridade</th>
+              <th>Problema</th>
+              <th>Arquivo</th>
+              <th>Impacto</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><span class="badge badge-p0">P0</span></td>
+              <td>seed_production_demo ausente do entrypoint</td>
+              <td><span class="file-ref">backend/entrypoint.sh</span></td>
+              <td>App implantado completamente vazio</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><span class="badge badge-p0">P0</span></td>
+              <td>Task modal ausente do dashboard</td>
+              <td><span class="file-ref">dashboard/page.tsx</span></td>
+              <td>Usuarios nunca veem ponto de entrada</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><span class="badge badge-p0">P0</span></td>
+              <td>Sem dados demo de workflow</td>
+              <td><span class="file-ref">seed_demo_workflow_journey.py</span></td>
+              <td>Usuarios veem workflow vazio</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><span class="badge badge-p1">P1</span></td>
+              <td>NameError em seed_document_types</td>
+              <td><span class="file-ref">seed_document_types.py:668</span></td>
+              <td>Comando reporta falha em DB limpo</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><span class="badge badge-p1">P1</span></td>
+              <td>Dois seeds ausentes do entrypoint</td>
+              <td><span class="file-ref">backend/entrypoint.sh</span></td>
+              <td>Dados demo nunca criados</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><span class="badge badge-p1">P1</span></td>
+              <td>Usuarios demo sem vinculo a orgao</td>
+              <td><span class="file-ref">seed_demo_workflow_journey.py</span></td>
+              <td>Impossibilita participacao em workflows</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><span class="badge badge-p2">P2</span></td>
+              <td>seed_judicial_flows.py duplicado</td>
+              <td><span class="file-ref">workflow_definition + execution</span></td>
+              <td>Django sombreia um dos comandos</td>
+              <td><span class="badge badge-doc">DOCUMENTED</span></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td><span class="badge badge-p2">P2</span></td>
+              <td>DemoEntryModal restrito a demo users</td>
+              <td><span class="file-ref">dashboard/page.tsx</span></td>
+              <td>Usuarios reais nao viam modal</td>
+              <td><span class="badge badge-fixed">FIXED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="footer">
+    <p>Verus.AI &mdash; Plataforma Juridica para Procuradorias &bull; Audit gerado em 2026-06-14 &bull; Versao 1.1.0</p>
+    <p style="margin-top:0.4rem;">Django 5.x + Next.js 14 + PostgreSQL + Redis + Celery</p>
+  </footer>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#7030A0',
+        primaryTextColor: '#e4e5e7',
+        primaryBorderColor: '#9333ea',
+        lineColor: '#6b7280',
+        secondaryColor: '#1a1d27',
+        tertiaryColor: '#2a2d3a',
+        fontFamily: 'Segoe UI, system-ui, sans-serif',
+        fontSize: '13px',
+        noteBkgColor: '#1a1d27',
+        noteTextColor: '#e4e5e7',
+        actorBkg: '#1a1d27',
+        actorBorder: '#7030A0',
+        actorTextColor: '#e4e5e7',
+        signalColor: '#e4e5e7',
+        signalTextColor: '#e4e5e7'
+      },
+      flowchart: {
+        htmlLabels: true,
+        curve: 'basis',
+        nodeSpacing: 50,
+        rankSpacing: 60
+      },
+      sequence: {
+        mirrorActors: false,
+        messageMargin: 40,
+        actorMargin: 80
+      }
+    });
+  </script>
+</body>
+</html>
