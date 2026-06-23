@@ -258,41 +258,34 @@ class UnifiedLLMService:
         if not handler:
             raise ValueError(f"Provider '{provider}' não suportado. Use: {list(dispatch.keys())}")
 
-        for attempt in range(self.max_retries):
-            try:
-                logger.info(
-                    f"[{provider}/{model}] Chamando LLM stream (tentativa {attempt + 1}/{self.max_retries})"
-                )
-                for chunk_text, final_result in handler(
-                    user_prompt=full_prompt,
-                    system_prompt=system_prompt,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                    model=model,
-                ):
-                    yield (chunk_text, final_result)
-                    # Log token usage when we get the final result
-                    if final_result is not None:
-                        self._log_token_usage(
-                            provider=provider,
-                            model=model,
-                            result=final_result,
-                            user=user,
-                            usage_type=usage_type,
-                            description=description,
-                        )
-                return  # Streaming completo, sair
+        try:
+            logger.info(
+                f"[{provider}/{model}] Chamando LLM stream"
+            )
+            for chunk_text, final_result in handler(
+                user_prompt=full_prompt,
+                system_prompt=system_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                model=model,
+            ):
+                yield (chunk_text, final_result)
+                # Log token usage when we get the final result
+                if final_result is not None:
+                    self._log_token_usage(
+                        provider=provider,
+                        model=model,
+                        result=final_result,
+                        user=user,
+                        usage_type=usage_type,
+                        description=description,
+                    )
 
-            except Exception as e:
-                logger.warning(
-                    f"[{provider}/{model}] Erro stream (tentativa {attempt + 1}): {e}"
-                )
-                if attempt < self.max_retries - 1 and self._is_retryable(e):
-                    time.sleep(self.retry_delay * (attempt + 1))
-                else:
-                    raise
-
-        raise RuntimeError(f"[{provider}/{model}] Máximo de tentativas excedido (stream)")
+        except Exception as e:
+            logger.error(
+                f"[{provider}/{model}] Erro no streaming: {e}"
+            )
+            raise
 
     # =========================================================================
     # ANTHROPIC
